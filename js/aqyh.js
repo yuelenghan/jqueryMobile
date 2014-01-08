@@ -5,6 +5,8 @@ var yhScroll, swScroll, rjScroll,
     pageNo = 1, pageSize = 15,
     yhTypeId, swTypeId, rjTypeId;
 
+var serverPath = "http://192.168.1.123:8080/DataService/";
+
 // 初始化安全隐患页面
 function initAqyh() {
     // 延迟200ms执行, 否则界面没有渲染完成, 取不到listview1
@@ -18,7 +20,7 @@ function getYhBaseInfo() {
     var listView = $('#listview1');
     listView.empty();
     $.ajax({
-        url: "http://localhost:8080/DataService/baseInfo/1",
+        url: serverPath + "baseInfo/1",
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "baseInfo",
@@ -40,7 +42,7 @@ function getSwBaseInfo() {
     var listView = $('#listview2');
     listView.empty();
     $.ajax({
-        url: "http://localhost:8080/DataService/baseInfo/102",
+        url: serverPath + "baseInfo/102",
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "baseInfo",
@@ -127,7 +129,7 @@ function getFirstYhInfo(listView, typeId) {
     var limit = pageSize;
 
     $.ajax({
-        url: "http://localhost:8080/DataService/yhinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
+        url: serverPath + "yhinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "yhInfo",
@@ -161,7 +163,7 @@ function getFirstSwInfo(listView, typeId) {
     var limit = pageSize;
 
     $.ajax({
-        url: "http://localhost:8080/DataService/swinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
+        url: serverPath + "swinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "swInfo",
@@ -195,7 +197,7 @@ function getFirstRjInfo(listView, typeId) {
     var limit = pageSize;
 
     $.ajax({
-        url: "http://localhost:8080/DataService/kqRecord/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
+        url: serverPath + "kqRecord/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "rjInfo",
@@ -255,7 +257,7 @@ function yhPullUpAction() {
     var start = (pageNo - 1) * 15;
     var limit = pageSize;
     $.ajax({
-        url: "http://localhost:8080/DataService/yhinput/typeId/" + yhTypeId + "/start/" + start + "/limit/" + limit,
+        url: serverPath + "yhinput/typeId/" + yhTypeId + "/start/" + start + "/limit/" + limit,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "yhInfo",
@@ -284,7 +286,7 @@ function swPullUpAction() {
     var start = (pageNo - 1) * 15;
     var limit = pageSize;
     $.ajax({
-        url: "http://localhost:8080/DataService/swinput/typeId/" + swTypeId + "/start/" + start + "/limit/" + limit,
+        url: serverPath + "swinput/typeId/" + swTypeId + "/start/" + start + "/limit/" + limit,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "swInfo",
@@ -313,7 +315,7 @@ function rjPullUpAction() {
     var start = (pageNo - 1) * 15;
     var limit = pageSize;
     $.ajax({
-        url: "http://localhost:8080/DataService/kqRecord/typeId/" + rjTypeId + "/start/" + start + "/limit/" + limit,
+        url: serverPath + "kqRecord/typeId/" + rjTypeId + "/start/" + start + "/limit/" + limit,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "rjInfo",
