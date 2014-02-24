@@ -135,7 +135,7 @@ function getFirstYhInfo(listView, typeId) {
         jsonpCallback: "yhInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
                 listView.append(list);
             }
 
@@ -156,6 +156,38 @@ function getFirstYhInfo(listView, typeId) {
     });
 }
 
+function gotoYhDetail(item) {
+    $.mobile.changePage("#yhDetail");
+
+    $.ajax({
+        url: serverPath + "yhinput/" + item.id,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "yhDetail",
+        success: function (data) {
+            if (data != null) {
+                $("#yhputinid").html(data.yhputinid);
+                $("#typename").html(data.typename);
+                $("#levelname").html(data.levelname);
+                $("#banci").html(data.banci);
+                $("#intime").html(data.intime);
+                $("#status").html(data.status);
+                $("#jctypeDesc").html(data.jctypeDesc);
+                $("#remarks").html(data.remarks);
+                $("#xqdate").html(data.xqdate);
+                $("#xqbanci").html(data.xqbanci);
+                $("#maindeptname").html(data.maindeptname);
+                $("#zrdeptname").html(data.zrdeptname);
+                $("#zrpername").html(data.zrpername);
+                $("#placename").html(data.placename);
+            }
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
 // 从后台取得三违的第一页信息
 function getFirstSwInfo(listView, typeId) {
     pageNo = 1;
@@ -169,7 +201,7 @@ function getFirstSwInfo(listView, typeId) {
         jsonpCallback: "swInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
+                var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
                 listView.append(list);
             }
 
@@ -183,6 +215,38 @@ function getFirstSwInfo(listView, typeId) {
             //加载下拉刷新插件
             loadSwScroll();
 
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
+function gotoSwDetail(item) {
+    $.mobile.changePage("#swDetail");
+
+    $.ajax({
+        url: serverPath + "swinput/" + item.id,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "swDetail",
+        success: function (data) {
+            if (data != null) {
+                $("#swinputid").html(data.swinputid);
+                $("#swtypename").html(data.typename);
+                $("#zyname").html(data.zyname);
+                $("#swlevelname").html(data.levelname);
+                $("#swbanci").html(data.banci);
+                $("#swpctime").html(data.pctime);
+                $("#pcpname").html(data.pcpname);
+                $("#pcpnameNow").html(data.pcpnameNow);
+                $("#swstatus").html(data.status);
+                $("#swjctypeDesc").html(data.jctypeDesc);
+                $("#islearn").html(data.islearn);
+                $("#swremarks").html(data.remarks);
+                $("#swmaindeptname").html(data.maindeptname);
+                $("#zrkqname").html(data.zrkqname);
+            }
         },
         error: function () {
             alert("error");

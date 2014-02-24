@@ -175,5 +175,291 @@
         </div>
     </div>
 </div>
+
+<!-- 隐患详细信息 -->
+<div data-role="page" id="yhDetail" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患详细信息</h1>
+    </div>
+
+    <div data-role="content">
+        <table id="yhDetailTable" style="width: 100%">
+            <tr>
+                <td>
+                    隐患编号
+                </td>
+                <td style="text-align: right">
+                    <span id="yhputinid"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    专业
+                </td>
+                <td style="text-align: right">
+                    <span id="typename"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    级别
+                </td>
+                <td style="text-align: right">
+                    <span id="levelname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排查班次
+                </td>
+                <td style="text-align: right">
+                    <span id="banci"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排查时间
+                </td>
+                <td style="text-align: right">
+                    <span id="intime"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    状态
+                </td>
+                <td style="text-align: right">
+                    <span id="status"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    检查类型
+                </td>
+                <td style="text-align: right">
+                    <span id="jctypeDesc"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    隐患描述
+                </td>
+                <td style="text-align: right">
+                    <span id="remarks"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    整改期限日期
+                </td>
+                <td style="text-align: right">
+                    <span id="xqdate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    整改期限班次
+                </td>
+                <td style="text-align: right">
+                    <span id="xqbanci"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    单位
+                </td>
+                <td style="text-align: right">
+                    <span id="maindeptname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    责任单位
+                </td>
+                <td style="text-align: right">
+                    <span id="zrdeptname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    责任人
+                </td>
+                <td style="text-align: right">
+                    <span id="zrpername"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    地点
+                </td>
+                <td style="text-align: right">
+                    <span id="placename"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- 三违详细信息 -->
+<div data-role="page" id="swDetail" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患详细信息</h1>
+    </div>
+
+    <div data-role="content">
+        <table id="swDetailTable" style="width: 100%">
+            <tr>
+                <td>
+                    三违编号
+                </td>
+                <td style="text-align: right">
+                    <span id="swinputid"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    类型
+                </td>
+                <td style="text-align: right">
+                    <span id="swtypename"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    专业
+                </td>
+                <td style="text-align: right">
+                    <span id="zyname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    级别
+                </td>
+                <td style="text-align: right">
+                    <span id="swlevelname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排查班次
+                </td>
+                <td style="text-align: right">
+                    <span id="swbanci"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排查时间
+                </td>
+                <td style="text-align: right">
+                    <span id="swpctime"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排查人
+                </td>
+                <td style="text-align: right">
+                    <span id="pcpname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排查人姓名集合
+                </td>
+                <td style="text-align: right">
+                    <span id="pcpnameNow"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    状态
+                </td>
+                <td style="text-align: right">
+                    <span id="swstatus"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    检查类型
+                </td>
+                <td style="text-align: right">
+                    <span id="swjctypeDesc"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    是否进班
+                </td>
+                <td style="text-align: right">
+                    <span id="islearn"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    描述
+                </td>
+                <td style="text-align: right">
+                    <span id="swremarks"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    单位
+                </td>
+                <td style="text-align: right">sw
+                    <span id="swmaindeptname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    责任科区
+                </td>
+                <td style="text-align: right">sw
+                    <span id="zrkqname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    三违人员
+                </td>
+                <td style="text-align: right">sw
+                    <span id="swpname"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    地点
+                </td>
+                <td style="text-align: right">sw
+                    <span id="swplacename"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    三违依据
+                </td>
+                <td style="text-align: right">sw
+                    <span id="swcontent"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    是否罚款
+                </td>
+                <td style="text-align: right">sw
+                    <span id="isfine"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>
