@@ -5,7 +5,7 @@ var yhScroll, swScroll, rjScroll,
     pageNo = 1, pageSize = 15,
     yhTypeId, swTypeId, rjTypeId;
 
-var serverPath = "http://192.168.1.123:8080/DataService/";
+var serverPath = "http://192.168.1.105:8080/DataService/";
 
 // 初始化安全隐患页面
 function initAqyh() {
@@ -125,7 +125,7 @@ function gotoRj(item) {
 // 从后台取得隐患的第一页信息
 function getFirstYhInfo(listView, typeId) {
     pageNo = 1;
-    var start = (pageNo - 1) * 15;
+    var start = (pageNo - 1) * pageSize;
     var limit = pageSize;
 
     $.ajax({
@@ -159,7 +159,7 @@ function getFirstYhInfo(listView, typeId) {
 // 从后台取得三违的第一页信息
 function getFirstSwInfo(listView, typeId) {
     pageNo = 1;
-    var start = (pageNo - 1) * 15;
+    var start = (pageNo - 1) * pageSize;
     var limit = pageSize;
 
     $.ajax({
@@ -193,7 +193,7 @@ function getFirstSwInfo(listView, typeId) {
 // 从后台取得入井记录的第一页信息
 function getFirstRjInfo(listView, typeId) {
     pageNo = 1;
-    var start = (pageNo - 1) * 15;
+    var start = (pageNo - 1) * pageSize;
     var limit = pageSize;
 
     $.ajax({
