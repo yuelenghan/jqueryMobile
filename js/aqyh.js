@@ -246,6 +246,10 @@ function gotoSwDetail(item) {
                 $("#swremarks").html(data.remarks);
                 $("#swmaindeptname").html(data.maindeptname);
                 $("#zrkqname").html(data.zrkqname);
+                $("#swpname").html(data.swpname);
+                $("#swplacename").html(data.placename);
+                $("#swcontent").html(data.content);
+                $("#isfine").html(data.isfine);
             }
         },
         error: function () {
@@ -267,7 +271,7 @@ function getFirstRjInfo(listView, typeId) {
         jsonpCallback: "rjInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
+                var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
                 listView.append(list);
             }
 
@@ -281,6 +285,35 @@ function getFirstRjInfo(listView, typeId) {
             //加载下拉刷新插件
             loadRjScroll();
 
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
+function gotoRjDetail(item) {
+    $.mobile.changePage("#rjDetail");
+
+    $.ajax({
+        url: serverPath + "kqRecord/" + item.id,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "rjDetail",
+        success: function (data) {
+            if (data != null) {
+                $("#rjid").html(data.rjid);
+                $("#kqpnumber").html(data.kqpnumber);
+                $("#kqpname").html(data.kqpname);
+                $("#kqtypeDesc").html(data.kqtypeDesc);
+                $("#datafromDesc").html(data.datafromDesc);
+                $("#kqtime").html(data.kqtime);
+                $("#kqdept").html(data.kqdept);
+                $("#kqbenci").html(data.kqbenci);
+                $("#downtime").html(data.downtime);
+                $("#uptime").html(data.uptime);
+                $("#worktime").html(data.worktime);
+            }
         },
         error: function () {
             alert("error");
