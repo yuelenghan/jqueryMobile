@@ -114,3 +114,48 @@ function checkRjxxcxData(startDate, endDate, unit, title) {
         return false;
     }
 }
+
+function getDbjhbData() {
+    var date = $("#date-1").val();
+    var banci = $("#banci-1").val();
+    var name = $("#name-1").val();
+
+    if (date == undefined || date == null || date == "") {
+        date = "null";
+    }
+    if (name == undefined || name == null || name == "") {
+        name = "null";
+    }
+
+    $.ajax({
+        url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "dbjhbSummary",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                $.mobile.changePage("#dbjhb2");
+                for (var i = 0; i < data.length; i++) {
+                    var tableStr = "<tr>";
+                    tableStr += "<td>" + data[i].mineDate + "</td>";
+                    tableStr += "<td>" + data[i].banci + "</td>";
+                    tableStr += "<td>" + data[i].person + "</td>";
+                    tableStr += "<td>" + data[i].changePerson + "</td>";
+                    tableStr += "<td>" + data[i].realPerson + "</td>";
+                    tableStr + "</tr>";
+
+                    $(tableStr).appendTo($("#dbjhb-result tbody"));
+                }
+
+                // 刷新table, 否则隐藏coloumn功能不可用
+                $("#dbjhb-result").table("refresh");
+            } else {
+                alert("没有数据!")
+            }
+
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
