@@ -142,13 +142,47 @@ function getDbjhbData() {
                     tableStr += "<td>" + data[i].person + "</td>";
                     tableStr += "<td>" + data[i].changePerson + "</td>";
                     tableStr += "<td>" + data[i].realPerson + "</td>";
-                    tableStr + "</tr>";
+                    tableStr += "</tr>";
 
                     $(tableStr).appendTo($("#dbjhb-result tbody"));
                 }
 
                 // 刷新table, 否则隐藏coloumn功能不可用
                 $("#dbjhb-result").table("refresh");
+            } else {
+                alert("没有数据!")
+            }
+
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
+function getGpxxData() {
+    $.ajax({
+        url: serverPath + "summary/gpxx",
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "gpxxSummary",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                $.mobile.changePage("#gpxx");
+                for (var i = 0; i < data.length; i++) {
+                    var tableStr = "<tr>";
+                    tableStr += "<td>" + data[i].maindeptname + "</td>";
+                    tableStr += "<td>" + data[i].zrpersonname + "</td>";
+                    tableStr += "<td>" + data[i].gpdate + "</td>";
+                    tableStr += "<td>" + data[i].gpbanci + "</td>";
+                    tableStr += "<td>" + data[i].httypeDesc + "</td>";
+                    tableStr += "</tr>";
+
+                    $(tableStr).appendTo($("#gpxx-result tbody"));
+                }
+
+                // 刷新table, 否则隐藏coloumn功能不可用
+                $("#gpxx-result").table("refresh");
             } else {
                 alert("没有数据!")
             }
