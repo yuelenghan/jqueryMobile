@@ -39,7 +39,7 @@
         <ul data-role="listview" id="summaryList">
             <li><a href="#dbjhb1">带班计划表</a></li>
             <li><a href="#fswxx1">反三违信息查询</a></li>
-            <li><a href="#zbdbld">各单位值班及带班领导统计</a></li>
+            <li><a href="#zbdbld1">各单位值班及带班领导统计</a></li>
             <li><a href="#gsxx">工伤信息</a></li>
             <li><a onclick="getGpxxData()">挂牌信息</a></li>
             <li><a href="#kzdkyh">口孜东矿所有隐患</a></li>
@@ -107,7 +107,6 @@
             </thead>
 
             <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
             </tbody>
         </table>
     </div>
@@ -130,12 +129,11 @@
         <label for="endDate-2">截至日期:</label>
         <input id="endDate-2" type="text" data-role="date">
 
-        <label for="unit-2">单位:</label>
-        <select id="unit-2" name="unit-2">
-            <!-- TODO : 使用ajax调用后台接口得到单位信息 -->
-        </select>
+        <label for="name-2">人员姓名</label>
+        <input id="name-2" type="text">
 
-        <a href="#fswxx2" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search">查询</a>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getFswxxData()">查询</a>
     </div>
 </div>
 
@@ -162,15 +160,32 @@
             </thead>
 
             <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
             </tbody>
         </table>
     </div>
 </div>
 
 <!-- 第三个查询统计 -->
-<!-- 值班带班领导统计 -- 查询结果页面 -->
-<div data-role="page" id="zbdbld" data-add-back-btn="true">
+<!-- 值班带班领导统计1 -- 录入参数页面 -->
+<div data-role="page" id="zbdbld1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">值班带班领导统计</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="date-3">日期:</label>
+        <input id="date-3" type="text" data-role="date">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getZbdbldData()">查询</a>
+    </div>
+</div>
+
+<!-- 值班带班领导统计2 -- 查询结果页面 -->
+<div data-role="page" id="zbdbld2" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
            data-iconpos="notext"></a>
@@ -184,13 +199,14 @@
             <tr>
                 <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
                 <th data-priority="1">单位</th>
-                <th data-priority="1">今日值班及带班</th>
-                <th data-priority="1">明日值班及带班</th>
+                <th data-priority="1">值班</th>
+                <th data-priority="1">早班</th>
+                <th data-priority="1">中班</th>
+                <th data-priority="1">夜班</th>
             </tr>
             </thead>
 
             <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据(此表格为分组表格) -->
             </tbody>
         </table>
     </div>
@@ -414,7 +430,8 @@
         <label for="date-9">日期:</label>
         <input id="date-9" type="text" data-role="date">
 
-        <a href="#ydyhhz2" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search">查询</a>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getYdyhhzData()">查询</a>
     </div>
 </div>
 
@@ -436,19 +453,18 @@
                 <th data-priority="1" colspan="7" style="text-align: center">隐患</th>
             </tr>
             <tr>
-                <th></th>
                 <th data-priority="1">合计</th>
                 <th data-priority="1">A级</th>
                 <th data-priority="1">B级</th>
                 <th data-priority="1">C级</th>
-                <th data-priority="1">逾期</th>
-                <th data-priority="1">已整改</th>
-                <th data-priority="1">未整改</th>
+                <th data-priority="1">逾期未整改</th>
+                <th data-priority="1">历史逾期</th>
+                <th data-priority="1">已闭合</th>
+                <th data-priority="1">未闭合</th>
             </tr>
             </thead>
 
             <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
             </tbody>
         </table>
     </div>

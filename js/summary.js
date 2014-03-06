@@ -193,3 +193,137 @@ function getGpxxData() {
         }
     });
 }
+
+function getFswxxData() {
+    var startDate = $("#startDate-2").val();
+    var endDate = $("#endDate-2").val();
+    var name = $("#name-2").val();
+
+//    alert("startDate = " + startDate + ", endDate = " + endDate + ", name = " + name);
+
+    if (startDate == undefined || startDate == null || startDate == "") {
+        startDate = "null";
+    }
+    if (endDate == undefined || endDate == null || endDate == "") {
+        endDate = "null";
+    }
+    if (name == undefined || name == null || name == "") {
+        name = "null";
+    }
+
+    $.ajax({
+        url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "fswxxSummary",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                $.mobile.changePage("#fswxx2");
+                for (var i = 0; i < data.length; i++) {
+                    var tableStr = "<tr>";
+                    tableStr += "<td>" + data[i].deptName + "</td>";
+                    tableStr += "<td>" + data[i].name + "</td>";
+                    tableStr += "<td>" + data[i].ybsw + "</td>";
+                    tableStr += "<td>" + data[i].jyzsw + "</td>";
+                    tableStr += "<td>" + data[i].yzsw + "</td>";
+                    tableStr += "</tr>";
+
+                    $(tableStr).appendTo($("#fswxx-result tbody"));
+                }
+
+                // 刷新table, 否则隐藏coloumn功能不可用
+                $("#fswxx-result").table("refresh");
+            } else {
+                alert("没有数据!")
+            }
+
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
+function getZbdbldData() {
+    var date = $("#date-3").val();
+    if (date == undefined || date == null || date == "") {
+        alert("请输入日期！");
+        return;
+    }
+
+    $.ajax({
+        url: serverPath + "summary/zbdbld/date/" + date,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "zbdbldSummary",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                $.mobile.changePage("#zbdbld2");
+                for (var i = 0; i < data.length; i++) {
+                    var tableStr = "<tr>";
+                    tableStr += "<td>" + data[i].deptName + "</td>";
+                    tableStr += "<td>" + data[i].detail + "</td>";
+                    tableStr += "<td>" + data[i].zb + "</td>";
+                    tableStr += "<td>" + data[i].zhb + "</td>";
+                    tableStr += "<td>" + data[i].yb + "</td>";
+                    tableStr += "</tr>";
+
+                    $(tableStr).appendTo($("#zbdbld-result tbody"));
+                }
+
+                // 刷新table, 否则隐藏coloumn功能不可用
+                $("#zbdbld-result").table("refresh");
+            } else {
+                alert("没有数据!")
+            }
+
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
+function getYdyhhzData() {
+    var date = $("#date-9").val();
+    if (date == undefined || date == null || date == "") {
+        alert("请输入日期！");
+        return;
+    }
+
+    $.ajax({
+        url: serverPath + "summary/ydyhhz/date/" + date,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "ydyhhzSummary",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                $.mobile.changePage("#ydyhhz2");
+                for (var i = 0; i < data.length; i++) {
+                    var tableStr = "<tr>";
+                    tableStr += "<td>" + data[i].deptName + "</td>";
+                    tableStr += "<td>" + data[i].yhAll + "</td>";
+                    tableStr += "<td>" + data[i].yhA + "</td>";
+                    tableStr += "<td>" + data[i].yhB + "</td>";
+                    tableStr += "<td>" + data[i].yhC + "</td>";
+                    tableStr += "<td>" + data[i].yhYqwzg + "</td>";
+                    tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                    tableStr += "<td>" + data[i].yhYbh + "</td>";
+                    tableStr += "<td>" + data[i].yhWbh + "</td>";
+                    tableStr += "</tr>";
+
+                    $(tableStr).appendTo($("#ydyhhz-result tbody"));
+                }
+
+                // 刷新table, 否则隐藏coloumn功能不可用
+                $("#ydyhhz-result").table("refresh");
+            } else {
+                alert("没有数据!")
+            }
+
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
