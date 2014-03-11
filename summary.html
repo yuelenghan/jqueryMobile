@@ -40,16 +40,16 @@
             <li><a href="#dbjhb1">带班计划表</a></li>
             <li><a href="#fswxx1">反三违信息查询</a></li>
             <li><a href="#zbdbld1">各单位值班及带班领导统计</a></li>
-            <li><a href="#gsxx">工伤信息</a></li>
+            <li><a onclick="gotoGsxx()">工伤信息</a></li>
             <li><a onclick="getGpxxData()">挂牌信息</a></li>
-            <li><a href="#kzdkyh">口孜东矿所有隐患</a></li>
+            <li><a href="#kzdkyh1">口孜东矿所有隐患</a></li>
             <li><a href="#ldxjdb1">领导干部下井及下井带班情况</a></li>
-            <li><a href="#ydswhz1">全公司月度三违挂牌汇总</a></li>
+            <li><a href="#ydswgphz1">全公司月度三违挂牌汇总</a></li>
             <li><a href="#ydyhhz1">全公司月度隐患汇总</a></li>
             <li><a href="#rjxxcx1">入井信息查询</a></li>
-            <li><a href="#">三违信息</a></li>
-            <li><a href="#">隐患分类统计</a></li>
-            <li><a href="#">隐患信息综合查询</a></li>
+            <li><a href="#swxxcx1">三违信息</a></li>
+            <li><a href="#yhfltjcx1">隐患分类统计</a></li>
+            <li><a href="#yhxxzhcx1">隐患信息综合查询</a></li>
         </ul>
     </div>
 </div>
@@ -213,9 +213,40 @@
 </div>
 
 <!-- 第四个查询统计 -->
-<!-- 工伤信息统计 -- 查询结果页面 -->
-<div data-role="page" id="gsxx" data-add-back-btn="true">
+<!-- 工伤信息统计1 -- 录入参数页面 -->
+<div data-role="page" id="gsxx1" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">工伤信息统计</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="startDate-4">开始日期:</label>
+        <input id="startDate-4" type="text" data-role="date">
+
+        <label for="endDate-4">截至日期:</label>
+        <input id="endDate-4" type="text" data-role="date">
+
+        <label for="unit-4">部门:</label>
+        <input id="unit-4" type="text">
+
+        <label for="level-4">等级:</label>
+        <select id="level-4">
+        </select>
+
+        <label for="name-4">姓名:</label>
+        <input id="name-4" type="text">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getGsxxData()">查询</a>
+    </div>
+</div>
+
+<!-- 工伤信息统计2 -- 查询结果页面 -->
+<div data-role="page" id="gsxx2" data-add-back-btn="true">
+<div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
            data-iconpos="notext"></a>
 
@@ -272,8 +303,26 @@
 </div>
 
 <!-- 第六个查询统计 -->
-<!-- 口孜东矿所有隐患 -- 查询结果页面 -->
-<div data-role="page" id="kzdkyh" data-add-back-btn="true">
+<!-- 口孜东矿所有隐患1 -- 录入参数页面 -->
+<div data-role="page" id="kzdkyh1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">口孜东矿所有隐患</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="date-6">日期:</label>
+        <input id="date-6" type="text" data-role="date">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getKzdkyhData()">查询</a>
+    </div>
+</div>
+
+<!-- 口孜东矿所有隐患2 -- 查询结果页面 -->
+<div data-role="page" id="kzdkyh2" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
            data-iconpos="notext"></a>
@@ -291,6 +340,7 @@
                 <th data-priority="1">隐患数量</th>
                 <th data-priority="1">已闭合</th>
                 <th data-priority="2">未闭合</th>
+                <th data-priority="2">逾期</th>
                 <th data-priority="1">A级</th>
                 <th data-priority="2">B级</th>
                 <th data-priority="2">C级</th>
@@ -321,12 +371,11 @@
         <label for="endDate-7">截至日期:</label>
         <input id="endDate-7" type="text" data-role="date">
 
-        <label for="unit-7">单位:</label>
-        <select id="unit-7" name="unit-7">
-            <!-- TODO : 使用ajax调用后台接口得到单位信息 -->
-        </select>
+        <label for="name-7">姓名:</label>
+        <input id="name-7" type="text">
 
-        <a href="#ldxjdb2" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search">查询</a>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getLdxjdbData()">查询</a>
     </div>
 </div>
 
@@ -340,7 +389,7 @@
     </div>
 
     <div data-role="content">
-        <table id="ldxjdb2-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+        <table id="ldxjdb-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
             <thead>
             <tr>
                 <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
@@ -348,7 +397,7 @@
                 <th data-priority="1">姓名</th>
                 <th data-priority="2">职务</th>
                 <th data-priority="1">实际下井</th>
-                <th data-priority="2">拟定带班</th>
+                <th data-priority="2">规定带班</th>
                 <th data-priority="1">实际带班</th>
                 <th data-priority="1">排查隐患</th>
                 <th data-priority="1">排查三违</th>
@@ -364,7 +413,7 @@
 
 <!-- 第八个查询统计 -->
 <!-- 全公司月度三违挂牌汇总1 -- 录入参数页面 -->
-<div data-role="page" id="ydswhz1" data-add-back-btn="true">
+<div data-role="page" id="ydswgphz1" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
            data-iconpos="notext"></a>
@@ -376,12 +425,13 @@
         <label for="date-8">日期:</label>
         <input id="date-8" type="text" data-role="date">
 
-        <a href="#ydswhz2" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search">查询</a>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getYdswgphzData()">查询</a>
     </div>
 </div>
 
 <!-- 全公司月度三违挂牌汇总2 -- 查询结果页面 -->
-<div data-role="page" id="ydswhz2" data-add-back-btn="true">
+<div data-role="page" id="ydswgphz2" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
            data-iconpos="notext"></a>
@@ -390,10 +440,11 @@
     </div>
 
     <div data-role="content">
-        <table id="ydswhz-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+        <table id="ydswgphz-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
             <thead>
             <tr>
                 <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                <th data-priority="1" rowspan="2" style="text-align: center">单位</th>
                 <th data-priority="1" colspan="4">三违</th>
                 <th data-priority="1" colspan="3">挂牌</th>
             </tr>
@@ -487,15 +538,8 @@
         <label for="endDate-10">结束日期:</label>
         <input id="endDate-10" type="text" data-role="date">
 
-        <label for="unit-10">单位:</label>
-        <select id="unit-10">
-            <!-- TODO : 调用后台接口得到单位数据 -->
-        </select>
-
-        <label for="title-10">职务级别:</label>
-        <select id="title-10">
-            <!-- TODO : 调用后台接口得到单位数据 -->
-        </select>
+        <label for="name-10">姓名:</label>
+        <input id="name-10" type="text">
 
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
            onclick="getRjxxcxData()">查询</a>
@@ -523,12 +567,177 @@
             </thead>
 
             <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
-            <!--  <tr>
-                  <td>bumen</td>
-                  <td>xingm</td>
-                  <td>rjsj</td>
-              </tr>-->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 第十一个查询统计 -->
+<!-- 三违信息查询1 -- 录入参数页面 -->
+<div data-role="page" id="swxxcx1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">三违信息查询</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="startDate-11">开始日期:</label>
+        <input id="startDate-11" type="text" data-role="date">
+
+        <label for="endDate-11">结束日期:</label>
+        <input id="endDate-11" type="text" data-role="date">
+
+        <label for="name-11">姓名:</label>
+        <input id="name-11" type="text">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getSwxxcxData()">查询</a>
+    </div>
+</div>
+
+<!-- 三违信息查询2 -- 查询结果页面 -->
+<div data-role="page" id="swxxcx2" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">三违信息查询</h1>
+    </div>
+
+    <div data-role="content">
+        <table id="swxxcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+            <thead>
+            <tr>
+                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                <th data-priority="1">责任单位</th>
+                <th data-priority="1">责任部门</th>
+                <th data-priority="1">三违人员</th>
+                <th data-priority="1">排查时间</th>
+                <th data-priority="1">三违级别</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 第十二个查询统计 -->
+<!-- 隐患分类统计查询1 -- 录入参数页面 -->
+<div data-role="page" id="yhfltjcx1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患分类统计查询</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="startDate-12">开始日期:</label>
+        <input id="startDate-12" type="text" data-role="date">
+
+        <label for="endDate-12">结束日期:</label>
+        <input id="endDate-12" type="text" data-role="date">
+
+        <label for="unit-12">责任单位:</label>
+        <input id="unit-12" type="text">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getYhfltjcxData()">查询</a>
+    </div>
+</div>
+
+<!-- 隐患分类统计查询2 -- 查询结果页面 -->
+<div data-role="page" id="yhfltjcx2" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患分类统计查询</h1>
+    </div>
+
+    <div data-role="content">
+        <table id="yhfltjcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+            <thead>
+            <tr>
+                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                <th data-priority="1">单位</th>
+                <th data-priority="1">责任单位</th>
+                <th data-priority="1">隐患数量</th>
+                <th data-priority="1">已闭合</th>
+                <th data-priority="1">未闭合</th>
+                <th data-priority="1">逾期</th>
+                <th data-priority="1">A级</th>
+                <th data-priority="1">B级</th>
+                <th data-priority="1">C级</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 第十三个查询统计 -->
+<!-- 隐患信息综合查询1 -- 录入参数页面 -->
+<div data-role="page" id="yhxxzhcx1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患信息综合查询</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="startDate-13">开始日期:</label>
+        <input id="startDate-13" type="text" data-role="date">
+
+        <label for="endDate-13">结束日期:</label>
+        <input id="endDate-13" type="text" data-role="date">
+
+        <label for="unit-13">责任单位:</label>
+        <input id="unit-13" type="text">
+
+        <label for="banci-13">班次:</label>
+        <select id="banci-13">
+            <option value="早班">早班</option>
+            <option value="中班">中班</option>
+            <option value="夜班">夜班</option>
+        </select>
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getYhxxzhcxData()">查询</a>
+    </div>
+</div>
+
+<!-- 隐患信息综合查询2 -- 查询结果页面 -->
+<div data-role="page" id="yhxxzhcx2" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患信息综合查询</h1>
+    </div>
+
+    <div data-role="content">
+        <table id="yhxxzhcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+            <thead>
+            <tr>
+                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                <th data-priority="1">责任单位</th>
+                <th data-priority="1">班次</th>
+                <th data-priority="1">排查时间</th>
+                <th data-priority="1">级别</th>
+                <th data-priority="1">隐患类型</th>
+                <th data-priority="1">隐患状态</th>
+            </tr>
+            </thead>
+
+            <tbody>
             </tbody>
         </table>
     </div>
