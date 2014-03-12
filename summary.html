@@ -36,23 +36,21 @@
     </div>
 
     <div data-role="content">
-        <div class="scroller">
-            <ul data-role="listview" id="summaryList">
-                <li><a href="#dbjhb1">带班计划表</a></li>
-                <li><a href="#fswxx1">反三违信息查询</a></li>
-                <li><a href="#zbdbld1">各单位值班及带班领导统计</a></li>
-                <li><a onclick="gotoGsxx()">工伤信息</a></li>
-                <li><a onclick="getGpxxData()">挂牌信息</a></li>
-                <li><a href="#kzdkyh1">口孜东矿所有隐患</a></li>
-                <li><a href="#ldxjdb1">领导干部下井及下井带班情况</a></li>
-                <li><a href="#ydswgphz1">全公司月度三违挂牌汇总</a></li>
-                <li><a href="#ydyhhz1">全公司月度隐患汇总</a></li>
-                <li><a href="#rjxxcx1">入井信息查询</a></li>
-                <li><a href="#swxxcx1">三违信息</a></li>
-                <li><a href="#yhfltjcx1">隐患分类统计</a></li>
-                <li><a href="#yhxxzhcx1">隐患信息综合查询</a></li>
-            </ul>
-        </div>
+        <ul data-role="listview" id="summaryList">
+            <li><a href="#dbjhb1">带班计划表</a></li>
+            <li><a href="#fswxx1">反三违信息查询</a></li>
+            <li><a href="#zbdbld1">各单位值班及带班领导统计</a></li>
+            <li><a onclick="gotoGsxx()">工伤信息</a></li>
+            <li><a onclick="getGpxxData()">挂牌信息</a></li>
+            <li><a href="#kzdkyh1">口孜东矿所有隐患</a></li>
+            <li><a href="#ldxjdb1">领导干部下井及下井带班情况</a></li>
+            <li><a href="#ydswgphz1">全公司月度三违挂牌汇总</a></li>
+            <li><a href="#ydyhhz1">全公司月度隐患汇总</a></li>
+            <li><a href="#rjxxcx1">入井信息查询</a></li>
+            <li><a href="#swxxcx1">三违信息</a></li>
+            <li><a href="#yhfltjcx1">隐患分类统计</a></li>
+            <li><a href="#yhxxzhcx1">隐患信息综合查询</a></li>
+        </ul>
     </div>
 </div>
 
@@ -97,7 +95,7 @@
 
     <div data-role="content" style="overflow:scroll">
         <table id="dbjhb-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-        <thead>
+            <thead>
             <tr>
                 <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
                 <th data-priority="1">带班日期</th>
@@ -249,7 +247,7 @@
 <!-- 工伤信息统计2 -- 查询结果页面 -->
 <div data-role="page" id="gsxx2" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
-    <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
            data-iconpos="notext"></a>
 
         <h1 style="font-size: large">工伤信息统计</h1>
