@@ -8,6 +8,7 @@
     <link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
     <link href="css/jquery.mobile.datepicker.css" rel="stylesheet" type="text/css"/>
     <link href="css/my.css" rel="stylesheet" type="text/css"/>
+    <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
 
 
     <!-- js -->
@@ -16,6 +17,7 @@
     <script src="js/jquery.mobile.datepicker.js" type="text/javascript"></script>
     <script src="js/jquery.ui.datepicker.js" type="text/javascript"></script>
     <script src="js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+    <script src="js/iscroll.js" type="text/javascript"></script>
     <script src="js/summary.js" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -94,21 +96,33 @@
     </div>
 
     <div data-role="content" style="overflow:scroll">
-        <table id="dbjhb-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1">带班日期</th>
-                <th data-priority="1">班次</th>
-                <th data-priority="1">计划带班人员</th>
-                <th data-priority="2">调整带班人员</th>
-                <th data-priority="1">实际带班人员</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper1" class="wrapper">
+            <div id="summaryScroller1" class="scroller">
+                <div id="summaryPullDown1" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="dbjhb-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">带班日期</th>
+                        <th data-priority="1">班次</th>
+                        <th data-priority="1">计划带班人员</th>
+                        <th data-priority="2">调整带班人员</th>
+                        <th data-priority="1">实际带班人员</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp1" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

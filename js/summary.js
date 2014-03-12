@@ -3,6 +3,7 @@
  */
 
 var serverPath = "http://192.168.1.105:8080/DataService/";
+var pageSize = 15;
 
 // 从服务端得到入井信息统计的数据
 function getRjxxcxData() {
@@ -26,7 +27,7 @@ function getRjxxcxData() {
 
     // 提交到服务端
     $.ajax({
-        url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name,
+        url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "rjxxSummary",
@@ -108,7 +109,7 @@ function getDbjhbData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name,
+        url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "dbjhbSummary",
@@ -143,7 +144,7 @@ function getDbjhbData() {
 
 function getGpxxData() {
     $.ajax({
-        url: serverPath + "summary/gpxx",
+        url: serverPath + "summary/gpxx/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "gpxxSummary",
@@ -194,7 +195,7 @@ function getFswxxData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name,
+        url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "fswxxSummary",
@@ -235,7 +236,7 @@ function getZbdbldData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/zbdbld/date/" + date,
+        url: serverPath + "summary/zbdbld/date/" + date + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "zbdbldSummary",
@@ -276,7 +277,7 @@ function getYdyhhzData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/ydyhhz/date/" + date,
+        url: serverPath + "summary/ydyhhz/date/" + date + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "ydyhhzSummary",
@@ -330,7 +331,7 @@ function getLdxjdbData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name,
+        url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "ldxjdbSummary",
@@ -375,7 +376,7 @@ function getKzdkyhData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/kzdkyh/date/" + date,
+        url: serverPath + "summary/kzdkyh/date/" + date + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "kzdkyhSummary",
@@ -422,7 +423,7 @@ function getYdswgphzData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/ydswgphz/date/" + date,
+        url: serverPath + "summary/ydswgphz/date/" + date + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "ydswgphzSummary",
@@ -479,7 +480,7 @@ function getSwxxcxData() {
 
     // 提交到服务端
     $.ajax({
-        url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name,
+        url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "swxxSummary",
@@ -532,7 +533,7 @@ function getYhfltjcxData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit,
+        url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "yhfltjcxSummary",
@@ -591,7 +592,7 @@ function getYhxxzhcxData() {
     }
 
     $.ajax({
-        url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci,
+        url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "yhxxzhcxSummary",
@@ -651,7 +652,7 @@ function getGsxxData() {
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", level = " + level + ", name = " + name);
 
     $.ajax({
-        url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name,
+        url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name + "/start/0/limit/" + pageSize,
         dataType: "jsonp",
         type: "post",
         jsonpCallback: "gsxxSummary",

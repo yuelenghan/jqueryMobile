@@ -26,7 +26,7 @@ function getYhBaseInfo() {
         jsonpCallback: "baseInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#' onclick='gotoYh(this)' id='" + data[i].infoid + "'>" + data[i].infoname + "</a></li>";
+                var list = "<li><a onclick='gotoYh(this)' id='" + data[i].infoid + "'>" + data[i].infoname + "</a></li>";
                 listView.append(list);
             }
             listView.listview('refresh');
@@ -48,7 +48,7 @@ function getSwBaseInfo() {
         jsonpCallback: "baseInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#' onclick='gotoSw(this)' id='" + data[i].infoid + "'>" + data[i].infoname + "</a></li>";
+                var list = "<li><a onclick='gotoSw(this)' id='" + data[i].infoid + "'>" + data[i].infoname + "</a></li>";
                 listView.append(list);
             }
             listView.listview('refresh');
@@ -135,9 +135,13 @@ function getFirstYhInfo(listView, typeId) {
         jsonpCallback: "yhInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
                 listView.append(list);
             }
+
+            /*      $("a").on("tap",function(){
+             gotoYhDetail(this);
+             });*/
 
             listView.listview('refresh');
 
@@ -147,7 +151,10 @@ function getFirstYhInfo(listView, typeId) {
                 yhScroll = null;
             }
             //加载下拉刷新插件
-            loadYhScroll();
+            setTimeout(function () {
+                loadYhScroll()
+            }, 200);
+//            loadYhScroll();
 
         },
         error: function () {
@@ -158,7 +165,6 @@ function getFirstYhInfo(listView, typeId) {
 
 function gotoYhDetail(item) {
     $.mobile.changePage("#yhDetail");
-
     $.ajax({
         url: serverPath + "yhinput/" + item.id,
         dataType: "jsonp",
@@ -213,7 +219,10 @@ function getFirstSwInfo(listView, typeId) {
                 swScroll = null;
             }
             //加载下拉刷新插件
-            loadSwScroll();
+            setTimeout(function () {
+                loadSwScroll()
+            }, 200);
+//            loadSwScroll();
 
         },
         error: function () {
@@ -283,7 +292,10 @@ function getFirstRjInfo(listView, typeId) {
                 rjScroll = null;
             }
             //加载下拉刷新插件
-            loadRjScroll();
+            setTimeout(function () {
+                loadRjScroll()
+            }, 200);
+//            loadRjScroll();
 
         },
         error: function () {
@@ -361,7 +373,7 @@ function yhPullUpAction() {
         success: function (data) {
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                    var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
                     listView.append(list);
                 }
             }
@@ -438,6 +450,7 @@ function loadYhScroll() {
     var pullDownOffset = pullDownEl.offsetHeight;
     var pullUpEl = document.getElementById('yhPullUp');
     var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
     yhScroll = new iScroll('yhWrapper', {
         useTransition: true,
@@ -452,6 +465,7 @@ function loadYhScroll() {
             }
         },
         onScrollMove: function () {
+            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
             if (this.y > 5 && !pullDownEl.className.match('flip')) {
                 pullDownEl.className = 'flip';
                 pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
@@ -460,14 +474,14 @@ function loadYhScroll() {
                 pullDownEl.className = '';
                 pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
                 this.minScrollY = -pullDownOffset;
-            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+            } else if (this.y < (this.minScrollY - 5) && !pullUpEl.className.match('flip')) {
                 pullUpEl.className = 'flip';
                 pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
-                this.maxScrollY = this.maxScrollY;
+//                this.maxScrollY = this.maxScrollY;
             } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
                 pullUpEl.className = '';
                 pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-                this.maxScrollY = pullUpOffset;
+//                this.maxScrollY = pullUpOffset;
             }
         },
         onScrollEnd: function () {
