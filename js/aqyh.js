@@ -5,6 +5,8 @@ var yhScroll, swScroll, rjScroll,
     pageNo = 1, pageSize = 15,
     yhTypeId, swTypeId, rjTypeId;
 
+var loading = false;
+
 var serverPath = "http://192.168.1.105:8080/DataService/";
 
 // 初始化安全隐患页面
@@ -124,42 +126,49 @@ function gotoRj(item) {
 
 // 从后台取得隐患的第一页信息
 function getFirstYhInfo(listView, typeId) {
-    pageNo = 1;
-    var start = (pageNo - 1) * pageSize;
-    var limit = pageSize;
+    if (loading == false) {
+        loading = true;
+        pageNo = 1;
+        var start = (pageNo - 1) * pageSize;
+        var limit = pageSize;
 
-    $.ajax({
-        url: serverPath + "yhinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhInfo",
-        success: function (data) {
-            if (data != null && data.length > 0) {
-                listView.empty();
+        $.ajax({
+            url: serverPath + "yhinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "yhInfo",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    listView.empty();
 
-                for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
-                    listView.append(list);
+                    for (var i = 0; i < data.length; i++) {
+                        var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                        listView.append(list);
+                    }
+
+                    listView.listview('refresh');
+
+                    // 销毁下拉刷新插件
+                    if (yhScroll) {
+                        yhScroll.destroy();
+                        yhScroll = null;
+                    }
+
+                    loadYhScroll();
+                } else {
+                    alert("没有数据！");
                 }
 
-                listView.listview('refresh');
+                loading = false;
 
-                // 销毁下拉刷新插件
-                if (yhScroll) {
-                    yhScroll.destroy();
-                    yhScroll = null;
-                }
-
-                loadYhScroll();
-            } else {
-                alert("没有数据！");
+            },
+            error: function () {
+                alert("error!");
+                loading = false;
             }
+        });
+    }
 
-        },
-        error: function () {
-            alert("error!");
-        }
-    });
 }
 
 function gotoYhDetail(item) {
@@ -195,45 +204,53 @@ function gotoYhDetail(item) {
 
 // 从后台取得三违的第一页信息
 function getFirstSwInfo(listView, typeId) {
-    pageNo = 1;
-    var start = (pageNo - 1) * pageSize;
-    var limit = pageSize;
+    if (loading == false) {
+        loading = true;
 
-    $.ajax({
-        url: serverPath + "swinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "swInfo",
-        success: function (data) {
-            if (data != null && data.length > 0) {
-                listView.empty();
+        pageNo = 1;
+        var start = (pageNo - 1) * pageSize;
+        var limit = pageSize;
 
-                for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
-                    listView.append(list);
+        $.ajax({
+            url: serverPath + "swinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "swInfo",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    listView.empty();
+
+                    for (var i = 0; i < data.length; i++) {
+                        var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
+                        listView.append(list);
+                    }
+
+                    listView.listview('refresh');
+
+                    // 销毁下拉刷新插件
+                    if (swScroll) {
+                        swScroll.destroy();
+                        swScroll = null;
+                    }
+                    //加载下拉刷新插件
+                    /*  setTimeout(function () {
+                     loadSwScroll()
+                     }, 200);*/
+                    loadSwScroll();
+                } else {
+                    alert("没有数据！");
                 }
 
-                listView.listview('refresh');
+                loading = false;
 
-                // 销毁下拉刷新插件
-                if (swScroll) {
-                    swScroll.destroy();
-                    swScroll = null;
-                }
-                //加载下拉刷新插件
-                /*  setTimeout(function () {
-                 loadSwScroll()
-                 }, 200);*/
-                loadSwScroll();
-            } else {
-                alert("没有数据！");
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
-        },
-        error: function () {
-            alert("error");
-        }
-    });
 }
 
 function gotoSwDetail(item) {
@@ -274,43 +291,50 @@ function gotoSwDetail(item) {
 
 // 从后台取得入井记录的第一页信息
 function getFirstRjInfo(listView, typeId) {
-    pageNo = 1;
-    var start = (pageNo - 1) * pageSize;
-    var limit = pageSize;
+    if (loading == false) {
+        loading = true;
+        pageNo = 1;
+        var start = (pageNo - 1) * pageSize;
+        var limit = pageSize;
 
-    $.ajax({
-        url: serverPath + "kqRecord/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "rjInfo",
-        success: function (data) {
-            if (data != null && data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
-                    listView.append(list);
+        $.ajax({
+            url: serverPath + "kqRecord/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "rjInfo",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
+                        listView.append(list);
+                    }
+
+                    listView.listview('refresh');
+
+                    // 销毁下拉刷新插件
+                    if (rjScroll) {
+                        rjScroll.destroy();
+                        rjScroll = null;
+                    }
+                    //加载下拉刷新插件
+                    /* setTimeout(function () {
+                     loadRjScroll()
+                     }, 200);*/
+                    loadRjScroll();
+                } else {
+                    alert("没有数据！");
                 }
 
-                listView.listview('refresh');
+                loading = false;
 
-                // 销毁下拉刷新插件
-                if (rjScroll) {
-                    rjScroll.destroy();
-                    rjScroll = null;
-                }
-                //加载下拉刷新插件
-                /* setTimeout(function () {
-                 loadRjScroll()
-                 }, 200);*/
-                loadRjScroll();
-            } else {
-                alert("没有数据！");
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
-        },
-        error: function () {
-            alert("error");
-        }
-    });
 }
 
 function gotoRjDetail(item) {
@@ -369,89 +393,110 @@ function rjPullDownAction() {
 
 //隐患上拉事件, 分页
 function yhPullUpAction() {
-    pageNo++;
-    var listView = $("#yhListview");
+    if (loading == false) {
+        loading = true;
+        pageNo++;
+        var listView = $("#yhListview");
 
-    var start = (pageNo - 1) * 15;
-    var limit = pageSize;
-    $.ajax({
-        url: serverPath + "yhinput/typeId/" + yhTypeId + "/start/" + start + "/limit/" + limit,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhInfo",
-        success: function (data) {
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
-                    listView.append(list);
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+        $.ajax({
+            url: serverPath + "yhinput/typeId/" + yhTypeId + "/start/" + start + "/limit/" + limit,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "yhInfo",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                        listView.append(list);
+                    }
                 }
-            }
 
-            listView.listview('refresh');
-            yhScroll.refresh();
-        },
-        error: function () {
-            alert("error");
-        }
-    });
+                listView.listview('refresh');
+                yhScroll.refresh();
+
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 //三违上拉事件, 分页
 function swPullUpAction() {
-    pageNo++;
-    var listView = $("#swListview");
+    if (loading == false) {
+        loading = true;
+        pageNo++;
+        var listView = $("#swListview");
 
-    var start = (pageNo - 1) * 15;
-    var limit = pageSize;
-    $.ajax({
-        url: serverPath + "swinput/typeId/" + swTypeId + "/start/" + start + "/limit/" + limit,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "swInfo",
-        success: function (data) {
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
-                    listView.append(list);
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+        $.ajax({
+            url: serverPath + "swinput/typeId/" + swTypeId + "/start/" + start + "/limit/" + limit,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "swInfo",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var list = "<li><a href='#'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
+                        listView.append(list);
+                    }
                 }
-            }
 
-            listView.listview('refresh');
-            swScroll.refresh();
-        },
-        error: function () {
-            alert("error");
-        }
-    });
+                listView.listview('refresh');
+                swScroll.refresh();
+
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 //入境记录上拉事件, 分页
 function rjPullUpAction() {
-    pageNo++;
-    var listView = $("#rjListview");
+    if (loading == false) {
+        loading = true;
+        pageNo++;
+        var listView = $("#rjListview");
 
-    var start = (pageNo - 1) * 15;
-    var limit = pageSize;
-    $.ajax({
-        url: serverPath + "kqRecord/typeId/" + rjTypeId + "/start/" + start + "/limit/" + limit,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "rjInfo",
-        success: function (data) {
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    var list = "<li><a href='#'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
-                    listView.append(list);
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+        $.ajax({
+            url: serverPath + "kqRecord/typeId/" + rjTypeId + "/start/" + start + "/limit/" + limit,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "rjInfo",
+            success: function (data) {
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var list = "<li><a href='#'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
+                        listView.append(list);
+                    }
                 }
-            }
 
-            listView.listview('refresh');
-            rjScroll.refresh();
-        },
-        error: function () {
-            alert("error");
-        }
-    });
+                listView.listview('refresh');
+                rjScroll.refresh();
+
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function loadYhScroll() {
