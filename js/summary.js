@@ -3,7 +3,9 @@
  */
 
 var serverPath = "http://192.168.1.105:8080/DataService/";
-var pageSize = 15;
+var pageSize = 15, pageNo = 1;
+var summaryScroll1;
+var loading = false;
 
 // 从服务端得到入井信息统计的数据
 function getRjxxcxData() {
@@ -97,49 +99,183 @@ function getRjxxcxData() {
 
 
 function getDbjhbData() {
-    var date = $("#date-1").val();
-    var banci = $("#banci-1").val();
-    var name = $("#name-1").val();
+    if (loading == false) {
+        loading = true;
+        pageNo = 1;
 
-    if (date == undefined || date == null || date == "") {
-        date = "null";
-    }
-    if (name == undefined || name == null || name == "") {
-        name = "null";
-    }
+        var date = $("#date-1").val();
+        var banci = $("#banci-1").val();
+        var name = $("#name-1").val();
 
-    $.ajax({
-        url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "dbjhbSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#dbjhb2");
-                $("#dbjhb-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].mineDate + "</td>";
-                    tableStr += "<td>" + data[i].banci + "</td>";
-                    tableStr += "<td>" + data[i].person + "</td>";
-                    tableStr += "<td>" + data[i].changePerson + "</td>";
-                    tableStr += "<td>" + data[i].realPerson + "</td>";
-                    tableStr += "</tr>";
+        if (date == undefined || date == null || date == "") {
+            date = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
 
-                    $(tableStr).appendTo($("#dbjhb-result tbody"));
+        $.ajax({
+            url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "dbjhbSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#dbjhb2");
+
+                    $("#dbjhb-result tbody").html("");
+
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].mineDate + "</td>";
+                        tableStr += "<td>" + data[i].banci + "</td>";
+                        tableStr += "<td>" + data[i].person + "</td>";
+                        tableStr += "<td>" + data[i].changePerson + "</td>";
+                        tableStr += "<td>" + data[i].realPerson + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#dbjhb-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#dbjhb-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll1) {
+                        summaryScroll1.destroy();
+                        summaryScroll1 = null;
+                    }
+
+                    loadSummaryScroll1();
+
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#dbjhb-result").table("refresh");
-            } else {
-                alert("没有数据!")
-            }
+                loading = false;
 
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
+}
+
+function loadSummaryScroll1() {
+    var pullDownEl = document.getElementById('summaryPullDown1');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp1');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll1 = new iScroll('summaryWrapper1', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getDbjhbData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll1PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper1').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll1PullUp() {
+    if (loading == false) {
+        loading = true;
+        pageNo++;
+
+        var date = $("#date-1").val();
+        var banci = $("#banci-1").val();
+        var name = $("#name-1").val();
+
+        if (date == undefined || date == null || date == "") {
+            date = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+        $.ajax({
+            url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "dbjhbSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].mineDate + "</td>";
+                        tableStr += "<td>" + data[i].banci + "</td>";
+                        tableStr += "<td>" + data[i].person + "</td>";
+                        tableStr += "<td>" + data[i].changePerson + "</td>";
+                        tableStr += "<td>" + data[i].realPerson + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#dbjhb-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#dbjhb-result").table("refresh");
+
+                    summaryScroll1.refresh();
+                } else {
+                    alert("没有新数据！");
+                }
+
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getGpxxData() {
