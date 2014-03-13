@@ -150,10 +150,10 @@ function getFirstYhInfo(listView, typeId) {
                     yhScroll = null;
                 }
                 //加载下拉刷新插件
-                setTimeout(function () {
-                    loadYhScroll()
-                }, 200);
-//            loadYhScroll();
+                /*setTimeout(function () {
+                 loadYhScroll()
+                 }, 200);*/
+                loadYhScroll();
             } else {
                 alert("没有数据！");
             }
