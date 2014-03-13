@@ -149,10 +149,7 @@ function getFirstYhInfo(listView, typeId) {
                     yhScroll.destroy();
                     yhScroll = null;
                 }
-                //加载下拉刷新插件
-                /*setTimeout(function () {
-                 loadYhScroll()
-                 }, 200);*/
+
                 loadYhScroll();
             } else {
                 alert("没有数据！");
@@ -208,23 +205,29 @@ function getFirstSwInfo(listView, typeId) {
         type: "post",
         jsonpCallback: "swInfo",
         success: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
-                listView.append(list);
-            }
+            if (data != null && data.length > 0) {
+                listView.empty();
 
-            listView.listview('refresh');
+                for (var i = 0; i < data.length; i++) {
+                    var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
+                    listView.append(list);
+                }
 
-            // 销毁下拉刷新插件
-            if (swScroll) {
-                swScroll.destroy();
-                swScroll = null;
+                listView.listview('refresh');
+
+                // 销毁下拉刷新插件
+                if (swScroll) {
+                    swScroll.destroy();
+                    swScroll = null;
+                }
+                //加载下拉刷新插件
+                /*  setTimeout(function () {
+                 loadSwScroll()
+                 }, 200);*/
+                loadSwScroll();
+            } else {
+                alert("没有数据！");
             }
-            //加载下拉刷新插件
-            setTimeout(function () {
-                loadSwScroll()
-            }, 200);
-//            loadSwScroll();
 
         },
         error: function () {
@@ -281,23 +284,27 @@ function getFirstRjInfo(listView, typeId) {
         type: "post",
         jsonpCallback: "rjInfo",
         success: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
-                listView.append(list);
-            }
+            if (data != null && data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
+                    listView.append(list);
+                }
 
-            listView.listview('refresh');
+                listView.listview('refresh');
 
-            // 销毁下拉刷新插件
-            if (rjScroll) {
-                rjScroll.destroy();
-                rjScroll = null;
+                // 销毁下拉刷新插件
+                if (rjScroll) {
+                    rjScroll.destroy();
+                    rjScroll = null;
+                }
+                //加载下拉刷新插件
+                /* setTimeout(function () {
+                 loadRjScroll()
+                 }, 200);*/
+                loadRjScroll();
+            } else {
+                alert("没有数据！");
             }
-            //加载下拉刷新插件
-            setTimeout(function () {
-                loadRjScroll()
-            }, 200);
-//            loadRjScroll();
 
         },
         error: function () {
