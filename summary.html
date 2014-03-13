@@ -109,7 +109,7 @@
                         <th data-priority="1">带班日期</th>
                         <th data-priority="1">班次</th>
                         <th data-priority="1">计划带班人员</th>
-                        <th data-priority="2">调整带班人员</th>
+                        <th data-priority="1">调整带班人员</th>
                         <th data-priority="1">实际带班人员</th>
                     </tr>
                     </thead>
@@ -161,21 +161,33 @@
     </div>
 
     <div data-role="content">
-        <table id="fswxx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="2">单位</th>
-                <th data-priority="1">反三违人员</th>
-                <th data-priority="1">一般</th>
-                <th data-priority="1">较严重</th>
-                <th data-priority="1">严重</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper2" class="wrapper">
+            <div id="summaryScroller2" class="scroller">
+                <div id="summaryPullDown2" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="fswxx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="2">单位</th>
+                        <th data-priority="1">反三违人员</th>
+                        <th data-priority="1">一般</th>
+                        <th data-priority="1">较严重</th>
+                        <th data-priority="1">严重</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp2" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -208,21 +220,33 @@
     </div>
 
     <div data-role="content">
-        <table id="zbdbld-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1">单位</th>
-                <th data-priority="1">值班</th>
-                <th data-priority="1">早班</th>
-                <th data-priority="1">中班</th>
-                <th data-priority="1">夜班</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper3" class="wrapper">
+            <div id="summaryScroller3" class="scroller">
+                <div id="summaryPullDown3" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="zbdbld-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">单位</th>
+                        <th data-priority="1">值班</th>
+                        <th data-priority="1">早班</th>
+                        <th data-priority="1">中班</th>
+                        <th data-priority="1">夜班</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp3" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -268,21 +292,33 @@
     </div>
 
     <div data-role="content">
-        <table id="gsxx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="2">部门</th>
-                <th data-priority="1">受伤人员</th>
-                <th data-priority="1">工伤等级</th>
-                <th data-priority="2">发生时间</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper4" class="wrapper">
+            <div id="summaryScroller4" class="scroller">
+                <div id="summaryPullDown4" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
-            </tbody>
-        </table>
+                <table id="gsxx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="2">部门</th>
+                        <th data-priority="1">受伤人员</th>
+                        <th data-priority="1">工伤等级</th>
+                        <th data-priority="2">发生时间</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp4" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -297,22 +333,34 @@
     </div>
 
     <div data-role="content">
-        <table id="gpxx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="2">责任单位</th>
-                <th data-priority="1">责任人</th>
-                <th data-priority="1">挂牌时间</th>
-                <th data-priority="2">班次</th>
-                <th data-priority="1">挂牌类型</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper5" class="wrapper">
+            <div id="summaryScroller5" class="scroller">
+                <div id="summaryPullDown5" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
-            </tbody>
-        </table>
+                <table id="gpxx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="2">责任单位</th>
+                        <th data-priority="1">责任人</th>
+                        <th data-priority="1">挂牌时间</th>
+                        <th data-priority="2">班次</th>
+                        <th data-priority="1">挂牌类型</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp5" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -345,26 +393,38 @@
     </div>
 
     <div data-role="content">
-        <table id="kzdkyh-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="2">单位</th>
-                <th data-priority="1">责任单位</th>
-                <th data-priority="1">隐患数量</th>
-                <th data-priority="1">已闭合</th>
-                <th data-priority="2">未闭合</th>
-                <th data-priority="2">逾期</th>
-                <th data-priority="1">A级</th>
-                <th data-priority="2">B级</th>
-                <th data-priority="2">C级</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper6" class="wrapper">
+            <div id="summaryScroller6" class="scroller">
+                <div id="summaryPullDown6" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
-            </tbody>
-        </table>
+                <table id="kzdkyh-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="2">单位</th>
+                        <th data-priority="1">责任单位</th>
+                        <th data-priority="1">隐患数量</th>
+                        <th data-priority="1">已闭合</th>
+                        <th data-priority="2">未闭合</th>
+                        <th data-priority="2">逾期</th>
+                        <th data-priority="1">A级</th>
+                        <th data-priority="2">B级</th>
+                        <th data-priority="2">C级</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp6" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -403,25 +463,37 @@
     </div>
 
     <div data-role="content">
-        <table id="ldxjdb-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="2">单位</th>
-                <th data-priority="1">姓名</th>
-                <th data-priority="2">职务</th>
-                <th data-priority="1">实际下井</th>
-                <th data-priority="2">规定带班</th>
-                <th data-priority="1">实际带班</th>
-                <th data-priority="1">排查隐患</th>
-                <th data-priority="1">排查三违</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper7" class="wrapper">
+            <div id="summaryScroller7" class="scroller">
+                <div id="summaryPullDown7" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
-            </tbody>
-        </table>
+                <table id="ldxjdb-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="2">单位</th>
+                        <th data-priority="1">姓名</th>
+                        <th data-priority="2">职务</th>
+                        <th data-priority="1">实际下井</th>
+                        <th data-priority="2">规定带班</th>
+                        <th data-priority="1">实际带班</th>
+                        <th data-priority="1">排查隐患</th>
+                        <th data-priority="1">排查三违</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp7" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -454,30 +526,43 @@
     </div>
 
     <div data-role="content">
-        <table id="ydswgphz-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1" rowspan="2" style="text-align: center">单位</th>
-                <th data-priority="1" colspan="4">三违</th>
-                <th data-priority="1" colspan="3">挂牌</th>
-            </tr>
-            <tr>
-                <th data-priority="1">合计</th>
-                <th data-priority="1">严重</th>
-                <th data-priority="1">较严重</th>
-                <th data-priority="1">一般</th>
+        <div id="summaryWrapper8" class="wrapper">
+            <div id="summaryScroller8" class="scroller">
+                <div id="summaryPullDown8" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-                <th data-priority="1">合计</th>
-                <th data-priority="1">未摘牌</th>
-                <th data-priority="1">已摘牌</th>
-            </tr>
-            </thead>
+                <table id="ydswgphz-result" data-role="table" data-mode="columntoggle"
+                       class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1" rowspan="2" style="text-align: center">单位</th>
+                        <th data-priority="1" colspan="4">三违</th>
+                        <th data-priority="1" colspan="3">挂牌</th>
+                    </tr>
+                    <tr>
+                        <th data-priority="1">合计</th>
+                        <th data-priority="1">严重</th>
+                        <th data-priority="1">较严重</th>
+                        <th data-priority="1">一般</th>
 
-            <tbody>
-            <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
-            </tbody>
-        </table>
+                        <th data-priority="1">合计</th>
+                        <th data-priority="1">未摘牌</th>
+                        <th data-priority="1">已摘牌</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <!-- TODO : 使用ajax调用后台接口得到返回数据 -->
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp8" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -510,28 +595,40 @@
     </div>
 
     <div data-role="content">
-        <table id="ydyhhz-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1" rowspan="2">单位</th>
-                <th data-priority="1" colspan="7" style="text-align: center">隐患</th>
-            </tr>
-            <tr>
-                <th data-priority="1">合计</th>
-                <th data-priority="1">A级</th>
-                <th data-priority="1">B级</th>
-                <th data-priority="1">C级</th>
-                <th data-priority="1">逾期未整改</th>
-                <th data-priority="1">历史逾期</th>
-                <th data-priority="1">已闭合</th>
-                <th data-priority="1">未闭合</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper9" class="wrapper">
+            <div id="summaryScroller9" class="scroller">
+                <div id="summaryPullDown9" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="ydyhhz-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1" rowspan="2">单位</th>
+                        <th data-priority="1" colspan="7" style="text-align: center">隐患</th>
+                    </tr>
+                    <tr>
+                        <th data-priority="1">合计</th>
+                        <th data-priority="1">A级</th>
+                        <th data-priority="1">B级</th>
+                        <th data-priority="1">C级</th>
+                        <th data-priority="1">逾期未整改</th>
+                        <th data-priority="1">历史逾期</th>
+                        <th data-priority="1">已闭合</th>
+                        <th data-priority="1">未闭合</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp9" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -570,19 +667,31 @@
     </div>
 
     <div data-role="content">
-        <table id="rjxxcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1">部门</th>
-                <th data-priority="1">姓名</th>
-                <th data-priority="1">入井时间</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper10" class="wrapper">
+            <div id="summaryScroller10" class="scroller">
+                <div id="summaryPullDown10" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="rjxxcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">部门</th>
+                        <th data-priority="1">姓名</th>
+                        <th data-priority="1">入井时间</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp10" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -621,21 +730,33 @@
     </div>
 
     <div data-role="content">
-        <table id="swxxcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1">责任单位</th>
-                <th data-priority="1">责任部门</th>
-                <th data-priority="1">三违人员</th>
-                <th data-priority="1">排查时间</th>
-                <th data-priority="1">三违级别</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper11" class="wrapper">
+            <div id="summaryScroller11" class="scroller">
+                <div id="summaryPullDown11" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="swxxcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">责任单位</th>
+                        <th data-priority="1">责任部门</th>
+                        <th data-priority="1">三违人员</th>
+                        <th data-priority="1">排查时间</th>
+                        <th data-priority="1">三违级别</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp11" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -674,25 +795,38 @@
     </div>
 
     <div data-role="content">
-        <table id="yhfltjcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1">单位</th>
-                <th data-priority="1">责任单位</th>
-                <th data-priority="1">隐患数量</th>
-                <th data-priority="1">已闭合</th>
-                <th data-priority="1">未闭合</th>
-                <th data-priority="1">逾期</th>
-                <th data-priority="1">A级</th>
-                <th data-priority="1">B级</th>
-                <th data-priority="1">C级</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper12" class="wrapper">
+            <div id="summaryScroller12" class="scroller">
+                <div id="summaryPullDown12" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="yhfltjcx-result" data-role="table" data-mode="columntoggle"
+                       class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">单位</th>
+                        <th data-priority="1">责任单位</th>
+                        <th data-priority="1">隐患数量</th>
+                        <th data-priority="1">已闭合</th>
+                        <th data-priority="1">未闭合</th>
+                        <th data-priority="1">逾期</th>
+                        <th data-priority="1">A级</th>
+                        <th data-priority="1">B级</th>
+                        <th data-priority="1">C级</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp12" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -738,22 +872,35 @@
     </div>
 
     <div data-role="content">
-        <table id="yhxxzhcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
-            <thead>
-            <tr>
-                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
-                <th data-priority="1">责任单位</th>
-                <th data-priority="1">班次</th>
-                <th data-priority="1">排查时间</th>
-                <th data-priority="1">级别</th>
-                <th data-priority="1">隐患类型</th>
-                <th data-priority="1">隐患状态</th>
-            </tr>
-            </thead>
+        <div id="summaryWrapper13" class="wrapper">
+            <div id="summaryScroller13" class="scroller">
+                <div id="summaryPullDown13" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
 
-            <tbody>
-            </tbody>
-        </table>
+                <table id="yhxxzhcx-result" data-role="table" data-mode="columntoggle"
+                       class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">责任单位</th>
+                        <th data-priority="1">班次</th>
+                        <th data-priority="1">排查时间</th>
+                        <th data-priority="1">级别</th>
+                        <th data-priority="1">隐患类型</th>
+                        <th data-priority="1">隐患状态</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp13" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

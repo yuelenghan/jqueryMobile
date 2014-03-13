@@ -4,103 +4,209 @@
 
 var serverPath = "http://192.168.1.105:8080/DataService/";
 var pageSize = 15, pageNo = 1;
-var summaryScroll1;
+var summaryScroll1, summaryScroll2, summaryScroll3, summaryScroll4, summaryScroll5,
+    summaryScroll6, summaryScroll7, summaryScroll8, summaryScroll9, summaryScroll10,
+    summaryScroll11, summaryScroll12, summaryScroll13;
 var loading = false;
 
 // 从服务端得到入井信息统计的数据
 function getRjxxcxData() {
-    var startDate = $("#startDate-10").val();
-    var endDate = $("#endDate-10").val();
-    var name = $("#name-10").val();
+    if (loading == false) {
+        pageNo = 1;
 
-    if (startDate == undefined || startDate == null || startDate == "") {
-        alert("请输入开始日期!");
-        return false;
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        alert("请输入结束日期!");
-        return false;
-    }
+        var startDate = $("#startDate-10").val();
+        var endDate = $("#endDate-10").val();
+        var name = $("#name-10").val();
 
-    if (name == undefined || name == null || name == "") {
-        alert("请输入姓名!");
-        return false;
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
 
-    // 提交到服务端
-    $.ajax({
-        url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "rjxxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#rjxxcx2");
-                $("#rjxxcx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].name + "</td>";
-                    tableStr += "<td>" + data[i].downTime + "</td>";
-                    tableStr + "</tr>";
+        if (name == undefined || name == null || name == "") {
+            alert("请输入姓名!");
+            return;
+        }
 
-                    //                                $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
-                    $(tableStr).appendTo($("#rjxxcx-result tbody"));
+        loading = true;
+
+        // 提交到服务端
+        $.ajax({
+            url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "rjxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#rjxxcx2");
+                    $("#rjxxcx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].downTime + "</td>";
+                        tableStr + "</tr>";
+
+                        //                                $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
+                        $(tableStr).appendTo($("#rjxxcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#rjxxcx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll10) {
+                        summaryScroll10.destroy();
+                        summaryScroll10 = null;
+                    }
+
+                    loadSummaryScroll10();
+
+
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#rjxxcx-result").table("refresh");
-
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll10() {
+    var pullDownEl = document.getElementById('summaryPullDown10');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp10');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll10 = new iScroll('summaryWrapper10', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getRjxxcxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll10PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
 
-    // 测试========start========
-    /*unit = "010102";
-     title = "152";
-     $.ajax({
-     url: serverPath + "summary/rjxx/beginDate/" + startDate + "/endDate/" + endDate + "/dwid/" + unit + "/zwjb/" + title,
-     dataType: "jsonp",
-     type: "post",
-     jsonpCallback: "rjxxSummary",
-     success: function (data) {
-     if (data != undefined && data != null && data.length > 0) {
-     $.mobile.changePage("#rjxxcx2");
-     for (var i = 0; i < data.length; i++) {
-     var tableStr = "<tr>";
-     tableStr += "<td>" + data[i].deptName + "</td>";
-     tableStr += "<td>" + data[i].name + "</td>";
-     tableStr += "<td>" + data[i].rjsj + "</td>";
-     tableStr + "</tr>";
 
-     //                    $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
-     $(tableStr).appendTo($("#rjxxcx-result tbody"));
-     }
+    setTimeout(function () {
+        document.getElementById('summaryWrapper10').style.left = '0';
+    }, 800);
+}
 
-     // 刷新table, 否则隐藏coloumn功能不可用
-     $("#rjxxcx-result").table("refresh");
-     } else {
-     alert("没有数据!")
-     }
+function summaryScroll10PullUp() {
+    if (loading == false) {
+        pageNo++;
 
-     },
-     error: function () {
-     alert("error");
-     }
-     });*/
-    // 测试========end========
+        var startDate = $("#startDate-10").val();
+        var endDate = $("#endDate-10").val();
+        var name = $("#name-10").val();
+
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
+
+        if (name == undefined || name == null || name == "") {
+            alert("请输入姓名!");
+            return;
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "rjxxSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].downTime + "</td>";
+                        tableStr + "</tr>";
+
+                        //                                $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
+                        $(tableStr).appendTo($("#rjxxcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#rjxxcx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll10.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 
 function getDbjhbData() {
     if (loading == false) {
-        loading = true;
         pageNo = 1;
 
         var date = $("#date-1").val();
@@ -113,6 +219,8 @@ function getDbjhbData() {
         if (name == undefined || name == null || name == "") {
             name = "null";
         }
+
+        loading = true;
 
         $.ajax({
             url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/0/limit/" + pageSize,
@@ -224,7 +332,6 @@ function loadSummaryScroll1() {
 
 function summaryScroll1PullUp() {
     if (loading == false) {
-        loading = true;
         pageNo++;
 
         var date = $("#date-1").val();
@@ -240,6 +347,9 @@ function summaryScroll1PullUp() {
 
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
+
+        loading = true;
+
         $.ajax({
             url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
@@ -262,9 +372,61 @@ function summaryScroll1PullUp() {
                     // 刷新table, 否则隐藏coloumn功能不可用
                     $("#dbjhb-result").table("refresh");
 
-                    summaryScroll1.refresh();
                 } else {
                     alert("没有新数据！");
+                }
+
+                summaryScroll1.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
+}
+
+function getGpxxData() {
+    if (loading == false) {
+        pageNo = 1;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/gpxx/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "gpxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#gpxx");
+                    $("#gpxx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].maindeptname + "</td>";
+                        tableStr += "<td>" + data[i].zrpersonname + "</td>";
+                        tableStr += "<td>" + data[i].gpdate + "</td>";
+                        tableStr += "<td>" + data[i].gpbanci + "</td>";
+                        tableStr += "<td>" + data[i].httypeDesc + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#gpxx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#gpxx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll5) {
+                        summaryScroll5.destroy();
+                        summaryScroll5 = null;
+                    }
+
+                    loadSummaryScroll5();
+                } else {
+                    alert("没有数据!")
                 }
 
                 loading = false;
@@ -278,547 +440,1991 @@ function summaryScroll1PullUp() {
 
 }
 
-function getGpxxData() {
-    $.ajax({
-        url: serverPath + "summary/gpxx/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "gpxxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#gpxx");
-                $("#gpxx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].maindeptname + "</td>";
-                    tableStr += "<td>" + data[i].zrpersonname + "</td>";
-                    tableStr += "<td>" + data[i].gpdate + "</td>";
-                    tableStr += "<td>" + data[i].gpbanci + "</td>";
-                    tableStr += "<td>" + data[i].httypeDesc + "</td>";
-                    tableStr += "</tr>";
+function loadSummaryScroll5() {
+    var pullDownEl = document.getElementById('summaryPullDown5');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp5');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-                    $(tableStr).appendTo($("#gpxx-result tbody"));
-                }
-
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#gpxx-result").table("refresh");
-            } else {
-                alert("没有数据!")
+    summaryScroll5 = new iScroll('summaryWrapper5', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
             }
-
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getGpxxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll5PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper5').style.left = '0';
+    }, 800);
 }
 
+function summaryScroll5PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/gpxx/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "gpxxSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].maindeptname + "</td>";
+                        tableStr += "<td>" + data[i].zrpersonname + "</td>";
+                        tableStr += "<td>" + data[i].gpdate + "</td>";
+                        tableStr += "<td>" + data[i].gpbanci + "</td>";
+                        tableStr += "<td>" + data[i].httypeDesc + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#gpxx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#gpxx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll5.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
+}
+
+
 function getFswxxData() {
-    var startDate = $("#startDate-2").val();
-    var endDate = $("#endDate-2").val();
-    var name = $("#name-2").val();
+    if (loading == false) {
+        pageNo = 1;
+
+        var startDate = $("#startDate-2").val();
+        var endDate = $("#endDate-2").val();
+        var name = $("#name-2").val();
 
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", name = " + name);
 
-    if (startDate == undefined || startDate == null || startDate == "") {
-        startDate = "null";
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        endDate = "null";
-    }
-    if (name == undefined || name == null || name == "") {
-        name = "null";
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            startDate = "null";
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            endDate = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
 
-    $.ajax({
-        url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "fswxxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#fswxx2");
-                $("#fswxx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].name + "</td>";
-                    tableStr += "<td>" + data[i].ybsw + "</td>";
-                    tableStr += "<td>" + data[i].jyzsw + "</td>";
-                    tableStr += "<td>" + data[i].yzsw + "</td>";
-                    tableStr += "</tr>";
+        loading = true;
 
-                    $(tableStr).appendTo($("#fswxx-result tbody"));
+        $.ajax({
+            url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "fswxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#fswxx2");
+                    $("#fswxx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].ybsw + "</td>";
+                        tableStr += "<td>" + data[i].jyzsw + "</td>";
+                        tableStr += "<td>" + data[i].yzsw + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#fswxx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#fswxx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll2) {
+                        summaryScroll2.destroy();
+                        summaryScroll2 = null;
+                    }
+
+                    loadSummaryScroll2();
+
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#fswxx-result").table("refresh");
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
+}
 
+function loadSummaryScroll2() {
+    var pullDownEl = document.getElementById('summaryPullDown2');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp2');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll2 = new iScroll('summaryWrapper2', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getFswxxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll2PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper2').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll2PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var startDate = $("#startDate-2").val();
+        var endDate = $("#endDate-2").val();
+        var name = $("#name-2").val();
+
+//    alert("startDate = " + startDate + ", endDate = " + endDate + ", name = " + name);
+
+        if (startDate == undefined || startDate == null || startDate == "") {
+            startDate = "null";
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            endDate = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "fswxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].ybsw + "</td>";
+                        tableStr += "<td>" + data[i].jyzsw + "</td>";
+                        tableStr += "<td>" + data[i].yzsw + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#fswxx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#fswxx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据!")
+                }
+
+                summaryScroll2.refresh();
+                loading = false;
+
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getZbdbldData() {
-    var date = $("#date-3").val();
-    if (date == undefined || date == null || date == "") {
-        alert("请输入日期！");
-        return;
-    }
+    if (loading == false) {
+        pageNo = 1;
 
-    $.ajax({
-        url: serverPath + "summary/zbdbld/date/" + date + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "zbdbldSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#zbdbld2");
-                $("#zbdbld-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].detail + "</td>";
-                    tableStr += "<td>" + data[i].zb + "</td>";
-                    tableStr += "<td>" + data[i].zhb + "</td>";
-                    tableStr += "<td>" + data[i].yb + "</td>";
-                    tableStr += "</tr>";
+        var date = $("#date-3").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期！");
+            return;
+        }
 
-                    $(tableStr).appendTo($("#zbdbld-result tbody"));
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/zbdbld/date/" + date + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "zbdbldSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#zbdbld2");
+                    $("#zbdbld-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].detail + "</td>";
+                        tableStr += "<td>" + data[i].zb + "</td>";
+                        tableStr += "<td>" + data[i].zhb + "</td>";
+                        tableStr += "<td>" + data[i].yb + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#zbdbld-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#zbdbld-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll3) {
+                        summaryScroll3.destroy();
+                        summaryScroll3 = null;
+                    }
+
+                    loadSummaryScroll3();
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#zbdbld-result").table("refresh");
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll3() {
+    var pullDownEl = document.getElementById('summaryPullDown3');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp3');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll3 = new iScroll('summaryWrapper3', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getZbdbldData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll3PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper3').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll3PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var date = $("#date-3").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期！");
+            return;
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/zbdbld/date/" + date + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "zbdbldSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].detail + "</td>";
+                        tableStr += "<td>" + data[i].zb + "</td>";
+                        tableStr += "<td>" + data[i].zhb + "</td>";
+                        tableStr += "<td>" + data[i].yb + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#zbdbld-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#zbdbld-result").table("refresh");
+
+                } else {
+                    alert("没有新数据!")
+                }
+
+                summaryScroll3.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getYdyhhzData() {
-    var date = $("#date-9").val();
-    if (date == undefined || date == null || date == "") {
-        alert("请输入日期！");
-        return;
-    }
+    if (loading == false) {
+        pageNo = 1;
 
-    $.ajax({
-        url: serverPath + "summary/ydyhhz/date/" + date + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "ydyhhzSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#ydyhhz2");
-                $("#ydyhhz-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].yhAll + "</td>";
-                    tableStr += "<td>" + data[i].yhA + "</td>";
-                    tableStr += "<td>" + data[i].yhB + "</td>";
-                    tableStr += "<td>" + data[i].yhC + "</td>";
-                    tableStr += "<td>" + data[i].yhYqwzg + "</td>";
-                    tableStr += "<td>" + data[i].yhLsyq + "</td>";
-                    tableStr += "<td>" + data[i].yhYbh + "</td>";
-                    tableStr += "<td>" + data[i].yhWbh + "</td>";
-                    tableStr += "</tr>";
+        var date = $("#date-9").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期！");
+            return;
+        }
 
-                    $(tableStr).appendTo($("#ydyhhz-result tbody"));
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/ydyhhz/date/" + date + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "ydyhhzSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#ydyhhz2");
+                    $("#ydyhhz-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].yhA + "</td>";
+                        tableStr += "<td>" + data[i].yhB + "</td>";
+                        tableStr += "<td>" + data[i].yhC + "</td>";
+                        tableStr += "<td>" + data[i].yhYqwzg + "</td>";
+                        tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                        tableStr += "<td>" + data[i].yhYbh + "</td>";
+                        tableStr += "<td>" + data[i].yhWbh + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#ydyhhz-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#ydyhhz-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll9) {
+                        summaryScroll9.destroy();
+                        summaryScroll9 = null;
+                    }
+
+                    loadSummaryScroll9();
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#ydyhhz-result").table("refresh");
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll9() {
+    var pullDownEl = document.getElementById('summaryPullDown9');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp9');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll9 = new iScroll('summaryWrapper9', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getYdyhhzData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll9PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper9').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll9PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var date = $("#date-9").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期！");
+            return;
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/ydyhhz/date/" + date + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "ydyhhzSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].yhA + "</td>";
+                        tableStr += "<td>" + data[i].yhB + "</td>";
+                        tableStr += "<td>" + data[i].yhC + "</td>";
+                        tableStr += "<td>" + data[i].yhYqwzg + "</td>";
+                        tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                        tableStr += "<td>" + data[i].yhYbh + "</td>";
+                        tableStr += "<td>" + data[i].yhWbh + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#ydyhhz-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#ydyhhz-result").table("refresh");
+
+                } else {
+                    alert("没有新数据!")
+                }
+
+                summaryScroll9.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getLdxjdbData() {
-    var startDate = $("#startDate-7").val();
-    var endDate = $("#endDate-7").val();
-    var name = $("#name-7").val();
+    if (loading == false) {
+        pageNo = 1;
+
+        var startDate = $("#startDate-7").val();
+        var endDate = $("#endDate-7").val();
+        var name = $("#name-7").val();
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", name = " + name);
 
-    if (startDate == undefined || startDate == null || startDate == "") {
-        startDate = "null";
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        endDate = "null";
-    }
-    if (name == undefined || name == null || name == "") {
-        name = "null";
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            startDate = "null";
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            endDate = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
 
-    $.ajax({
-        url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "ldxjdbSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#ldxjdb2");
-                $("#ldxjdb-result tbody").html("");
+        loading = true;
 
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].name + "</td>";
-                    tableStr += "<td>" + data[i].posName + "</td>";
-                    tableStr += "<td>" + data[i].rjAll + "</td>";
-                    tableStr += "<td>" + data[i].planFreq + "</td>";
-                    tableStr += "<td>" + data[i].dbrj + "</td>";
-                    tableStr += "<td>" + data[i].yhAll + "</td>";
-                    tableStr += "<td>" + data[i].swAll + "</td>";
-                    tableStr += "</tr>";
+        $.ajax({
+            url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "ldxjdbSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#ldxjdb2");
+                    $("#ldxjdb-result tbody").html("");
 
-                    $(tableStr).appendTo($("#ldxjdb-result tbody"));
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].posName + "</td>";
+                        tableStr += "<td>" + data[i].rjAll + "</td>";
+                        tableStr += "<td>" + data[i].planFreq + "</td>";
+                        tableStr += "<td>" + data[i].dbrj + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].swAll + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#ldxjdb-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#ldxjdb-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll7) {
+                        summaryScroll7.destroy();
+                        summaryScroll7 = null;
+                    }
+
+                    loadSummaryScroll7();
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#ldxjdb-result").table("refresh");
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+
+}
+
+function loadSummaryScroll7() {
+    var pullDownEl = document.getElementById('summaryPullDown7');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp7');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll7 = new iScroll('summaryWrapper7', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getLdxjdbData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll7PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper7').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll7PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var startDate = $("#startDate-7").val();
+        var endDate = $("#endDate-7").val();
+        var name = $("#name-7").val();
+//    alert("startDate = " + startDate + ", endDate = " + endDate + ", name = " + name);
+
+        if (startDate == undefined || startDate == null || startDate == "") {
+            startDate = "null";
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            endDate = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "ldxjdbSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].posName + "</td>";
+                        tableStr += "<td>" + data[i].rjAll + "</td>";
+                        tableStr += "<td>" + data[i].planFreq + "</td>";
+                        tableStr += "<td>" + data[i].dbrj + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].swAll + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#ldxjdb-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#ldxjdb-result").table("refresh");
+
+                } else {
+                    alert("没有新数据!")
+                }
+
+                summaryScroll7.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getKzdkyhData() {
-    var date = $("#date-6").val();
-    if (date == undefined || date == null || date == "") {
-        alert("请输入日期！");
-        return;
-    }
+    if (loading == false) {
+        pageNo = 1;
 
-    $.ajax({
-        url: serverPath + "summary/kzdkyh/date/" + date + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "kzdkyhSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#kzdkyh2");
-                $("#kzdkyh-result tbody").html("");
+        var date = $("#date-6").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期！");
+            return;
+        }
 
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].zrDeptName + "</td>";
-                    tableStr += "<td>" + data[i].yhAll + "</td>";
-                    tableStr += "<td>" + data[i].yhYbh + "</td>";
-                    tableStr += "<td>" + data[i].yhWbh + "</td>";
-                    tableStr += "<td>" + data[i].yhLsyq + "</td>";
-                    tableStr += "<td>" + data[i].yhA + "</td>";
-                    tableStr += "<td>" + data[i].yhB + "</td>";
-                    tableStr += "<td>" + data[i].yhC + "</td>";
-                    tableStr += "</tr>";
+        loading = true;
 
-                    $(tableStr).appendTo($("#kzdkyh-result tbody"));
+        $.ajax({
+            url: serverPath + "summary/kzdkyh/date/" + date + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "kzdkyhSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#kzdkyh2");
+                    $("#kzdkyh-result tbody").html("");
+
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].zrDeptName + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].yhYbh + "</td>";
+                        tableStr += "<td>" + data[i].yhWbh + "</td>";
+                        tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                        tableStr += "<td>" + data[i].yhA + "</td>";
+                        tableStr += "<td>" + data[i].yhB + "</td>";
+                        tableStr += "<td>" + data[i].yhC + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#kzdkyh-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#kzdkyh-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll6) {
+                        summaryScroll6.destroy();
+                        summaryScroll6 = null;
+                    }
+
+                    loadSummaryScroll6();
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#kzdkyh-result").table("refresh");
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
-        },
-        error: function () {
-            alert("error");
-        }
-    });
 }
 
 
-function getYdswgphzData() {
-    var date = $("#date-8").val();
-    if (date == undefined || date == null || date == "") {
-        alert("请输入日期!");
-        return false;
-    }
+function loadSummaryScroll6() {
+    var pullDownEl = document.getElementById('summaryPullDown6');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp6');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-    $.ajax({
-        url: serverPath + "summary/ydswgphz/date/" + date + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "ydswgphzSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#ydswgphz2");
-                $("#ydswgphz-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].swAll + "</td>";
-                    tableStr += "<td>" + data[i].swYz + "</td>";
-                    tableStr += "<td>" + data[i].swJyz + "</td>";
-                    tableStr += "<td>" + data[i].swYb + "</td>";
-                    tableStr += "<td>" + data[i].gpAll + "</td>";
-                    tableStr += "<td>" + data[i].gpWz + "</td>";
-                    tableStr += "<td>" + data[i].gpYz + "</td>";
-                    tableStr += "</tr>";
-
-                    $(tableStr).appendTo($("#ydswgphz-result tbody"));
-                }
-
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#ydswgphz-result").table("refresh");
-            } else {
-                alert("没有数据!")
+    summaryScroll6 = new iScroll('summaryWrapper6', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
             }
-
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getKzdkyhData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll6PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper6').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll6PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var date = $("#date-6").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期！");
+            return;
+        }
+
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/kzdkyh/date/" + date + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "kzdkyhSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].zrDeptName + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].yhYbh + "</td>";
+                        tableStr += "<td>" + data[i].yhWbh + "</td>";
+                        tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                        tableStr += "<td>" + data[i].yhA + "</td>";
+                        tableStr += "<td>" + data[i].yhB + "</td>";
+                        tableStr += "<td>" + data[i].yhC + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#kzdkyh-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#kzdkyh-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll6.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
+}
+
+function getYdswgphzData() {
+    if (loading == false) {
+        pageNo = 1;
+
+        var date = $("#date-8").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期!");
+            return;
+        }
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/ydswgphz/date/" + date + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "ydswgphzSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#ydswgphz2");
+                    $("#ydswgphz-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].swAll + "</td>";
+                        tableStr += "<td>" + data[i].swYz + "</td>";
+                        tableStr += "<td>" + data[i].swJyz + "</td>";
+                        tableStr += "<td>" + data[i].swYb + "</td>";
+                        tableStr += "<td>" + data[i].gpAll + "</td>";
+                        tableStr += "<td>" + data[i].gpWz + "</td>";
+                        tableStr += "<td>" + data[i].gpYz + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#ydswgphz-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#ydswgphz-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll8) {
+                        summaryScroll8.destroy();
+                        summaryScroll8 = null;
+                    }
+
+                    loadSummaryScroll8();
+                } else {
+                    alert("没有数据!")
+                }
+
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
+}
+
+function loadSummaryScroll8() {
+    var pullDownEl = document.getElementById('summaryPullDown8');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp8');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll8 = new iScroll('summaryWrapper8', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
+        },
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getYdswgphzData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll8PullUp();	// Execute custom function (ajax call?)
+            }
+        }
+    });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper8').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll8PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var date = $("#date-8").val();
+        if (date == undefined || date == null || date == "") {
+            alert("请输入日期!");
+            return;
+        }
+
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/ydswgphz/date/" + date + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "ydswgphzSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].swAll + "</td>";
+                        tableStr += "<td>" + data[i].swYz + "</td>";
+                        tableStr += "<td>" + data[i].swJyz + "</td>";
+                        tableStr += "<td>" + data[i].swYb + "</td>";
+                        tableStr += "<td>" + data[i].gpAll + "</td>";
+                        tableStr += "<td>" + data[i].gpWz + "</td>";
+                        tableStr += "<td>" + data[i].gpYz + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#ydswgphz-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#ydswgphz-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll8.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getSwxxcxData() {
-    var startDate = $("#startDate-11").val();
-    var endDate = $("#endDate-11").val();
-    var name = $("#name-11").val();
+    if (loading == false) {
+        pageNo = 1;
 
-    if (startDate == undefined || startDate == null || startDate == "") {
-        alert("请输入开始日期!");
-        return false;
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        alert("请输入结束日期!");
-        return false;
-    }
+        var startDate = $("#startDate-11").val();
+        var endDate = $("#endDate-11").val();
+        var name = $("#name-11").val();
 
-    if (name == undefined || name == null || name == "") {
-        alert("请输入姓名!");
-        return false;
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
 
-    // 提交到服务端
-    $.ajax({
-        url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "swxxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#swxxcx2");
-                $("#swxxcx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].mainDeptName + "</td>";
-                    tableStr += "<td>" + data[i].zrkqName + "</td>";
-                    tableStr += "<td>" + data[i].swpName + "</td>";
-                    tableStr += "<td>" + data[i].pctime + "</td>";
-                    tableStr += "<td>" + data[i].levelName + "</td>";
-                    tableStr + "</tr>";
+        if (name == undefined || name == null || name == "") {
+            alert("请输入姓名!");
+            return;
+        }
 
-                    $(tableStr).appendTo($("#swxxcx-result tbody"));
+        loading = true;
+
+        // 提交到服务端
+        $.ajax({
+            url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "swxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#swxxcx2");
+                    $("#swxxcx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].mainDeptName + "</td>";
+                        tableStr += "<td>" + data[i].zrkqName + "</td>";
+                        tableStr += "<td>" + data[i].swpName + "</td>";
+                        tableStr += "<td>" + data[i].pctime + "</td>";
+                        tableStr += "<td>" + data[i].levelName + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#swxxcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#swxxcx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll11) {
+                        summaryScroll11.destroy();
+                        summaryScroll11 = null;
+                    }
+
+                    loadSummaryScroll11();
+
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#swxxcx-result").table("refresh");
-
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll11() {
+    var pullDownEl = document.getElementById('summaryPullDown11');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp11');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll11 = new iScroll('summaryWrapper11', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getSwxxcxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll11PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper11').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll11PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var startDate = $("#startDate-11").val();
+        var endDate = $("#endDate-11").val();
+        var name = $("#name-11").val();
+
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
+
+        if (name == undefined || name == null || name == "") {
+            alert("请输入姓名!");
+            return;
+        }
+
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "swxxSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].mainDeptName + "</td>";
+                        tableStr += "<td>" + data[i].zrkqName + "</td>";
+                        tableStr += "<td>" + data[i].swpName + "</td>";
+                        tableStr += "<td>" + data[i].pctime + "</td>";
+                        tableStr += "<td>" + data[i].levelName + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#swxxcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#swxxcx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll11.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getYhfltjcxData() {
-    var startDate = $("#startDate-12").val();
-    var endDate = $("#endDate-12").val();
-    var unit = $("#unit-12").val();
+    if (loading == false) {
+        pageNo = 1;
 
-    if (startDate == undefined || startDate == null || startDate == "") {
-        alert("请输入开始日期!");
-        return false;
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        alert("请输入结束日期!");
-        return false;
-    }
+        var startDate = $("#startDate-12").val();
+        var endDate = $("#endDate-12").val();
+        var unit = $("#unit-12").val();
 
-    if (unit == undefined || unit == null || unit == "") {
-        unit = "null";
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
 
-    $.ajax({
-        url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhfltjcxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#yhfltjcx2");
-                $("#yhfltjcx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].zrDeptName + "</td>";
-                    tableStr += "<td>" + data[i].yhAll + "</td>";
-                    tableStr += "<td>" + data[i].yhYbh + "</td>";
-                    tableStr += "<td>" + data[i].yhWbh + "</td>";
-                    tableStr += "<td>" + data[i].yhLsyq + "</td>";
-                    tableStr += "<td>" + data[i].yhA + "</td>";
-                    tableStr += "<td>" + data[i].yhB + "</td>";
-                    tableStr += "<td>" + data[i].yhC + "</td>";
-                    tableStr + "</tr>";
+        if (unit == undefined || unit == null || unit == "") {
+            unit = "null";
+        }
 
-                    $(tableStr).appendTo($("#yhfltjcx-result tbody"));
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "yhfltjcxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#yhfltjcx2");
+                    $("#yhfltjcx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].zrDeptName + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].yhYbh + "</td>";
+                        tableStr += "<td>" + data[i].yhWbh + "</td>";
+                        tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                        tableStr += "<td>" + data[i].yhA + "</td>";
+                        tableStr += "<td>" + data[i].yhB + "</td>";
+                        tableStr += "<td>" + data[i].yhC + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#yhfltjcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#yhfltjcx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll12) {
+                        summaryScroll12.destroy();
+                        summaryScroll12 = null;
+                    }
+
+                    loadSummaryScroll12();
+                } else {
+                    alert("没有数据!")
                 }
+                loading = false;
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#yhfltjcx-result").table("refresh");
-
-            } else {
-                alert("没有数据!")
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll12() {
+    var pullDownEl = document.getElementById('summaryPullDown12');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp12');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll12 = new iScroll('summaryWrapper12', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getYhfltjcxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll12PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper12').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll12PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var startDate = $("#startDate-12").val();
+        var endDate = $("#endDate-12").val();
+        var unit = $("#unit-12").val();
+
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
+
+        if (unit == undefined || unit == null || unit == "") {
+            unit = "null";
+        }
+
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "yhfltjcxSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].zrDeptName + "</td>";
+                        tableStr += "<td>" + data[i].yhAll + "</td>";
+                        tableStr += "<td>" + data[i].yhYbh + "</td>";
+                        tableStr += "<td>" + data[i].yhWbh + "</td>";
+                        tableStr += "<td>" + data[i].yhLsyq + "</td>";
+                        tableStr += "<td>" + data[i].yhA + "</td>";
+                        tableStr += "<td>" + data[i].yhB + "</td>";
+                        tableStr += "<td>" + data[i].yhC + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#yhfltjcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#yhfltjcx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll12.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getYhxxzhcxData() {
-    var startDate = $("#startDate-13").val();
-    var endDate = $("#endDate-13").val();
-    var unit = $("#unit-13").val();
-    var banci = $("#banci-13").val();
+    if (loading == false) {
+        pageNo = 1;
+
+        var startDate = $("#startDate-13").val();
+        var endDate = $("#endDate-13").val();
+        var unit = $("#unit-13").val();
+        var banci = $("#banci-13").val();
 
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", banci = " + banci);
-    if (startDate == undefined || startDate == null || startDate == "") {
-        alert("请输入开始日期!");
-        return false;
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        alert("请输入结束日期!");
-        return false;
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
 
-    if (unit == undefined || unit == null || unit == "") {
-        unit = "null";
-    }
+        if (unit == undefined || unit == null || unit == "") {
+            unit = "null";
+        }
 
-    $.ajax({
-        url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "yhxxzhcxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#yhxxzhcx2");
-                $("#yhxxzhcx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].zrDeptName + "</td>";
-                    tableStr += "<td>" + data[i].banci + "</td>";
-                    tableStr += "<td>" + data[i].pcTime + "</td>";
-                    tableStr += "<td>" + data[i].levelName + "</td>";
-                    tableStr += "<td>" + data[i].typeName + "</td>";
-                    tableStr += "<td>" + data[i].status + "</td>";
-                    tableStr + "</tr>";
+        loading = true;
 
-                    $(tableStr).appendTo($("#yhxxzhcx-result tbody"));
+        $.ajax({
+            url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "yhxxzhcxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#yhxxzhcx2");
+                    $("#yhxxzhcx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].zrDeptName + "</td>";
+                        tableStr += "<td>" + data[i].banci + "</td>";
+                        tableStr += "<td>" + data[i].pcTime + "</td>";
+                        tableStr += "<td>" + data[i].levelName + "</td>";
+                        tableStr += "<td>" + data[i].typeName + "</td>";
+                        tableStr += "<td>" + data[i].status + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#yhxxzhcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#yhxxzhcx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll13) {
+                        summaryScroll13.destroy();
+                        summaryScroll13 = null;
+                    }
+
+                    loadSummaryScroll13();
+
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#yhxxzhcx-result").table("refresh");
-
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll13() {
+    var pullDownEl = document.getElementById('summaryPullDown13');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp13');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll13 = new iScroll('summaryWrapper13', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getYhxxzhcxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll13PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper13').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll13PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var startDate = $("#startDate-13").val();
+        var endDate = $("#endDate-13").val();
+        var unit = $("#unit-13").val();
+        var banci = $("#banci-13").val();
+
+//    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", banci = " + banci);
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期!");
+            return;
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入结束日期!");
+            return;
+        }
+
+        if (unit == undefined || unit == null || unit == "") {
+            unit = "null";
+        }
+
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "yhxxzhcxSummary",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].zrDeptName + "</td>";
+                        tableStr += "<td>" + data[i].banci + "</td>";
+                        tableStr += "<td>" + data[i].pcTime + "</td>";
+                        tableStr += "<td>" + data[i].levelName + "</td>";
+                        tableStr += "<td>" + data[i].typeName + "</td>";
+                        tableStr += "<td>" + data[i].status + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#yhxxzhcx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#yhxxzhcx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据！");
+                }
+
+                summaryScroll13.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function getGsxxData() {
-    var startDate = $("#startDate-4").val();
-    var endDate = $("#endDate-4").val();
-    var unit = $("#unit-4").val();
-    var level = $("#level-4").val();
-    var name = $("#name-4").val();
+    if (loading == false) {
+        pageNo = 1;
+
+        var startDate = $("#startDate-4").val();
+        var endDate = $("#endDate-4").val();
+        var unit = $("#unit-4").val();
+        var level = $("#level-4").val();
+        var name = $("#name-4").val();
 
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", level = " + level + ", name = " + name);
 
-    if (startDate == undefined || startDate == null || startDate == "") {
-        startDate = "null";
-    }
-    if (endDate == undefined || endDate == null || endDate == "") {
-        endDate = "null";
-    }
+        if (startDate == undefined || startDate == null || startDate == "") {
+            startDate = "null";
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            endDate = "null";
+        }
 
-    if (unit == undefined || unit == null || unit == "") {
-        unit = "null";
-    }
-    if (name == undefined || name == null || name == "") {
-        name = "null";
-    }
+        if (unit == undefined || unit == null || unit == "") {
+            unit = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", level = " + level + ", name = " + name);
 
-    $.ajax({
-        url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name + "/start/0/limit/" + pageSize,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "gsxxSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#gsxx2");
-                $("#gsxx-result tbody").html("");
-                for (var i = 0; i < data.length; i++) {
-                    var tableStr = "<tr>";
-                    tableStr += "<td>" + data[i].deptName + "</td>";
-                    tableStr += "<td>" + data[i].name + "</td>";
-                    tableStr += "<td>" + data[i].level + "</td>";
-                    tableStr += "<td>" + data[i].happenDate + "</td>";
-                    tableStr + "</tr>";
+        loading = true;
 
-                    $(tableStr).appendTo($("#gsxx-result tbody"));
+        $.ajax({
+            url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name + "/start/0/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "gsxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#gsxx2");
+                    $("#gsxx-result tbody").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].level + "</td>";
+                        tableStr += "<td>" + data[i].happenDate + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#gsxx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#gsxx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll4) {
+                        summaryScroll4.destroy();
+                        summaryScroll4 = null;
+                    }
+
+                    loadSummaryScroll4();
+
+                } else {
+                    alert("没有数据!")
                 }
 
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#gsxx-result").table("refresh");
-
-            } else {
-                alert("没有数据!")
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
             }
+        });
+    }
 
+}
+
+function loadSummaryScroll4() {
+    var pullDownEl = document.getElementById('summaryPullDown4');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp4');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll4 = new iScroll('summaryWrapper4', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
         },
-        error: function () {
-            alert("error");
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getGsxxData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll4PullUp();	// Execute custom function (ajax call?)
+            }
         }
     });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper4').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll4PullUp() {
+    if (loading == false) {
+        loading = true;
+        pageNo++;
+
+        var startDate = $("#startDate-4").val();
+        var endDate = $("#endDate-4").val();
+        var unit = $("#unit-4").val();
+        var level = $("#level-4").val();
+        var name = $("#name-4").val();
+
+//    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", level = " + level + ", name = " + name);
+
+        if (startDate == undefined || startDate == null || startDate == "") {
+            startDate = "null";
+        }
+        if (endDate == undefined || endDate == null || endDate == "") {
+            endDate = "null";
+        }
+
+        if (unit == undefined || unit == null || unit == "") {
+            unit = "null";
+        }
+        if (name == undefined || name == null || name == "") {
+            name = "null";
+        }
+
+        var start = (pageNo - 1) * 15;
+        var limit = pageSize;
+        $.ajax({
+            url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "gsxxSummary",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].name + "</td>";
+                        tableStr += "<td>" + data[i].level + "</td>";
+                        tableStr += "<td>" + data[i].happenDate + "</td>";
+                        tableStr + "</tr>";
+
+                        $(tableStr).appendTo($("#gsxx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#gsxx-result").table("refresh");
+
+                } else {
+                    alert("没有新数据!")
+                }
+
+                summaryScroll4.refresh();
+                loading = false;
+            },
+            error: function () {
+                alert("error");
+                loading = false;
+            }
+        });
+    }
+
 }
 
 function gotoGsxx() {
