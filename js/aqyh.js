@@ -134,31 +134,33 @@ function getFirstYhInfo(listView, typeId) {
         type: "post",
         jsonpCallback: "yhInfo",
         success: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
-                listView.append(list);
-            }
+            if (data != null && data.length > 0) {
+                listView.empty();
 
-            /*      $("a").on("tap",function(){
-             gotoYhDetail(this);
-             });*/
+                for (var i = 0; i < data.length; i++) {
+                    var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                    listView.append(list);
+                }
 
-            listView.listview('refresh');
+                listView.listview('refresh');
 
-            // 销毁下拉刷新插件
-            if (yhScroll) {
-                yhScroll.destroy();
-                yhScroll = null;
-            }
-            //加载下拉刷新插件
-            setTimeout(function () {
-                loadYhScroll()
-            }, 200);
+                // 销毁下拉刷新插件
+                if (yhScroll) {
+                    yhScroll.destroy();
+                    yhScroll = null;
+                }
+                //加载下拉刷新插件
+                setTimeout(function () {
+                    loadYhScroll()
+                }, 200);
 //            loadYhScroll();
+            } else {
+                alert("没有数据！");
+            }
 
         },
         error: function () {
-            alert("error");
+            alert("error!");
         }
     });
 }
@@ -336,7 +338,7 @@ function gotoRjDetail(item) {
 //隐患下拉事件, 取得最新的数据
 function yhPullDownAction() {
     var listView = $("#yhListview");
-    listView.empty();
+//    listView.empty();
 
     getFirstYhInfo(listView, yhTypeId);
 }
