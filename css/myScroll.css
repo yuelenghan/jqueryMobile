@@ -174,6 +174,17 @@
     overflow: auto;
 }
 
+#rydwWrapper1 {
+    position: absolute;
+    z-index: 1;
+    top: 45px;
+    bottom: 48px;
+    left: -9999px;
+    width: 100%;
+    background: #fff;
+    overflow: auto;
+}
+
 #yhScroller {
     position: absolute;
     z-index: 1;
@@ -310,6 +321,15 @@
 }
 
 #summaryScroller13 {
+    position: absolute;
+    z-index: 1;
+    /*	-webkit-touch-callout:none;*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    padding: 0;
+}
+
+#rydwScroller1 {
     position: absolute;
     z-index: 1;
     /*	-webkit-touch-callout:none;*/
@@ -571,6 +591,17 @@
     color: #888;
 }
 
+#rydwPullDown1, #rydwPullUp1 {
+    background: #fff;
+    height: 40px;
+    line-height: 40px;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    font-size: 14px;
+    color: #888;
+}
+
 #yhPullDown .pullDownIcon, #yhPullUp .pullUpIcon {
     display: block;
     float: left;
@@ -763,6 +794,18 @@
     -webkit-transition-duration: 250ms;
 }
 
+#rydwPullDown1 .pullDownIcon, #rydwPullUp1 .pullUpIcon {
+    display: block;
+    float: left;
+    width: 40px;
+    height: 40px;
+    background: url(images/pull-icon@2x.png) 0 0 no-repeat;
+    -webkit-background-size: 40px 80px;
+    background-size: 40px 80px;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 250ms;
+}
+
 #yhPullDown .pullDownIcon {
     -webkit-transform: rotate(0deg) translateZ(0);
 }
@@ -824,6 +867,10 @@
 }
 
 #summaryPullDown13 .pullDownIcon {
+    -webkit-transform: rotate(0deg) translateZ(0);
+}
+
+#rydwPullDown1 .pullDownIcon {
     -webkit-transform: rotate(0deg) translateZ(0);
 }
 
@@ -891,6 +938,10 @@
     -webkit-transform: rotate(-180deg) translateZ(0);
 }
 
+#rydwPullUp1 .pullUpIcon {
+    -webkit-transform: rotate(-180deg) translateZ(0);
+}
+
 #yhPullDown.flip .pullDownIcon {
     -webkit-transform: rotate(-180deg) translateZ(0);
 }
@@ -955,6 +1006,10 @@
     -webkit-transform: rotate(-180deg) translateZ(0);
 }
 
+#rydwPullDown1.flip .pullDownIcon {
+    -webkit-transform: rotate(-180deg) translateZ(0);
+}
+
 #yhPullUp.flip .pullUpIcon {
     -webkit-transform: rotate(0deg) translateZ(0);
 }
@@ -1016,6 +1071,10 @@
 }
 
 #summaryPullUp13.flip .pullUpIcon {
+    -webkit-transform: rotate(0deg) translateZ(0);
+}
+
+#rydwPullUp1.flip .pullUpIcon {
     -webkit-transform: rotate(0deg) translateZ(0);
 }
 
@@ -1185,6 +1244,17 @@
 }
 
 #summaryPullDown13.loading .pullDownIcon, #summaryPullUp13.loading .pullUpIcon {
+    background-position: 0 100%;
+    -webkit-transform: rotate(0deg) translateZ(0);
+    -webkit-transition-duration: 0ms;
+
+    -webkit-animation-name: loading;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+
+#rydwPullDown1.loading .pullDownIcon, #rydwPullUp1.loading .pullUpIcon {
     background-position: 0 100%;
     -webkit-transform: rotate(0deg) translateZ(0);
     -webkit-transition-duration: 0ms;

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery Mobile Web 应用程序</title>
+
+    <!-- css -->
+    <link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/jquery.mobile.datepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="css/my.css" rel="stylesheet" type="text/css"/>
+    <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
+
+
+    <!-- js -->
+    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
+    <script src="js/jquery.mobile.datepicker.js" type="text/javascript"></script>
+    <script src="js/jquery.ui.datepicker.js" type="text/javascript"></script>
+    <script src="js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+    <script src="js/iscroll.js" type="text/javascript"></script>
+    <script src="js/rydw.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+    </script>
+</head>
+<body>
+<div data-role="page">
+    <div data-role="header" data-theme="b">
+        <a href="index.html" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large;">人员定位</h1>
+    </div>
+
+    <div data-role="content">
+        <ul data-role="listview">
+            <li><a href="#inMinePeople1">查询井下人员</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- 查询井下人员1 -- 录入参数页面 -->
+<div data-role="page" id="inMinePeople1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">查询井下人员</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="date-1">日期:</label>
+        <input id="date-1" type="text" data-role="date">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getInMinePeople()">查询</a>
+    </div>
+</div>
+
+<!-- 查询井下人员2 -- 查询结果页面 -->
+<div data-role="page" id="inMinePeople2" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">查询井下人员</h1>
+    </div>
+
+    <div data-role="content" style="overflow:scroll">
+        <div id="rydwWrapper1" class="wrapper">
+            <div id="rydwScroller1" class="scroller">
+                <div id="rydwPullDown1" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
+
+                <table id="inMinePeople-result" data-role="table" data-mode="columntoggle"
+                       class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="1">姓名</th>
+                        <th data-priority="1">职务</th>
+                        <th data-priority="1">部门简称</th>
+                        <th data-priority="1">部门全称</th>
+                        <th data-priority="1">工种名称</th>
+                        <th data-priority="1">位置</th>
+                        <th data-priority="1">初次报告时间</th>
+                        <th data-priority="1">末次报告时间</th>
+                        <th data-priority="1">入井时间</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="rydwPullUp1" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

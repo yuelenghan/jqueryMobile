@@ -49,7 +49,7 @@ function getRjxxcxData() {
                         tableStr += "<td>" + data[i].deptName + "</td>";
                         tableStr += "<td>" + data[i].name + "</td>";
                         tableStr += "<td>" + data[i].downTime + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         //                                $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
                         $(tableStr).appendTo($("#rjxxcx-result tbody"));
@@ -179,7 +179,7 @@ function summaryScroll10PullUp() {
                         tableStr += "<td>" + data[i].deptName + "</td>";
                         tableStr += "<td>" + data[i].name + "</td>";
                         tableStr += "<td>" + data[i].downTime + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         //                                $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
                         $(tableStr).appendTo($("#rjxxcx-result tbody"));
@@ -1674,7 +1674,7 @@ function getSwxxcxData() {
                         tableStr += "<td>" + data[i].swpName + "</td>";
                         tableStr += "<td>" + data[i].pctime + "</td>";
                         tableStr += "<td>" + data[i].levelName + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#swxxcx-result tbody"));
                     }
@@ -1805,7 +1805,7 @@ function summaryScroll11PullUp() {
                         tableStr += "<td>" + data[i].swpName + "</td>";
                         tableStr += "<td>" + data[i].pctime + "</td>";
                         tableStr += "<td>" + data[i].levelName + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#swxxcx-result tbody"));
                     }
@@ -1872,7 +1872,7 @@ function getYhfltjcxData() {
                         tableStr += "<td>" + data[i].yhA + "</td>";
                         tableStr += "<td>" + data[i].yhB + "</td>";
                         tableStr += "<td>" + data[i].yhC + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#yhfltjcx-result tbody"));
                     }
@@ -2005,7 +2005,7 @@ function summaryScroll12PullUp() {
                         tableStr += "<td>" + data[i].yhA + "</td>";
                         tableStr += "<td>" + data[i].yhB + "</td>";
                         tableStr += "<td>" + data[i].yhC + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#yhfltjcx-result tbody"));
                     }
@@ -2071,7 +2071,7 @@ function getYhxxzhcxData() {
                         tableStr += "<td>" + data[i].levelName + "</td>";
                         tableStr += "<td>" + data[i].typeName + "</td>";
                         tableStr += "<td>" + data[i].status + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#yhxxzhcx-result tbody"));
                     }
@@ -2204,7 +2204,7 @@ function summaryScroll13PullUp() {
                         tableStr += "<td>" + data[i].levelName + "</td>";
                         tableStr += "<td>" + data[i].typeName + "</td>";
                         tableStr += "<td>" + data[i].status + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#yhxxzhcx-result tbody"));
                     }
@@ -2272,7 +2272,7 @@ function getGsxxData() {
                         tableStr += "<td>" + data[i].name + "</td>";
                         tableStr += "<td>" + data[i].level + "</td>";
                         tableStr += "<td>" + data[i].happenDate + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#gsxx-result tbody"));
                     }
@@ -2403,7 +2403,7 @@ function summaryScroll4PullUp() {
                         tableStr += "<td>" + data[i].name + "</td>";
                         tableStr += "<td>" + data[i].level + "</td>";
                         tableStr += "<td>" + data[i].happenDate + "</td>";
-                        tableStr + "</tr>";
+                        tableStr += "</tr>";
 
                         $(tableStr).appendTo($("#gsxx-result tbody"));
                     }
