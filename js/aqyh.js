@@ -304,6 +304,9 @@ function getFirstRjInfo(listView, typeId) {
             jsonpCallback: "rjInfo",
             success: function (data) {
                 if (data != null && data.length > 0) {
+
+                    listView.empty();
+
                     for (var i = 0; i < data.length; i++) {
                         var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
                         listView.append(list);
@@ -377,7 +380,7 @@ function yhPullDownAction() {
 //三违下拉事件, 取得最新的数据
 function swPullDownAction() {
     var listView = $("#swListview");
-    listView.empty();
+//    listView.empty();
 
     getFirstSwInfo(listView, swTypeId);
 }
@@ -385,7 +388,7 @@ function swPullDownAction() {
 //入井记录下拉事件, 取得最新的数据
 function rjPullDownAction() {
     var listView = $("#rjListview");
-    listView.empty();
+//    listView.empty();
 
     getFirstRjInfo(listView, rjTypeId);
 }
