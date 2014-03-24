@@ -155,13 +155,13 @@ function rydwScroll1PullUp() {
                     for (var i = 0; i < data.length; i++) {
                         var tableStr = "<tr>";
                         tableStr += "<td>" + data[i].peopleName + "</td>";
-                        tableStr += "<td>" + data[i].rankName + "</td>";
-                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        /*         tableStr += "<td>" + data[i].rankName + "</td>";
+                         tableStr += "<td>" + data[i].deptName + "</td>";
                         tableStr += "<td>" + data[i].deptFullName + "</td>";
-                        tableStr += "<td>" + data[i].workTypeName + "</td>";
+                         tableStr += "<td>" + data[i].workTypeName + "</td>";*/
                         tableStr += "<td>" + data[i].positionDesc + "</td>";
-                        tableStr += "<td>" + data[i].firstReportTime + "</td>";
-                        tableStr += "<td>" + data[i].lastReportTime + "</td>";
+                        /*         tableStr += "<td>" + data[i].firstReportTime + "</td>";
+                         tableStr += "<td>" + data[i].lastReportTime + "</td>";*/
                         tableStr += "<td>" + data[i].inMineTime + "</td>";
                         tableStr += "</tr>";
 
