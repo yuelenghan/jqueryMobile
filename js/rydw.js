@@ -14,7 +14,7 @@ function getInMinePeople() {
 //    alert("date = " + date);
 
         if (date == undefined || date == null || date == "") {
-            alert("请输入日期！")
+            alert("请输入日期！");
             return;
         }
 

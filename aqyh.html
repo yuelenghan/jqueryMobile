@@ -17,9 +17,9 @@
 
     <script type="text/javascript">
         initAqyh();
-        document.addEventListener('touchmove', function (e) {
-            e.preventDefault();
-        }, false);
+        /* document.addEventListener('touchmove', function (e) {
+         e.preventDefault();
+         }, false);*/
     </script>
 </head>
 <body>
@@ -312,9 +312,9 @@
         <h1 style="font-size: large">三违详细信息</h1>
     </div>
 
-    <div data-role="content">
-        <table id="swDetailTable" style="width: 100%">
-            <tr>
+    <div data-role="content" style="overflow: auto">
+        <table id="swDetailTable" style="width: 100%;">
+        <tr>
                 <td>
                     三违编号
                 </td>

@@ -6,7 +6,7 @@ var serverPath = "http://192.168.1.105:8080/DataService/";
 var pageSize = 15, pageNo = 1;
 var summaryScroll1, summaryScroll2, summaryScroll3, summaryScroll4, summaryScroll5,
     summaryScroll6, summaryScroll7, summaryScroll8, summaryScroll9, summaryScroll10,
-    summaryScroll11, summaryScroll12, summaryScroll13;
+    summaryScroll11, summaryScroll12, summaryScroll13, summaryScroll81;
 var loading = false;
 
 // 从服务端得到入井信息统计的数据
@@ -16,7 +16,7 @@ function getRjxxcxData() {
 
         var startDate = $("#startDate-10").val();
         var endDate = $("#endDate-10").val();
-        var name = $("#name-10").val();
+        var dept = $("#dept-10").val();
 
         if (startDate == undefined || startDate == null || startDate == "") {
             alert("请输入开始日期!");
@@ -27,16 +27,15 @@ function getRjxxcxData() {
             return;
         }
 
-        if (name == undefined || name == null || name == "") {
-            alert("请输入姓名!");
-            return;
+        if (dept == undefined || dept == null || dept == "") {
+            dept = "null";
         }
 
         loading = true;
 
         // 提交到服务端
         $.ajax({
-            url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
+            url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "rjxxSummary",
@@ -68,7 +67,8 @@ function getRjxxcxData() {
 
 
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -146,7 +146,7 @@ function summaryScroll10PullUp() {
 
         var startDate = $("#startDate-10").val();
         var endDate = $("#endDate-10").val();
-        var name = $("#name-10").val();
+        var dept = $("#dept-10").val();
 
         if (startDate == undefined || startDate == null || startDate == "") {
             alert("请输入开始日期!");
@@ -157,9 +157,8 @@ function summaryScroll10PullUp() {
             return;
         }
 
-        if (name == undefined || name == null || name == "") {
-            alert("请输入姓名!");
-            return;
+        if (dept == undefined || dept == null || dept == "") {
+            dept = "null";
         }
 
         var start = (pageNo - 1) * 15;
@@ -168,7 +167,7 @@ function summaryScroll10PullUp() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "rjxxSummary",
@@ -189,7 +188,8 @@ function summaryScroll10PullUp() {
                     $("#rjxxcx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll10.refresh();
@@ -230,7 +230,6 @@ function getDbjhbData() {
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
                     $.mobile.changePage("#dbjhb2");
-
                     $("#dbjhb-result tbody").html("");
 
                     for (var i = 0; i < data.length; i++) {
@@ -257,7 +256,8 @@ function getDbjhbData() {
                     loadSummaryScroll1();
 
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -373,7 +373,8 @@ function summaryScroll1PullUp() {
                     $("#dbjhb-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll1.refresh();
@@ -426,7 +427,8 @@ function getGpxxData() {
 
                     loadSummaryScroll5();
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -530,7 +532,8 @@ function summaryScroll5PullUp() {
                     $("#gpxx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll5.refresh();
@@ -601,7 +604,8 @@ function getFswxxData() {
                     loadSummaryScroll2();
 
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -720,7 +724,8 @@ function summaryScroll2PullUp() {
                     $("#fswxx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据!")
+//                    alert("没有新数据!")
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll2.refresh();
@@ -736,115 +741,145 @@ function summaryScroll2PullUp() {
 
 }
 
-function getZbdbldData() {
-    if (loading == false) {
-        pageNo = 1;
+function getZbdbldData(flag) {
+    /*var date = $("#date-3").val();
+     if (date == undefined || date == null || date == "") {
+     alert("请输入日期！");
+     return;
+     }*/
 
-        var date = $("#date-3").val();
-        if (date == undefined || date == null || date == "") {
-            alert("请输入日期！");
-            return;
-        }
+//alert(flag.id);
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
 
-        loading = true;
+    if (flag.id == "jt") {
+    }
 
-        $.ajax({
-            url: serverPath + "summary/zbdbld/date/" + date + "/start/0/limit/" + pageSize,
-            dataType: "jsonp",
-            type: "post",
-            jsonpCallback: "zbdbldSummary",
-            success: function (data) {
-                if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#zbdbld2");
-                    $("#zbdbld-result tbody").html("");
-                    for (var i = 0; i < data.length; i++) {
-                        var tableStr = "<tr>";
-                        tableStr += "<td>" + data[i].deptName + "</td>";
-                        tableStr += "<td>" + data[i].detail + "</td>";
-                        tableStr += "<td>" + data[i].zb + "</td>";
-                        tableStr += "<td>" + data[i].zhb + "</td>";
-                        tableStr += "<td>" + data[i].yb + "</td>";
-                        tableStr += "</tr>";
+    if (flag.id == "mt") {
+        day = date.getDate() + 1;
+    }
 
-                        $(tableStr).appendTo($("#zbdbld-result tbody"));
-                    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
+    }
 
-                    // 刷新table, 否则隐藏coloumn功能不可用
-                    $("#zbdbld-result").table("refresh");
+//          alert(year + "," +month + "," + day);
 
-                    // 销毁下拉刷新插件
-                    if (summaryScroll3) {
-                        summaryScroll3.destroy();
-                        summaryScroll3 = null;
-                    }
+    var curDate = year + "-" + month + "-" + day;
 
-                    loadSummaryScroll3();
-                } else {
-                    alert("没有数据!")
+    $.ajax({
+        url: serverPath + "summary/zbdbld/date/" + curDate,
+        dataType: "jsonp",
+        type: "post",
+        jsonpCallback: "zbdbldSummary",
+        success: function (data) {
+            if (data != undefined && data != null && data.length > 0) {
+                $.mobile.changePage("#zbdbld2");
+
+                $("#zbdbld-result tbody").html("");
+
+                for (var i = 0; i < data.length; i++) {
+//                    alert(data.length);
+
+                    var tableStr = "<tr>";
+                    tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
+                    tableStr += "<td colspan='2'>值班</td>";
+                    tableStr += "<td>" + data[i].detail + "</td></tr>";
+
+                    tableStr += "<tr>";
+                    tableStr += "<td rowspan='3'>带班</td>";
+                    tableStr += "<td>夜班</td>";
+                    tableStr += "<td>" + data[i].yb + "</td></tr>";
+
+                    tableStr += "<tr>";
+                    tableStr += "<td>早班</td>";
+                    tableStr += "<td>" + data[i].zb + "</td></tr>";
+
+                    tableStr += "<tr>";
+                    tableStr += "<td>中班</td>";
+                    tableStr += "<td>" + data[i].zhb + "</td></tr>";
+
+                    $(tableStr).appendTo($("#zbdbld-result tbody"));
                 }
 
-                loading = false;
-            },
-            error: function () {
-                alert("error");
-                loading = false;
+                // 刷新table, 否则隐藏coloumn功能不可用
+                $("#zbdbld-result").table("refresh");
+
+                // 销毁下拉刷新插件
+                if (summaryScroll3) {
+                    summaryScroll3.destroy();
+                    summaryScroll3 = null;
+                }
+                loadSummaryScroll3();
+            } else {
+//                alert("没有数据!")
+                $.mobile.changePage("#alert-dialog");
             }
-        });
-    }
+
+        },
+        error: function () {
+            alert("error");
+        }
+    });
 
 }
 
 function loadSummaryScroll3() {
-    var pullDownEl = document.getElementById('summaryPullDown3');
-    var pullDownOffset = pullDownEl.offsetHeight;
+    /*   var pullDownEl = document.getElementById('summaryPullDown3');
+     var pullDownOffset = pullDownEl.offsetHeight;
     var pullUpEl = document.getElementById('summaryPullUp3');
-    var pullUpOffset = pullUpEl.offsetHeight;
+     var pullUpOffset = pullUpEl.offsetHeight;*/
 //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-    summaryScroll3 = new iScroll('summaryWrapper3', {
-        useTransition: true,
-        topOffset: pullDownOffset,
-        onRefresh: function () {
-            if (pullDownEl.className.match('loading')) {
-                pullDownEl.className = '';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-            } else if (pullUpEl.className.match('loading')) {
-                pullUpEl.className = '';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-            }
-        },
-        onScrollMove: function () {
-//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
-            if (this.y > 5 && !pullDownEl.className.match('flip')) {
-                pullDownEl.className = 'flip';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
-                this.minScrollY = 0;
-            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-                pullDownEl.className = '';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-                this.minScrollY = -pullDownOffset;
-            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-                pullUpEl.className = 'flip';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
-                this.maxScrollY = this.maxScrollY;
-            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-                pullUpEl.className = '';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-                this.maxScrollY = pullUpOffset;
-            }
-        },
-        onScrollEnd: function () {
-            if (pullDownEl.className.match('flip')) {
-                pullDownEl.className = 'loading';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
-                getZbdbldData();	// Execute custom function (ajax call?)
-            } else if (pullUpEl.className.match('flip')) {
-                pullUpEl.className = 'loading';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-                summaryScroll3PullUp();	// Execute custom function (ajax call?)
-            }
-        }
-    });
+    /*summaryScroll3 = new iScroll('summaryWrapper3', {
+     useTransition: true,
+     topOffset: pullDownOffset,
+     onRefresh: function () {
+     if (pullDownEl.className.match('loading')) {
+     pullDownEl.className = '';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+     } else if (pullUpEl.className.match('loading')) {
+     pullUpEl.className = '';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+     }
+     },
+     onScrollMove: function () {
+     //            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+     if (this.y > 5 && !pullDownEl.className.match('flip')) {
+     pullDownEl.className = 'flip';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+     this.minScrollY = 0;
+     } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+     pullDownEl.className = '';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+     this.minScrollY = -pullDownOffset;
+     } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+     pullUpEl.className = 'flip';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+     this.maxScrollY = this.maxScrollY;
+     } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+     pullUpEl.className = '';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+     this.maxScrollY = pullUpOffset;
+     }
+     },
+     onScrollEnd: function () {
+     if (pullDownEl.className.match('flip')) {
+     pullDownEl.className = 'loading';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+     //test();	// Execute custom function (ajax call?)
+     } else if (pullUpEl.className.match('flip')) {
+     pullUpEl.className = 'loading';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+     // test();	// Execute custom function (ajax call?)
+     }
+     }
+     });*/
 
 
     setTimeout(function () {
@@ -890,7 +925,8 @@ function summaryScroll3PullUp() {
                     $("#zbdbld-result").table("refresh");
 
                 } else {
-                    alert("没有新数据!")
+//                    alert("没有新数据!")
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll3.refresh();
@@ -918,7 +954,7 @@ function getYdyhhzData() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/ydyhhz/date/" + date + "/start/0/limit/" + pageSize,
+            url: serverPath + "summary/ydyhhz/date/" + date,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "ydyhhzSummary",
@@ -953,7 +989,8 @@ function getYdyhhzData() {
 
                     loadSummaryScroll9();
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -1067,7 +1104,8 @@ function summaryScroll9PullUp() {
                     $("#ydyhhz-result").table("refresh");
 
                 } else {
-                    alert("没有新数据!")
+//                    alert("没有新数据!")
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll9.refresh();
@@ -1139,7 +1177,8 @@ function getLdxjdbData() {
 
                     loadSummaryScroll7();
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -1262,7 +1301,8 @@ function summaryScroll7PullUp() {
                     $("#ldxjdb-result").table("refresh");
 
                 } else {
-                    alert("没有新数据!")
+//                    alert("没有新数据!")
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll7.refresh();
@@ -1281,16 +1321,30 @@ function getKzdkyhData() {
     if (loading == false) {
         pageNo = 1;
 
-        var date = $("#date-6").val();
-        if (date == undefined || date == null || date == "") {
-            alert("请输入日期！");
+        var startDate = $("#startDate-6").val();
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期！");
             return;
         }
+
+        var endDate = $("#endDate-6").val();
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入截止日期！");
+            return;
+        }
+
+        var mine = $("#mine-6").val();
+        if (mine == undefined || mine == null || mine == "") {
+            alert("请选择煤矿！");
+            return;
+        }
+
+//        alert("date = " + date + " mine = " + mine);
 
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/kzdkyh/date/" + date + "/start/0/limit/" + pageSize,
+            url: serverPath + "summary/kzdkyh/startDate/" + startDate + "/endDate/" + endDate + "/mine/" + mine + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "kzdkyhSummary",
@@ -1326,7 +1380,8 @@ function getKzdkyhData() {
 
                     loadSummaryScroll6();
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -1409,6 +1464,11 @@ function summaryScroll6PullUp() {
             return;
         }
 
+        var mine = $("#mine-6").val();
+        if (mine == undefined || mine == null || mine == "") {
+            alert("请选择煤矿！");
+            return;
+        }
 
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
@@ -1416,7 +1476,7 @@ function summaryScroll6PullUp() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/kzdkyh/date/" + date + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/kzdkyh/date/" + date + "/mine/" + mine + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "kzdkyhSummary",
@@ -1442,7 +1502,8 @@ function summaryScroll6PullUp() {
                     $("#kzdkyh-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll6.refresh();
@@ -1467,44 +1528,78 @@ function getYdswgphzData() {
             return;
         }
 
+        var type = $("#type-8").val();
+
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/ydswgphz/date/" + date + "/start/0/limit/" + pageSize,
+            url: serverPath + "summary/ydswgphz/date/" + date + "/type/" + type,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "ydswgphzSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#ydswgphz2");
-                    $("#ydswgphz-result tbody").html("");
-                    for (var i = 0; i < data.length; i++) {
-                        var tableStr = "<tr>";
-                        tableStr += "<td>" + data[i].deptName + "</td>";
-                        tableStr += "<td>" + data[i].swAll + "</td>";
-                        tableStr += "<td>" + data[i].swYz + "</td>";
-                        tableStr += "<td>" + data[i].swJyz + "</td>";
-                        tableStr += "<td>" + data[i].swYb + "</td>";
-                        tableStr += "<td>" + data[i].gpAll + "</td>";
-                        tableStr += "<td>" + data[i].gpWz + "</td>";
-                        tableStr += "<td>" + data[i].gpYz + "</td>";
-                        tableStr += "</tr>";
+                    if (type == "sw") {
+                        $.mobile.changePage("#ydswgphz2");
+                        $("#ydswgphz-result tbody").html("");
+                        for (var i = 0; i < data.length; i++) {
+                            var tableStr = "<tr>";
+                            tableStr += "<td>" + data[i].deptName + "</td>";
+                            tableStr += "<td>" + data[i].swAll + "</td>";
+                            tableStr += "<td>" + data[i].swYz + "</td>";
+                            tableStr += "<td>" + data[i].swJyz + "</td>";
+                            tableStr += "<td>" + data[i].swYb + "</td>";
+                            /*       tableStr += "<td>" + data[i].gpAll + "</td>";
+                             tableStr += "<td>" + data[i].gpWz + "</td>";
+                             tableStr += "<td>" + data[i].gpYz + "</td>";*/
+                            tableStr += "</tr>";
 
-                        $(tableStr).appendTo($("#ydswgphz-result tbody"));
+                            $(tableStr).appendTo($("#ydswgphz-result tbody"));
+                        }
+
+                        // 刷新table, 否则隐藏coloumn功能不可用
+                        $("#ydswgphz-result").table("refresh");
+
+                        // 销毁下拉刷新插件
+                        if (summaryScroll8) {
+                            summaryScroll8.destroy();
+                            summaryScroll8 = null;
+                        }
+
+                        loadSummaryScroll8();
                     }
+                    if (type == "gp") {
+                        $.mobile.changePage("#ydswgphz3");
+                        $("#ydswgphz2-result tbody").html("");
+                        for (var i = 0; i < data.length; i++) {
+                            var tableStr = "<tr>";
+                            tableStr += "<td>" + data[i].deptName + "</td>";
+                            /*   tableStr += "<td>" + data[i].swAll + "</td>";
+                             tableStr += "<td>" + data[i].swYz + "</td>";
+                             tableStr += "<td>" + data[i].swJyz + "</td>";
+                             tableStr += "<td>" + data[i].swYb + "</td>";*/
+                            tableStr += "<td>" + data[i].gpAll + "</td>";
+                            tableStr += "<td>" + data[i].gpWz + "</td>";
+                            tableStr += "<td>" + data[i].gpYz + "</td>";
+                            tableStr += "</tr>";
 
-                    // 刷新table, 否则隐藏coloumn功能不可用
-                    $("#ydswgphz-result").table("refresh");
+                            $(tableStr).appendTo($("#ydswgphz2-result tbody"));
+                        }
 
-                    // 销毁下拉刷新插件
-                    if (summaryScroll8) {
-                        summaryScroll8.destroy();
-                        summaryScroll8 = null;
+                        // 刷新table, 否则隐藏coloumn功能不可用
+                        $("#ydswgphz2-result").table("refresh");
+
+                        // 销毁下拉刷新插件
+                        if (summaryScroll81) {
+                            summaryScroll81.destroy();
+                            summaryScroll81 = null;
+                        }
+
+                        loadSummaryScroll81();
                     }
-
-                    loadSummaryScroll8();
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -1519,60 +1614,118 @@ function getYdswgphzData() {
 }
 
 function loadSummaryScroll8() {
-    var pullDownEl = document.getElementById('summaryPullDown8');
-    var pullDownOffset = pullDownEl.offsetHeight;
+    /* var pullDownEl = document.getElementById('summaryPullDown8');
+     var pullDownOffset = pullDownEl.offsetHeight;
     var pullUpEl = document.getElementById('summaryPullUp8');
     var pullUpOffset = pullUpEl.offsetHeight;
 //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-    summaryScroll8 = new iScroll('summaryWrapper8', {
-        useTransition: true,
-        topOffset: pullDownOffset,
-        onRefresh: function () {
-            if (pullDownEl.className.match('loading')) {
-                pullDownEl.className = '';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-            } else if (pullUpEl.className.match('loading')) {
-                pullUpEl.className = '';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-            }
-        },
-        onScrollMove: function () {
-//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
-            if (this.y > 5 && !pullDownEl.className.match('flip')) {
-                pullDownEl.className = 'flip';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
-                this.minScrollY = 0;
-            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-                pullDownEl.className = '';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-                this.minScrollY = -pullDownOffset;
-            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-                pullUpEl.className = 'flip';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
-                this.maxScrollY = this.maxScrollY;
-            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-                pullUpEl.className = '';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-                this.maxScrollY = pullUpOffset;
-            }
-        },
-        onScrollEnd: function () {
-            if (pullDownEl.className.match('flip')) {
-                pullDownEl.className = 'loading';
-                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
-                getYdswgphzData();	// Execute custom function (ajax call?)
-            } else if (pullUpEl.className.match('flip')) {
-                pullUpEl.className = 'loading';
-                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-                summaryScroll8PullUp();	// Execute custom function (ajax call?)
-            }
-        }
-    });
+     summaryScroll8 = new iScroll('summaryWrapper8', {
+     useTransition: true,
+     topOffset: pullDownOffset,
+     onRefresh: function () {
+     if (pullDownEl.className.match('loading')) {
+     pullDownEl.className = '';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+     } else if (pullUpEl.className.match('loading')) {
+     pullUpEl.className = '';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+     }
+     },
+     onScrollMove: function () {
+     //            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+     if (this.y > 5 && !pullDownEl.className.match('flip')) {
+     pullDownEl.className = 'flip';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+     this.minScrollY = 0;
+     } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+     pullDownEl.className = '';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+     this.minScrollY = -pullDownOffset;
+     } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+     pullUpEl.className = 'flip';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+     this.maxScrollY = this.maxScrollY;
+     } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+     pullUpEl.className = '';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+     this.maxScrollY = pullUpOffset;
+     }
+     },
+     onScrollEnd: function () {
+     if (pullDownEl.className.match('flip')) {
+     pullDownEl.className = 'loading';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+     getYdswgphzData();	// Execute custom function (ajax call?)
+     } else if (pullUpEl.className.match('flip')) {
+     pullUpEl.className = 'loading';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+     summaryScroll8PullUp();	// Execute custom function (ajax call?)
+     }
+     }
+     });*/
 
 
     setTimeout(function () {
         document.getElementById('summaryWrapper8').style.left = '0';
+    }, 800);
+}
+
+function loadSummaryScroll81() {
+    /*   var pullDownEl = document.getElementById('summaryPullDown81');
+     var pullDownOffset = pullDownEl.offsetHeight;
+     var pullUpEl = document.getElementById('summaryPullUp81');
+     var pullUpOffset = pullUpEl.offsetHeight;*/
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    /* summaryScroll8 = new iScroll('summaryWrapper8', {
+     useTransition: true,
+     topOffset: pullDownOffset,
+     onRefresh: function () {
+     if (pullDownEl.className.match('loading')) {
+     pullDownEl.className = '';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+     } else if (pullUpEl.className.match('loading')) {
+     pullUpEl.className = '';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+     }
+     },
+     onScrollMove: function () {
+     //            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+     if (this.y > 5 && !pullDownEl.className.match('flip')) {
+     pullDownEl.className = 'flip';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+     this.minScrollY = 0;
+     } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+     pullDownEl.className = '';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+     this.minScrollY = -pullDownOffset;
+     } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+     pullUpEl.className = 'flip';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+     this.maxScrollY = this.maxScrollY;
+     } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+     pullUpEl.className = '';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+     this.maxScrollY = pullUpOffset;
+     }
+     },
+     onScrollEnd: function () {
+     if (pullDownEl.className.match('flip')) {
+     pullDownEl.className = 'loading';
+     pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+     getYdswgphzData();	// Execute custom function (ajax call?)
+     } else if (pullUpEl.className.match('flip')) {
+     pullUpEl.className = 'loading';
+     pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+     summaryScroll8PullUp();	// Execute custom function (ajax call?)
+     }
+     }
+     });*/
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper81').style.left = '0';
     }, 800);
 }
 
@@ -1618,7 +1771,8 @@ function summaryScroll8PullUp() {
                     $("#ydswgphz-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll8.refresh();
@@ -1639,7 +1793,7 @@ function getSwxxcxData() {
 
         var startDate = $("#startDate-11").val();
         var endDate = $("#endDate-11").val();
-        var name = $("#name-11").val();
+        var dept = $("#dept-11").val();
 
         if (startDate == undefined || startDate == null || startDate == "") {
             alert("请输入开始日期!");
@@ -1650,16 +1804,15 @@ function getSwxxcxData() {
             return;
         }
 
-        if (name == undefined || name == null || name == "") {
-            alert("请输入姓名!");
-            return;
+        if (dept == undefined || dept == null || dept == "") {
+            dept = "null";
         }
 
         loading = true;
 
         // 提交到服务端
         $.ajax({
-            url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
+            url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "swxxSummary",
@@ -1691,7 +1844,8 @@ function getSwxxcxData() {
                     loadSummaryScroll11();
 
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -1769,7 +1923,7 @@ function summaryScroll11PullUp() {
 
         var startDate = $("#startDate-11").val();
         var endDate = $("#endDate-11").val();
-        var name = $("#name-11").val();
+        var dept = $("#dept-11").val();
 
         if (startDate == undefined || startDate == null || startDate == "") {
             alert("请输入开始日期!");
@@ -1780,9 +1934,8 @@ function summaryScroll11PullUp() {
             return;
         }
 
-        if (name == undefined || name == null || name == "") {
-            alert("请输入姓名!");
-            return;
+        if (dept == undefined || dept == null || dept == "") {
+            dept = "null";
         }
 
 
@@ -1792,7 +1945,7 @@ function summaryScroll11PullUp() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "swxxSummary",
@@ -1814,7 +1967,8 @@ function summaryScroll11PullUp() {
                     $("#swxxcx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll11.refresh();
@@ -1888,7 +2042,8 @@ function getYhfltjcxData() {
 
                     loadSummaryScroll12();
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
                 loading = false;
 
@@ -2014,7 +2169,8 @@ function summaryScroll12PullUp() {
                     $("#yhfltjcx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll12.refresh();
@@ -2036,7 +2192,6 @@ function getYhxxzhcxData() {
         var startDate = $("#startDate-13").val();
         var endDate = $("#endDate-13").val();
         var unit = $("#unit-13").val();
-        var banci = $("#banci-13").val();
 
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", banci = " + banci);
         if (startDate == undefined || startDate == null || startDate == "") {
@@ -2055,7 +2210,7 @@ function getYhxxzhcxData() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci + "/start/0/limit/" + pageSize,
+            url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "yhxxzhcxSummary",
@@ -2088,7 +2243,8 @@ function getYhxxzhcxData() {
                     loadSummaryScroll13();
 
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -2167,7 +2323,6 @@ function summaryScroll13PullUp() {
         var startDate = $("#startDate-13").val();
         var endDate = $("#endDate-13").val();
         var unit = $("#unit-13").val();
-        var banci = $("#banci-13").val();
 
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", banci = " + banci);
         if (startDate == undefined || startDate == null || startDate == "") {
@@ -2190,7 +2345,7 @@ function summaryScroll13PullUp() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/banci/" + banci + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "yhxxzhcxSummary",
@@ -2213,7 +2368,8 @@ function summaryScroll13PullUp() {
                     $("#yhxxzhcx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据！");
+//                    alert("没有新数据！");
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll13.refresh();
@@ -2289,7 +2445,8 @@ function getGsxxData() {
                     loadSummaryScroll4();
 
                 } else {
-                    alert("没有数据!")
+//                    alert("没有数据!")
+                    $.mobile.changePage("#alert-dialog");
                 }
 
                 loading = false;
@@ -2412,7 +2569,8 @@ function summaryScroll4PullUp() {
                     $("#gsxx-result").table("refresh");
 
                 } else {
-                    alert("没有新数据!")
+//                    alert("没有新数据!")
+                    $.mobile.changePage("#alert2-dialog");
                 }
 
                 summaryScroll4.refresh();
@@ -2445,7 +2603,8 @@ function gotoGsxx() {
                 }
                 $(selectStr).appendTo(select);
             } else {
-                alert("没有数据!")
+//                alert("没有数据!")
+                $.mobile.changePage("#alert-dialog");
             }
 
         },

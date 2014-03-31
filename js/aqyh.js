@@ -67,7 +67,7 @@ function getRjBaseInfo() {
     listView.empty();
     var list = "<li><a href='#' onclick='gotoRj(this)' id='1'>正常</a></li>";
     listView.append(list);
-    list = "<li><a href='#' onclick='gotoRj(this)' id='2'>代班</a></li>";
+    list = "<li><a href='#' onclick='gotoRj(this)' id='2'>带班</a></li>";
     listView.append(list);
 
     // 延迟刷新
@@ -142,7 +142,7 @@ function getFirstYhInfo(listView, typeId) {
                     listView.empty();
 
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                        var list = "<li><a href='#' onclick='gotoYhDetail(this)'  id='" + data[i].yhputinid + "'>级别:" + data[i].levelname + " 单位:" + data[i].maindeptname + data[i].zrdeptname + " 时间:" + data[i].pctime + "</a></li>";
                         listView.append(list);
                     }
 
@@ -221,7 +221,7 @@ function getFirstSwInfo(listView, typeId) {
                     listView.empty();
 
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
+                        var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>级别:" + data[i].levelname + " 单位:" + data[i].maindeptname + data[i].zrkqname + " 时间:" + data[i].pctime + "</a></li>";
                         listView.append(list);
                     }
 
@@ -308,7 +308,7 @@ function getFirstRjInfo(listView, typeId) {
                     listView.empty();
 
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
+                        var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>姓名:" + data[i].kqpname + " 时间:" + data[i].kqtime + " 单位:" + data[i].deptDesc + "</a></li>";
                         listView.append(list);
                     }
 
@@ -356,7 +356,7 @@ function gotoRjDetail(item) {
                 $("#kqtypeDesc").html(data.kqtypeDesc);
                 $("#datafromDesc").html(data.datafromDesc);
                 $("#kqtime").html(data.kqtime);
-                $("#kqdept").html(data.kqdept);
+                $("#kqdept").html(data.deptDesc);
                 $("#kqbenci").html(data.kqbenci);
                 $("#downtime").html(data.downtime);
                 $("#uptime").html(data.uptime);
@@ -411,7 +411,7 @@ function yhPullUpAction() {
             success: function (data) {
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>id:" + data[i].yhputinid + " 班次:" + data[i].banci + " 排查时间:" + data[i].intime + "</a></li>";
+                        var list = "<li><a href='#' onclick='gotoYhDetail(this)' id='" + data[i].yhputinid + "'>级别:" + data[i].levelname + " 单位:" + data[i].maindeptname + data[i].zrdeptname + " 时间:" + data[i].pctime + "</a></li>";
                         listView.append(list);
                     }
                 }
@@ -447,7 +447,7 @@ function swPullUpAction() {
             success: function (data) {
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#'>id:" + data[i].swinputid + " 班次:" + data[i].banci + " 录入时间:" + data[i].intime + "</a></li>";
+                        var list = "<li><a href='#' onclick='gotoSwDetail(this)' id='" + data[i].swinputid + "'>级别:" + data[i].levelname + " 单位:" + data[i].maindeptname + data[i].zrkqname + " 时间:" + data[i].pctime + "</a></li>";
                         listView.append(list);
                     }
                 }
@@ -466,7 +466,7 @@ function swPullUpAction() {
 
 }
 
-//入境记录上拉事件, 分页
+//入井记录上拉事件, 分页
 function rjPullUpAction() {
     if (loading == false) {
         loading = true;
@@ -483,7 +483,7 @@ function rjPullUpAction() {
             success: function (data) {
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#'>id:" + data[i].rjid + " 姓名:" + data[i].kqpname + " 班次:" + data[i].kqbenci + " 数据来源:" + data[i].datafromDesc + "</a></li>";
+                        var list = "<li><a href='#' onclick='gotoRjDetail(this)' id='" + data[i].rjid + "'>姓名:" + data[i].kqpname + " 时间:" + data[i].kqtime + " 单位:" + data[i].deptDesc + "</a></li>";
                         listView.append(list);
                     }
                 }
