@@ -749,24 +749,17 @@ function getZbdbldData(flag) {
      }*/
 
 //alert(flag.id);
-    var date;
-    if (flag.id == "jt") {
-        date = new Date();
-    }
-    if (flag.id == "mt") {
-        date = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
-    }
-//    var date = new Date();
+    var date = new Date();
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
     var day = date.getDate();
 
-    /* if (flag.id == "jt") {
-     }
+    if (flag.id == "jt") {
+    }
 
     if (flag.id == "mt") {
         day = date.getDate() + 1;
-     }*/
+    }
 
     if (month < 10) {
         month = "0" + month;
@@ -778,9 +771,6 @@ function getZbdbldData(flag) {
 //          alert(year + "," +month + "," + day);
 
     var curDate = year + "-" + month + "-" + day;
-
-    /*   alert(curDate);
-     return;*/
 
     $.ajax({
         url: serverPath + "summary/zbdbld/date/" + curDate,
@@ -842,7 +832,7 @@ function getZbdbldData(flag) {
 function loadSummaryScroll3() {
     /*   var pullDownEl = document.getElementById('summaryPullDown3');
      var pullDownOffset = pullDownEl.offsetHeight;
-    var pullUpEl = document.getElementById('summaryPullUp3');
+     var pullUpEl = document.getElementById('summaryPullUp3');
      var pullUpOffset = pullUpEl.offsetHeight;*/
 //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
@@ -1626,9 +1616,9 @@ function getYdswgphzData() {
 function loadSummaryScroll8() {
     /* var pullDownEl = document.getElementById('summaryPullDown8');
      var pullDownOffset = pullDownEl.offsetHeight;
-    var pullUpEl = document.getElementById('summaryPullUp8');
-    var pullUpOffset = pullUpEl.offsetHeight;
-//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+     var pullUpEl = document.getElementById('summaryPullUp8');
+     var pullUpOffset = pullUpEl.offsetHeight;
+     //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
      summaryScroll8 = new iScroll('summaryWrapper8', {
      useTransition: true,

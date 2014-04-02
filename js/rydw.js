@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2014/3/21.
  */
-var serverPath = "http://192.168.1.105:8080/DataService/";
+var serverPath = "http://10.1.168.50:8080/DataService/";
 var rydwScroll1;
 var pageSize = 15, pageNo = 1;
 var loading = false;
@@ -34,7 +34,7 @@ function getInMinePeople() {
                         tableStr += "<td>" + data[i].peopleName + "</td>";
                         /*  tableStr += "<td>" + data[i].rankName + "</td>";
                          tableStr += "<td>" + data[i].deptName + "</td>";
-                        tableStr += "<td>" + data[i].deptFullName + "</td>";
+                         tableStr += "<td>" + data[i].deptFullName + "</td>";
                          tableStr += "<td>" + data[i].workTypeName + "</td>";*/
                         tableStr += "<td>" + data[i].positionDesc + "</td>";
                         /*  tableStr += "<td>" + data[i].firstReportTime + "</td>";
@@ -157,7 +157,7 @@ function rydwScroll1PullUp() {
                         tableStr += "<td>" + data[i].peopleName + "</td>";
                         /*         tableStr += "<td>" + data[i].rankName + "</td>";
                          tableStr += "<td>" + data[i].deptName + "</td>";
-                        tableStr += "<td>" + data[i].deptFullName + "</td>";
+                         tableStr += "<td>" + data[i].deptFullName + "</td>";
                          tableStr += "<td>" + data[i].workTypeName + "</td>";*/
                         tableStr += "<td>" + data[i].positionDesc + "</td>";
                         /*         tableStr += "<td>" + data[i].firstReportTime + "</td>";
