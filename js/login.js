@@ -1,9 +1,13 @@
 /**
+ * 登录js
  * Created by Administrator on 2014/4/1.
  */
 
 var serverPath = "http://192.168.1.105:8080/DataService/";
 
+/**
+ * 登录
+ */
 function login() {
     var userName = $("#userName").val();
     var password = $("#password").val();

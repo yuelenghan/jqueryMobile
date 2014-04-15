@@ -68,6 +68,9 @@
            onclick="getSwBasis()">查询</a>
 
         <label for="swBasisSelect">三违依据<span style="color: red">*</span></label>
+        <input type="text" placeholder="可以输入条件对三违依据进行过滤" id="swyjFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterSwyj()">过滤</a>
         <select id="swBasisSelect" onchange="selectBasis(this)"></select>
 
         <label for="swLevelSelect">三违性质<span style="color: red">*</span></label>
@@ -80,19 +83,28 @@
         <select id="swProSelect"></select>
 
         <label for="hazardSelect">危险源<span style="color: red">*</span></label>
+        <input type="text" placeholder="可以输入条件对危险源进行过滤" id="hazardFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterHazard()">过滤</a>
         <select id="hazardSelect"></select>
 
         <label for="swContent">三违描述<span style="color: red">*</span></label>
         <textarea id="swContent"></textarea>
 
-        <label for="zrrSelect">三违人员</label>
-        <select id="zrrSelect"></select>
+        <label for="swry">三违人员<span style="color: red">*</span></label>
+        <input id="querySwry" placeholder="请输入人员姓名进行查询">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="getSwry()">查询</a>
+        <select id="swry"></select>
 
         <label for="pcPersonName">排查人员<span style="color: red">*</span></label>
         <input id="pcPersonName" type="text" readonly="true">
         <input id="pcPersonNumber" type="hidden">
 
         <label for="placeSelect">排查地点<span style="color: red">*</span></label>
+        <input type="text" placeholder="可以输入条件对排查地点进行过滤" id="placeFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterPlace()">过滤</a>
         <select id="placeSelect"></select>
 
         <label for="placeDetail">明细地点</label>

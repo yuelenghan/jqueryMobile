@@ -1,4 +1,5 @@
 /**
+ * 统计查询js
  * Created by lh on 14-2-27.
  */
 
@@ -204,7 +205,9 @@ function summaryScroll10PullUp() {
 
 }
 
-
+/**
+ * 带班计划表
+ */
 function getDbjhbData() {
     if (loading == false) {
         pageNo = 1;
@@ -389,6 +392,9 @@ function summaryScroll1PullUp() {
 
 }
 
+/**
+ * 挂牌信息
+ */
 function getGpxxData() {
     if (loading == false) {
         pageNo = 1;
@@ -548,7 +554,9 @@ function summaryScroll5PullUp() {
 
 }
 
-
+/**
+ * 反三违信息
+ */
 function getFswxxData() {
     if (loading == false) {
         pageNo = 1;
@@ -741,6 +749,10 @@ function summaryScroll2PullUp() {
 
 }
 
+/**
+ * 值班带班领导
+ * @param flag
+ */
 function getZbdbldData(flag) {
     /*var date = $("#date-3").val();
      if (date == undefined || date == null || date == "") {
@@ -754,9 +766,11 @@ function getZbdbldData(flag) {
     var month = date.getMonth() + 1;
     var day = date.getDate();
 
+    // 今天
     if (flag.id == "jt") {
     }
 
+    // 明天
     if (flag.id == "mt") {
         day = date.getDate() + 1;
     }
@@ -941,6 +955,9 @@ function summaryScroll3PullUp() {
 
 }
 
+/**
+ * 月度隐患汇总
+ */
 function getYdyhhzData() {
     if (loading == false) {
         pageNo = 1;
@@ -1120,6 +1137,9 @@ function summaryScroll9PullUp() {
 
 }
 
+/**
+ * 领导下井带班
+ */
 function getLdxjdbData() {
     if (loading == false) {
         pageNo = 1;
@@ -1317,6 +1337,9 @@ function summaryScroll7PullUp() {
 
 }
 
+/**
+ * 各矿隐患查询
+ */
 function getKzdkyhData() {
     if (loading == false) {
         pageNo = 1;
@@ -1518,6 +1541,9 @@ function summaryScroll6PullUp() {
 
 }
 
+/**
+ * 月度三违挂牌汇总
+ */
 function getYdswgphzData() {
     if (loading == false) {
         pageNo = 1;
@@ -1787,6 +1813,9 @@ function summaryScroll8PullUp() {
 
 }
 
+/**
+ * 三违信息查询
+ */
 function getSwxxcxData() {
     if (loading == false) {
         pageNo = 1;
@@ -1983,6 +2012,9 @@ function summaryScroll11PullUp() {
 
 }
 
+/**
+ * 隐患分类统计查询
+ */
 function getYhfltjcxData() {
     if (loading == false) {
         pageNo = 1;
@@ -2185,6 +2217,9 @@ function summaryScroll12PullUp() {
 
 }
 
+/**
+ * 隐患信息综合查询
+ */
 function getYhxxzhcxData() {
     if (loading == false) {
         pageNo = 1;
@@ -2384,6 +2419,9 @@ function summaryScroll13PullUp() {
 
 }
 
+/**
+ * 工伤信息
+ */
 function getGsxxData() {
     if (loading == false) {
         pageNo = 1;

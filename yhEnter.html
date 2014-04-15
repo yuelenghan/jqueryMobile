@@ -55,6 +55,9 @@
            onclick="getYhBasis()">查询</a>
 
         <label for="yhBasisSelect">隐患依据<span style="color: red">*</span></label>
+        <input type="text" placeholder="可以输入条件对隐患依据进行过滤" id="yhyjFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterYhyj()">过滤</a>
         <select id="yhBasisSelect" onchange="selectBasis(this)"></select>
 
         <label for="yhLevelSelect">隐患级别<span style="color: red">*</span></label>
@@ -64,6 +67,9 @@
         <select id="yhTypeSelect"></select>
 
         <label for="hazardSelect">危险源<span style="color: red">*</span></label>
+        <input type="text" placeholder="可以输入条件对危险源进行过滤" id="hazardFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterHazard()">过滤</a>
         <select id="hazardSelect"></select>
 
         <label for="yhContent">隐患描述<span style="color: red">*</span></label>
@@ -76,6 +82,9 @@
         <select id="zrrSelect"></select>
 
         <label for="placeSelect">排查地点<span style="color: red">*</span></label>
+        <input type="text" placeholder="可以输入条件对排查地点进行过滤" id="placeFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterPlace()">过滤</a>
         <select id="placeSelect"></select>
 
         <label for="placeDetail">明细地点</label>
