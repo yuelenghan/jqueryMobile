@@ -49,16 +49,21 @@
     </div>
 
     <div data-role="content">
-        <label for="deptNumber">部门编码</label>
-        <input type="text" id="deptNumber" placeholder="请输入部门编码进行查询">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="getYhBasis()">查询</a>
+        <!--  <label for="deptNumber">部门编码</label>
+          <input type="text" id="deptNumber" placeholder="请输入部门编码进行查询">
+          <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+             onclick="getYhBasis()">查询</a>-->
+        <div id="deptSelectDiv" style="display: none">
+            <label for="deptSelect">部门列表</label>
+            <select id="deptSelect" onchange="selectDept(this.value)"></select>
+        </div>
 
-        <label for="yhBasisSelect">隐患依据<span style="color: red">*</span></label>
-        <input type="text" placeholder="可以输入条件对隐患依据进行过滤" id="yhyjFilter">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="filterYhyj()">过滤</a>
-        <select id="yhBasisSelect" onchange="selectBasis(this)"></select>
+
+        <label for="yhBasisText">隐患依据<span style="color: red">*</span></label>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" href="#yhyj-filter" data-transition="flip">获取隐患依据</a>
+        <!--  <select id="yhBasisSelect" onchange="selectBasis(this)"></select>-->
+        <input type="text" id="yhBasisText" readonly="true">
+        <input type="hidden" id="yhBasisValue">
 
         <label for="yhLevelSelect">隐患级别<span style="color: red">*</span></label>
         <select id="yhLevelSelect"></select>
@@ -66,25 +71,32 @@
         <label for="yhTypeSelect">隐患类型<span style="color: red">*</span></label>
         <select id="yhTypeSelect"></select>
 
-        <label for="hazardSelect">危险源<span style="color: red">*</span></label>
-        <input type="text" placeholder="可以输入条件对危险源进行过滤" id="hazardFilter">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="filterHazard()">过滤</a>
-        <select id="hazardSelect"></select>
+        <label for="hazardText">危险源<span style="color: red">*</span></label>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" href="#wxy-filter"
+           data-transition="flip">获取危险源</a>
+        <!--   <select id="hazardSelect"></select>-->
+        <input type="text" id="hazardText" readonly="true">
+        <input type="hidden" id="hazardValue">
 
         <label for="yhContent">隐患描述<span style="color: red">*</span></label>
         <textarea id="yhContent"></textarea>
 
         <label for="zrdwSelect">责任单位</label>
+        <input type="text" placeholder="可以输入条件对责任单位进行过滤" id="zrdwFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="zrdwFilter()">过滤责任单位</a>
         <select id="zrdwSelect" onchange="selectZrdw(this)"></select>
 
         <label for="zrrSelect">责任人</label>
+        <input type="text" placeholder="可以输入条件对责任人进行过滤" id="zrrFilter">
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="zrrFilter()">过滤责任人</a>
         <select id="zrrSelect"></select>
 
         <label for="placeSelect">排查地点<span style="color: red">*</span></label>
         <input type="text" placeholder="可以输入条件对排查地点进行过滤" id="placeFilter">
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="filterPlace()">过滤</a>
+           onclick="filterPlace()">过滤地点</a>
         <select id="placeSelect"></select>
 
         <label for="placeDetail">明细地点</label>
@@ -115,7 +127,7 @@
             <option value="0">重大安全隐患</option>
             <option value="1">年度隐患</option>
             <option value="2">月度隐患</option>
-            <option value="3">日常动态检查隐患</option>
+            <option value="3" selected="selected">日常动态检查隐患</option>
             <option value="4">矿专项检查</option>
             <option value="5">地面检查</option>
             <option value="6">职工检查</option>
@@ -153,6 +165,62 @@
 
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
            onclick="submitInfo()">提交</a>
+    </div>
+</div>
+
+<div data-role="page" id="yhyj-filter" data-close-btn="right">
+    <div data-role="header" data-theme="b">
+        <h1>过滤隐患依据</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="yhyjLevel">隐患级别</label>
+        <select id="yhyjLevel"></select>
+
+        <label for="yhyjType">隐患类型</label>
+        <select id="yhyjType"></select>
+
+        <label for="yhyjText">文字描述</label>
+        <input type="text" placeholder="可以输入条件对隐患依据进行过滤" id="yhyjText">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterYhyj()">过滤</a>
+
+        <label for="yhyjList">过滤结果</label>
+        <select id="yhyjList"></select>
+
+        <a class="ui-shadow ui-btn"
+           onclick="returnYhyj()">确定</a>
+    </div>
+</div>
+
+<div data-role="page" id="wxy-filter" data-close-btn="right">
+    <div data-role="header" data-theme="b">
+        <h1>过滤危险源</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="wxyLevel">等级</label>
+        <select id="wxyLevel">
+            <option value="null">--全部--</option>
+            <option value="低风险">低风险</option>
+            <option value="一般风险">一般风险</option>
+            <option value="中等风险">中等风险</option>
+            <option value="重大风险">重大风险</option>
+            <option value="特别重大风险">特别重大风险</option>
+        </select>
+
+        <label for="wxyText">文字描述</label>
+        <input type="text" placeholder="可以输入条件对危险源进行过滤" id="wxyText">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterWxy()">过滤</a>
+
+        <label for="wxyList">过滤结果</label>
+        <select id="wxyList"></select>
+
+        <a class="ui-shadow ui-btn"
+           onclick="returnWxy()">确定</a>
     </div>
 </div>
 </body>
