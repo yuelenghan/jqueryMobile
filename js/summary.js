@@ -32,6 +32,7 @@ function getRjxxcxData() {
             dept = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         // 提交到服务端
@@ -69,13 +70,27 @@ function getRjxxcxData() {
 
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+//                alert("error");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
+                $.mobile.loading("hide");
                 loading = false;
             }
         });
@@ -165,6 +180,7 @@ function summaryScroll10PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -190,15 +206,28 @@ function summaryScroll10PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll10.refresh();
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -223,6 +252,7 @@ function getDbjhbData() {
             name = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -259,16 +289,30 @@ function getDbjhbData() {
                     loadSummaryScroll1();
 
                 } else {
-//                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    alert("没有数据!");
+//                    $.mobile.changePage("#alert-dialog");
+//                    $().toastmessage('showNoticeToast', 'some message here');
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
 
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -351,6 +395,7 @@ function summaryScroll1PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -377,15 +422,30 @@ function summaryScroll1PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll1.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -399,6 +459,7 @@ function getGpxxData() {
     if (loading == false) {
         pageNo = 1;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -434,14 +495,28 @@ function getGpxxData() {
                     loadSummaryScroll5();
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -513,6 +588,7 @@ function summaryScroll5PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -539,15 +615,30 @@ function summaryScroll5PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll5.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -577,6 +668,7 @@ function getFswxxData() {
             name = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -613,14 +705,28 @@ function getFswxxData() {
 
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -707,6 +813,7 @@ function summaryScroll2PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -733,16 +840,31 @@ function summaryScroll2PullUp() {
 
                 } else {
 //                    alert("没有新数据!")
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll2.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
 
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -761,176 +883,66 @@ function getZbdbldData(flag) {
      }*/
 
 //alert(flag.id);
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
+    if (loading == false) {
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+        loading == true;
 
-    // 今天
-    if (flag.id == "jt") {
-    }
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
 
-    // 明天
-    if (flag.id == "mt") {
-        day = date.getDate() + 1;
-    }
+        // 今天
+        if (flag.id == "jt") {
+        }
 
-    if (month < 10) {
-        month = "0" + month;
-    }
-    if (day < 10) {
-        day = "0" + day;
-    }
+        // 明天
+        if (flag.id == "mt") {
+            day = date.getDate() + 1;
+        }
+
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (day < 10) {
+            day = "0" + day;
+        }
 
 //          alert(year + "," +month + "," + day);
 
-    var curDate = year + "-" + month + "-" + day;
-
-    $.ajax({
-        url: serverPath + "summary/zbdbld/date/" + curDate,
-        dataType: "jsonp",
-        type: "post",
-        jsonpCallback: "zbdbldSummary",
-        success: function (data) {
-            if (data != undefined && data != null && data.length > 0) {
-                $.mobile.changePage("#zbdbld2");
-
-                $("#zbdbld-result tbody").html("");
-
-                for (var i = 0; i < data.length; i++) {
-//                    alert(data.length);
-
-                    var tableStr = "<tr>";
-                    tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
-                    tableStr += "<td colspan='2'>值班</td>";
-                    tableStr += "<td>" + data[i].detail + "</td></tr>";
-
-                    tableStr += "<tr>";
-                    tableStr += "<td rowspan='3'>带班</td>";
-                    tableStr += "<td>夜班</td>";
-                    tableStr += "<td>" + data[i].yb + "</td></tr>";
-
-                    tableStr += "<tr>";
-                    tableStr += "<td>早班</td>";
-                    tableStr += "<td>" + data[i].zb + "</td></tr>";
-
-                    tableStr += "<tr>";
-                    tableStr += "<td>中班</td>";
-                    tableStr += "<td>" + data[i].zhb + "</td></tr>";
-
-                    $(tableStr).appendTo($("#zbdbld-result tbody"));
-                }
-
-                // 刷新table, 否则隐藏coloumn功能不可用
-                $("#zbdbld-result").table("refresh");
-
-                // 销毁下拉刷新插件
-                if (summaryScroll3) {
-                    summaryScroll3.destroy();
-                    summaryScroll3 = null;
-                }
-                loadSummaryScroll3();
-            } else {
-//                alert("没有数据!")
-                $.mobile.changePage("#alert-dialog");
-            }
-
-        },
-        error: function () {
-            alert("error");
-        }
-    });
-
-}
-
-function loadSummaryScroll3() {
-    /*   var pullDownEl = document.getElementById('summaryPullDown3');
-     var pullDownOffset = pullDownEl.offsetHeight;
-     var pullUpEl = document.getElementById('summaryPullUp3');
-     var pullUpOffset = pullUpEl.offsetHeight;*/
-//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
-
-    /*summaryScroll3 = new iScroll('summaryWrapper3', {
-     useTransition: true,
-     topOffset: pullDownOffset,
-     onRefresh: function () {
-     if (pullDownEl.className.match('loading')) {
-     pullDownEl.className = '';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-     } else if (pullUpEl.className.match('loading')) {
-     pullUpEl.className = '';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-     }
-     },
-     onScrollMove: function () {
-     //            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
-     if (this.y > 5 && !pullDownEl.className.match('flip')) {
-     pullDownEl.className = 'flip';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
-     this.minScrollY = 0;
-     } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-     pullDownEl.className = '';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-     this.minScrollY = -pullDownOffset;
-     } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-     pullUpEl.className = 'flip';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
-     this.maxScrollY = this.maxScrollY;
-     } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-     pullUpEl.className = '';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-     this.maxScrollY = pullUpOffset;
-     }
-     },
-     onScrollEnd: function () {
-     if (pullDownEl.className.match('flip')) {
-     pullDownEl.className = 'loading';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
-     //test();	// Execute custom function (ajax call?)
-     } else if (pullUpEl.className.match('flip')) {
-     pullUpEl.className = 'loading';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-     // test();	// Execute custom function (ajax call?)
-     }
-     }
-     });*/
-
-
-    setTimeout(function () {
-        document.getElementById('summaryWrapper3').style.left = '0';
-    }, 800);
-}
-
-function summaryScroll3PullUp() {
-    if (loading == false) {
-        pageNo++;
-
-        var date = $("#date-3").val();
-        if (date == undefined || date == null || date == "") {
-            alert("请输入日期！");
-            return;
-        }
-
-        var start = (pageNo - 1) * 15;
-        var limit = pageSize;
-
-        loading = true;
+        var curDate = year + "-" + month + "-" + day;
 
         $.ajax({
-            url: serverPath + "summary/zbdbld/date/" + date + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/zbdbld/date/" + curDate,
             dataType: "jsonp",
             type: "post",
             jsonpCallback: "zbdbldSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#zbdbld2");
+
+                    $("#zbdbld-result tbody").html("");
+
                     for (var i = 0; i < data.length; i++) {
+//                    alert(data.length);
+
                         var tableStr = "<tr>";
-                        tableStr += "<td>" + data[i].deptName + "</td>";
-                        tableStr += "<td>" + data[i].detail + "</td>";
-                        tableStr += "<td>" + data[i].zb + "</td>";
-                        tableStr += "<td>" + data[i].zhb + "</td>";
-                        tableStr += "<td>" + data[i].yb + "</td>";
-                        tableStr += "</tr>";
+                        tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
+                        tableStr += "<td colspan='2'>值班</td>";
+                        tableStr += "<td>" + data[i].detail + "</td></tr>";
+
+                        tableStr += "<tr>";
+                        tableStr += "<td rowspan='3'>带班</td>";
+                        tableStr += "<td>夜班</td>";
+                        tableStr += "<td>" + data[i].yb + "</td></tr>";
+
+                        tableStr += "<tr>";
+                        tableStr += "<td>早班</td>";
+                        tableStr += "<td>" + data[i].zb + "</td></tr>";
+
+                        tableStr += "<tr>";
+                        tableStr += "<td>中班</td>";
+                        tableStr += "<td>" + data[i].zhb + "</td></tr>";
 
                         $(tableStr).appendTo($("#zbdbld-result tbody"));
                     }
@@ -938,21 +950,46 @@ function summaryScroll3PullUp() {
                     // 刷新table, 否则隐藏coloumn功能不可用
                     $("#zbdbld-result").table("refresh");
 
+                    // 销毁下拉刷新插件
+                    if (summaryScroll3) {
+                        summaryScroll3.destroy();
+                        summaryScroll3 = null;
+                    }
+                    loadSummaryScroll3();
                 } else {
-//                    alert("没有新数据!")
-                    $.mobile.changePage("#alert2-dialog");
+//                alert("没有数据!")
+//                $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
-                summaryScroll3.refresh();
-                loading = false;
+                $.mobile.loading("hide");
+                loading == false;
+
             },
             error: function () {
-                alert("error");
-                loading = false;
+                $.mobile.loading("hide");
+                loading == false;
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
 
+}
+
+function loadSummaryScroll3() {
+    setTimeout(function () {
+        document.getElementById('summaryWrapper3').style.left = '0';
+    }, 800);
 }
 
 /**
@@ -968,6 +1005,7 @@ function getYdyhhzData() {
             return;
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1007,14 +1045,28 @@ function getYdyhhzData() {
                     loadSummaryScroll9();
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1092,6 +1144,7 @@ function summaryScroll9PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1122,15 +1175,30 @@ function summaryScroll9PullUp() {
 
                 } else {
 //                    alert("没有新数据!")
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll9.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1159,6 +1227,7 @@ function getLdxjdbData() {
             name = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1198,14 +1267,28 @@ function getLdxjdbData() {
                     loadSummaryScroll7();
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1293,6 +1376,7 @@ function summaryScroll7PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1322,15 +1406,30 @@ function summaryScroll7PullUp() {
 
                 } else {
 //                    alert("没有新数据!")
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll7.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1364,6 +1463,7 @@ function getKzdkyhData() {
 
 //        alert("date = " + date + " mine = " + mine);
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1404,14 +1504,28 @@ function getKzdkyhData() {
                     loadSummaryScroll6();
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1496,6 +1610,7 @@ function summaryScroll6PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1526,15 +1641,30 @@ function summaryScroll6PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll6.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1556,6 +1686,7 @@ function getYdswgphzData() {
 
         var type = $("#type-8").val();
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1625,14 +1756,28 @@ function getYdswgphzData() {
                     }
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1640,177 +1785,15 @@ function getYdswgphzData() {
 }
 
 function loadSummaryScroll8() {
-    /* var pullDownEl = document.getElementById('summaryPullDown8');
-     var pullDownOffset = pullDownEl.offsetHeight;
-     var pullUpEl = document.getElementById('summaryPullUp8');
-     var pullUpOffset = pullUpEl.offsetHeight;
-     //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
-
-     summaryScroll8 = new iScroll('summaryWrapper8', {
-     useTransition: true,
-     topOffset: pullDownOffset,
-     onRefresh: function () {
-     if (pullDownEl.className.match('loading')) {
-     pullDownEl.className = '';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-     } else if (pullUpEl.className.match('loading')) {
-     pullUpEl.className = '';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-     }
-     },
-     onScrollMove: function () {
-     //            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
-     if (this.y > 5 && !pullDownEl.className.match('flip')) {
-     pullDownEl.className = 'flip';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
-     this.minScrollY = 0;
-     } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-     pullDownEl.className = '';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-     this.minScrollY = -pullDownOffset;
-     } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-     pullUpEl.className = 'flip';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
-     this.maxScrollY = this.maxScrollY;
-     } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-     pullUpEl.className = '';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-     this.maxScrollY = pullUpOffset;
-     }
-     },
-     onScrollEnd: function () {
-     if (pullDownEl.className.match('flip')) {
-     pullDownEl.className = 'loading';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
-     getYdswgphzData();	// Execute custom function (ajax call?)
-     } else if (pullUpEl.className.match('flip')) {
-     pullUpEl.className = 'loading';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-     summaryScroll8PullUp();	// Execute custom function (ajax call?)
-     }
-     }
-     });*/
-
-
     setTimeout(function () {
         document.getElementById('summaryWrapper8').style.left = '0';
     }, 800);
 }
 
 function loadSummaryScroll81() {
-    /*   var pullDownEl = document.getElementById('summaryPullDown81');
-     var pullDownOffset = pullDownEl.offsetHeight;
-     var pullUpEl = document.getElementById('summaryPullUp81');
-     var pullUpOffset = pullUpEl.offsetHeight;*/
-//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
-
-    /* summaryScroll8 = new iScroll('summaryWrapper8', {
-     useTransition: true,
-     topOffset: pullDownOffset,
-     onRefresh: function () {
-     if (pullDownEl.className.match('loading')) {
-     pullDownEl.className = '';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-     } else if (pullUpEl.className.match('loading')) {
-     pullUpEl.className = '';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-     }
-     },
-     onScrollMove: function () {
-     //            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
-     if (this.y > 5 && !pullDownEl.className.match('flip')) {
-     pullDownEl.className = 'flip';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
-     this.minScrollY = 0;
-     } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-     pullDownEl.className = '';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
-     this.minScrollY = -pullDownOffset;
-     } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-     pullUpEl.className = 'flip';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
-     this.maxScrollY = this.maxScrollY;
-     } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-     pullUpEl.className = '';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
-     this.maxScrollY = pullUpOffset;
-     }
-     },
-     onScrollEnd: function () {
-     if (pullDownEl.className.match('flip')) {
-     pullDownEl.className = 'loading';
-     pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
-     getYdswgphzData();	// Execute custom function (ajax call?)
-     } else if (pullUpEl.className.match('flip')) {
-     pullUpEl.className = 'loading';
-     pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-     summaryScroll8PullUp();	// Execute custom function (ajax call?)
-     }
-     }
-     });*/
-
-
     setTimeout(function () {
         document.getElementById('summaryWrapper81').style.left = '0';
     }, 800);
-}
-
-function summaryScroll8PullUp() {
-    if (loading == false) {
-        pageNo++;
-
-        var date = $("#date-8").val();
-        if (date == undefined || date == null || date == "") {
-            alert("请输入日期!");
-            return;
-        }
-
-
-        var start = (pageNo - 1) * 15;
-        var limit = pageSize;
-
-        loading = true;
-
-        $.ajax({
-            url: serverPath + "summary/ydswgphz/date/" + date + "/start/" + start + "/limit/" + pageSize,
-            dataType: "jsonp",
-            type: "post",
-            jsonpCallback: "ydswgphzSummary",
-            success: function (data) {
-                if (data != null && data.length > 0) {
-                    for (var i = 0; i < data.length; i++) {
-                        var tableStr = "<tr>";
-                        tableStr += "<td>" + data[i].deptName + "</td>";
-                        tableStr += "<td>" + data[i].swAll + "</td>";
-                        tableStr += "<td>" + data[i].swYz + "</td>";
-                        tableStr += "<td>" + data[i].swJyz + "</td>";
-                        tableStr += "<td>" + data[i].swYb + "</td>";
-                        tableStr += "<td>" + data[i].gpAll + "</td>";
-                        tableStr += "<td>" + data[i].gpWz + "</td>";
-                        tableStr += "<td>" + data[i].gpYz + "</td>";
-                        tableStr += "</tr>";
-
-                        $(tableStr).appendTo($("#ydswgphz-result tbody"));
-                    }
-
-                    // 刷新table, 否则隐藏coloumn功能不可用
-                    $("#ydswgphz-result").table("refresh");
-
-                } else {
-//                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
-                }
-
-                summaryScroll8.refresh();
-                loading = false;
-            },
-            error: function () {
-                alert("error");
-                loading = false;
-            }
-        });
-    }
-
 }
 
 /**
@@ -1837,6 +1820,7 @@ function getSwxxcxData() {
             dept = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         // 提交到服务端
@@ -1874,14 +1858,28 @@ function getSwxxcxData() {
 
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -1971,6 +1969,7 @@ function summaryScroll11PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -1997,15 +1996,30 @@ function summaryScroll11PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll11.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2036,6 +2050,7 @@ function getYhfltjcxData() {
             unit = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -2075,14 +2090,29 @@ function getYhfltjcxData() {
                     loadSummaryScroll12();
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
+
+                $.mobile.loading("hide");
                 loading = false;
 
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2172,6 +2202,7 @@ function summaryScroll12PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -2202,15 +2233,30 @@ function summaryScroll12PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll12.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2242,6 +2288,7 @@ function getYhxxzhcxData() {
             unit = "null";
         }
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -2279,14 +2326,28 @@ function getYhxxzhcxData() {
 
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2377,6 +2438,7 @@ function summaryScroll13PullUp() {
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -2404,15 +2466,30 @@ function summaryScroll13PullUp() {
 
                 } else {
 //                    alert("没有新数据！");
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll13.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2449,6 +2526,7 @@ function getGsxxData() {
         }
 //    alert("startDate = " + startDate + ", endDate = " + endDate + ", unit = " + unit + ", level = " + level + ", name = " + name);
 
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         $.ajax({
@@ -2484,14 +2562,28 @@ function getGsxxData() {
 
                 } else {
 //                    alert("没有数据!")
-                    $.mobile.changePage("#alert-dialog");
+//                    $.mobile.changePage("#alert-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2558,6 +2650,7 @@ function loadSummaryScroll4() {
 
 function summaryScroll4PullUp() {
     if (loading == false) {
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
         pageNo++;
 
@@ -2608,15 +2701,30 @@ function summaryScroll4PullUp() {
 
                 } else {
 //                    alert("没有新数据!")
-                    $.mobile.changePage("#alert2-dialog");
+//                    $.mobile.changePage("#alert2-dialog");
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
                 }
 
                 summaryScroll4.refresh();
+
+                $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $.mobile.loading("hide");
                 loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -2642,12 +2750,23 @@ function gotoGsxx() {
                 $(selectStr).appendTo(select);
             } else {
 //                alert("没有数据!")
-                $.mobile.changePage("#alert-dialog");
+//                $.mobile.changePage("#alert-dialog");
+                $().toastmessage('showToast', {
+                    text: '没有数据',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'notice'
+                });
             }
 
         },
         error: function () {
-            alert("error");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }

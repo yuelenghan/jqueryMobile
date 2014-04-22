@@ -36,7 +36,13 @@ function initYhLevel() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -71,7 +77,13 @@ function initYhType() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -116,7 +128,13 @@ function initPcPerson() {
                             }
                         },
                         error: function () {
-                            alert("error!");
+//                            alert("error!");
+                            $().toastmessage('showToast', {
+                                text: '访问服务器错误！',
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'error'
+                            });
                         }
                     });
                 } else {
@@ -130,7 +148,13 @@ function initPcPerson() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -157,7 +181,13 @@ function initYhzy() {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -443,7 +473,13 @@ function selectZrdw(selectVal) {
             }
         },
         error: function () {
-            alert("error!");
+//            alert("error!");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -481,75 +517,104 @@ function selectZgfs(selectVal) {
  */
 function submitInfo() {
     if (confirm("确认提交？")) {
-        var yhyj = $("#yhBasisValue").val();   // 隐患依据
-        var yhjb = $("#yhLevelSelect").val();   // 隐患级别
-        var yhlx = $("#yhTypeSelect").val();    // 隐患类型
-        var wxy = $("#hazardValue").val();     // 危险源
-        var yhms = $("#yhContent").val();       // 隐患描述
-        var zrdw = $("#zrdwSelect").val();      // 责任单位
-        var zrr = $("#zrrSelect").val();        // 责任人
-        var pcdd = $("#placeSelect").val();     // 排查地点
-        var mxdd = $("#placeDetail").val();     // 明细地点
-        var pcsj = $("#pcTime").val();          // 排查时间
-        var pcbc = $("#pcbc").val();            // 排查班次
-        var pcry = $("#pcPersonNumber").val();  // 排查人员
-        var pclx = $("#pcType").val();          // 排查类型
-        var yhzy = $("#yhzySelect").val();      // 隐患专业
-        var zgfs = $("#zgfs").val();            // 整改方式
-        var zgqx = $("#zgqx").val();            // 整改期限
-        var zgbc = $("#zgbcSelect").val();      // 整改班次
+        if (loading == false) {
+            $.mobile.loading("show", {text: "正在录入...", textVisible: true});
+            loading = true;
 
-        if (yhyj == undefined || yhyj == null || yhyj == "") {
-            alert("请填写隐患依据！");
-            return;
-        }
+            var yhyj = $("#yhBasisValue").val();   // 隐患依据
+            var yhjb = $("#yhLevelSelect").val();   // 隐患级别
+            var yhlx = $("#yhTypeSelect").val();    // 隐患类型
+            var wxy = $("#hazardValue").val();     // 危险源
+            var yhms = $("#yhContent").val();       // 隐患描述
+            var zrdw = $("#zrdwSelect").val();      // 责任单位
+            var zrr = $("#zrrSelect").val();        // 责任人
+            var pcdd = $("#placeSelect").val();     // 排查地点
+            var mxdd = $("#placeDetail").val();     // 明细地点
+            var pcsj = $("#pcTime").val();          // 排查时间
+            var pcbc = $("#pcbc").val();            // 排查班次
+            var pcry = $("#pcPersonNumber").val();  // 排查人员
+            var pclx = $("#pcType").val();          // 排查类型
+            var yhzy = $("#yhzySelect").val();      // 隐患专业
+            var zgfs = $("#zgfs").val();            // 整改方式
+            var zgqx = $("#zgqx").val();            // 整改期限
+            var zgbc = $("#zgbcSelect").val();      // 整改班次
 
-        if (wxy == undefined || wxy == null || wxy == "") {
-            alert("请填写危险源！");
-            return;
-        }
-
-        if (yhms == undefined || yhms == null || yhms == "") {
-            alert("请填写隐患描述！");
-            return;
-        }
-        if (pcsj == undefined || pcsj == null || pcsj == "") {
-            alert("请填写排查时间！");
-            return;
-        }
-        if (pcry == undefined || pcry == null || pcry == "") {
-            alert("排查人员无法获取，请登录！");
-            return;
-        }
-
-        if (mxdd == undefined || mxdd == null || mxdd == "") {
-            mxdd = "null";
-        }
-        if (zgqx == undefined || zgqx == null || zgqx == "") {
-            zgqx = "null";
-        }
-
-
-        /*   alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", wxy = " + wxy + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
-         + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
-         + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
-
-        $.ajax({
-            url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
-            dataType: "jsonp",
-            type: "post",
-            jsonpCallback: "insertInfo",
-            success: function (data) {
-                if (data == "success") {
-                    alert("录入成功！")
-                } else {
-                    alert("录入失败！");
-                }
-            },
-            error: function () {
-                alert("error!");
+            if (yhyj == undefined || yhyj == null || yhyj == "") {
+                alert("请填写隐患依据！");
+                return;
             }
-        });
+
+            if (wxy == undefined || wxy == null || wxy == "") {
+                alert("请填写危险源！");
+                return;
+            }
+
+            if (yhms == undefined || yhms == null || yhms == "") {
+                alert("请填写隐患描述！");
+                return;
+            }
+            if (pcsj == undefined || pcsj == null || pcsj == "") {
+                alert("请填写排查时间！");
+                return;
+            }
+            if (pcry == undefined || pcry == null || pcry == "") {
+                alert("排查人员无法获取，请登录！");
+                return;
+            }
+
+            if (mxdd == undefined || mxdd == null || mxdd == "") {
+                mxdd = "null";
+            }
+            if (zgqx == undefined || zgqx == null || zgqx == "") {
+                zgqx = "null";
+            }
+
+
+            /*   alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", wxy = " + wxy + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
+             + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
+             + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
+
+            $.ajax({
+                url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
+                dataType: "jsonp",
+                type: "post",
+                jsonpCallback: "insertInfo",
+                success: function (data) {
+                    if (data == "success") {
+//                        alert("录入成功！")
+                        $().toastmessage('showToast', {
+                            text: '录入成功！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'success'
+                        });
+                    } else {
+//                        alert("录入失败！");
+                        $().toastmessage('showToast', {
+                            text: '录入失败！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'error'
+                        });
+                    }
+
+                    $.mobile.loading("hide");
+                    loading = false;
+                },
+                error: function () {
+                    $.mobile.loading("hide");
+                    loading = false;
+//                    alert("error!");
+                    $().toastmessage('showToast', {
+                        text: '访问服务器错误！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
+                }
+            });
+        }
+
     }
 }
 
@@ -596,7 +661,13 @@ function filterYhyj() {
                     select.selectmenu('refresh', true);
 
                 } else {
-                    alert("没有隐患依据数据！");
+//                    alert("没有隐患依据数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有隐患依据数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -605,8 +676,13 @@ function filterYhyj() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
-
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -686,7 +762,13 @@ function filterPlace() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -724,7 +806,13 @@ function returnYhyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -742,7 +830,13 @@ function returnYhyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -760,7 +854,13 @@ function returnYhyj() {
                 }
             },
             error: function () {
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
 
@@ -801,7 +901,13 @@ function filterWxy() {
                     select.selectmenu('refresh', true);
 
                 } else {
-                    alert("没有危险源数据！");
+//                    alert("没有危险源数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有危险源数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -810,8 +916,13 @@ function filterWxy() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
-
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -888,20 +999,38 @@ function zrdwFilter() {
                         error: function () {
                             $.mobile.loading("hide");
                             loading = false;
-                            alert("error!");
+//                            alert("error!");
+                            $().toastmessage('showToast', {
+                                text: '访问服务器错误！',
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'error'
+                            });
                         }
 
                     });
                 } else {
                     $.mobile.loading("hide");
                     loading = false;
-                    alert("没有责任单位数据！");
+//                    alert("没有责任单位数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有责任单位数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
             },
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }
@@ -935,7 +1064,13 @@ function zrrFilter() {
                     $(selectStr).appendTo(select);
                     select.selectmenu('refresh', true);
                 } else {
-                    alert("没有责任人数据！");
+//                    alert("没有责任人数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有责任人数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 $.mobile.loading("hide");
@@ -944,7 +1079,13 @@ function zrrFilter() {
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-                alert("error!");
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }

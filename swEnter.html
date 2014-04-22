@@ -9,6 +9,7 @@
     <link href="css/jquery.mobile.datepicker.css" rel="stylesheet" type="text/css"/>
     <link href="css/my.css" rel="stylesheet" type="text/css"/>
     <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
 
     <!-- js -->
     <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
@@ -16,6 +17,7 @@
     <script src="js/jquery.mobile.datepicker.js" type="text/javascript"></script>
     <script src="js/jquery.ui.datepicker.js" type="text/javascript"></script>
     <script src="js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+    <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
     <script src="js/iscroll.js" type="text/javascript"></script>
     <script src="js/swEnter.js" type="text/javascript"></script>
 
@@ -62,16 +64,21 @@
     </div>
 
     <div data-role="content">
-        <label for="deptNumber">部门编码</label>
-        <input type="text" id="deptNumber" placeholder="请输入部门编码进行查询">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="getSwBasis()">查询</a>
+        <!-- <label for="deptNumber">部门编码</label>
+         <input type="text" id="deptNumber" placeholder="请输入部门编码进行查询">
+         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+            onclick="getSwBasis()">查询</a>-->
 
-        <label for="swBasisSelect">三违依据<span style="color: red">*</span></label>
-        <input type="text" placeholder="可以输入条件对三违依据进行过滤" id="swyjFilter">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="filterSwyj()">过滤</a>
-        <select id="swBasisSelect" onchange="selectBasis(this)"></select>
+        <div id="deptSelectDiv" style="display: none">
+            <label for="deptSelect">部门列表</label>
+            <select id="deptSelect" onchange="selectDept(this.value)"></select>
+        </div>
+
+        <label for="swBasisText">三违依据<span style="color: red">*</span></label>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" href="#swyj-filter" data-transition="flip">获取三违依据</a>
+        <input type="text" id="swBasisText" readonly="true">
+        <input type="hidden" id="swBasisValue">
+        <!-- <select id="swBasisSelect" onchange="selectBasis(this)"></select>-->
 
         <label for="swLevelSelect">三违性质<span style="color: red">*</span></label>
         <select id="swLevelSelect"></select>
@@ -82,20 +89,21 @@
         <label for="swProSelect">三违专业<span style="color: red">*</span></label>
         <select id="swProSelect"></select>
 
-        <label for="hazardSelect">危险源<span style="color: red">*</span></label>
-        <input type="text" placeholder="可以输入条件对危险源进行过滤" id="hazardFilter">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="filterHazard()">过滤</a>
-        <select id="hazardSelect"></select>
+        <label for="hazardText">危险源<span style="color: red">*</span></label>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" href="#wxy-filter"
+           data-transition="flip">获取危险源</a>
+        <input type="text" id="hazardText" readonly="true">
+        <input type="hidden" id="hazardValue">
 
         <label for="swContent">三违描述<span style="color: red">*</span></label>
         <textarea id="swContent"></textarea>
 
-        <label for="swry">三违人员<span style="color: red">*</span></label>
-        <input id="querySwry" placeholder="请输入人员姓名进行查询">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-           onclick="getSwry()">查询</a>
-        <select id="swry"></select>
+        <label for="swryName">三违人员<span style="color: red">*</span></label>
+        <!--<input id="querySwry" placeholder="请输入人员姓名进行查询">-->
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" onclick="getSwry()">获取三违人员</a>
+        <!-- <select id="swry"></select>-->
+        <input type="text" id="swryName" readonly="true">
+        <input type="hidden" id="swryNumber">
 
         <label for="pcPersonName">排查人员<span style="color: red">*</span></label>
         <input id="pcPersonName" type="text" readonly="true">
@@ -125,13 +133,90 @@
         <select id="jcType">
             <option value="1">区队自查</option>
             <option value="2">职能科室</option>
-            <option value="3">安检部门</option>
+            <option value="3" selected="selected">安检部门</option>
             <option value="4">矿领导</option>
             <option value="5">公司部室</option>
         </select>
 
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
            onclick="submitInfo()">提交</a>
+    </div>
+</div>
+
+<div data-role="page" id="swyj-filter" data-close-btn="right">
+    <div data-role="header" data-theme="b">
+        <h1>过滤三违依据</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="swyjLevel">三违性质</label>
+        <select id="swyjLevel"></select>
+
+        <label for="swyjText">文字描述</label>
+        <input type="text" placeholder="可以输入条件对三违依据进行过滤" id="swyjText">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterSwyj()">过滤</a>
+
+        <label for="swyjList">过滤结果</label>
+        <select id="swyjList"></select>
+
+        <a class="ui-shadow ui-btn"
+           onclick="returnSwyj()">确定</a>
+    </div>
+</div>
+
+<div data-role="page" id="wxy-filter" data-close-btn="right">
+    <div data-role="header" data-theme="b">
+        <h1>过滤危险源</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="wxyLevel">等级</label>
+        <select id="wxyLevel">
+            <option value="null">--全部--</option>
+            <option value="低风险">低风险</option>
+            <option value="一般风险">一般风险</option>
+            <option value="中等风险">中等风险</option>
+            <option value="重大风险">重大风险</option>
+            <option value="特别重大风险">特别重大风险</option>
+        </select>
+
+        <label for="wxyText">文字描述</label>
+        <input type="text" placeholder="可以输入条件对危险源进行过滤" id="wxyText">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterWxy()">过滤</a>
+
+        <label for="wxyList">过滤结果</label>
+        <select id="wxyList"></select>
+
+        <a class="ui-shadow ui-btn"
+           onclick="returnWxy()">确定</a>
+    </div>
+</div>
+
+<div data-role="page" id="swry-filter" data-close-btn="right">
+    <div data-role="header" data-theme="b">
+        <h1>过滤三违人员</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="deptList">部门</label>
+        <select id="deptList">
+        </select>
+
+        <label for="swryText">姓名</label>
+        <input type="text" placeholder="可以输入姓名或简称进行过滤" id="swryText">
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+           onclick="filterSwry()">过滤</a>
+
+        <label for="swryList">过滤结果</label>
+        <select id="swryList"></select>
+
+        <a class="ui-shadow ui-btn"
+           onclick="returnSwry()">确定</a>
     </div>
 </div>
 </body>
