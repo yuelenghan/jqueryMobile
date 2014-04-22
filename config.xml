@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:gap="http://phonegap.com/ns/1.0"
+        id="com.phonegap.example"
+        version="1.0.0">
+
+    <name>风险预控</name>
+
+    <description>
+        风险预控手机客户端
+    </description>
+
+    <author email="lh.1986@iCloud.com">
+        李鹤
+    </author>
+
+    <gap:platform name="ios"/>
+    <gap:platform name="android"/>
+
+    <icon src="logo.png"/>
+
+    <gap:splash src="logo.png"/>
+
+    <preference name="fullscreen" value="true"/>
+</widget>
