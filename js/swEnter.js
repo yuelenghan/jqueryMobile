@@ -15,6 +15,7 @@ function initSwLevel() {
         url: serverPath + "baseInfo/46",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "swLevel",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -50,6 +51,7 @@ function initSwType() {
         url: serverPath + "baseInfo/102",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "swType",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -77,6 +79,7 @@ function initSwPro() {
         url: serverPath + "baseInfo/106",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "swPro",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -104,6 +107,7 @@ function initPcPerson() {
         url: serverPath + "yhEnter/pcPerson",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "pcPerson",
         success: function (data) {
             if (data != undefined && data != null && data != "null") {
@@ -159,6 +163,7 @@ function initDeptList() {
         url: serverPath + "swEnter/department/" + mainDeptId,
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "deptList",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -474,6 +479,7 @@ function submitInfo() {
                 url: serverPath + "swEnter/insertInfo/" + swyj + "/" + swxz + "/" + swlx + "/" + swzy + "/" + wxy + "/" + swms + "/" + swry + "/" + pcry + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + jcfs + "/" + mainDeptId,
                 dataType: "jsonp",
                 type: "post",
+                timeout: 10000,
                 jsonpCallback: "insertInfo",
                 success: function (data) {
                     if (data == "success") {
@@ -536,6 +542,7 @@ function filterSwyj() {
             url: serverPath + "swEnter/swBasis/deptNumber/" + mainDeptId + "/" + swyjLevel + "/" + swyjText,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swBasis",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -627,6 +634,7 @@ function filterPlace() {
             url: serverPath + "swEnter/place/deptNumber/" + mainDeptId + "/" + arg,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "place",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -685,6 +693,7 @@ function returnSwyj() {
             url: serverPath + "swEnter/swBasisLevel/" + swyj,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swBasisLevel",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -733,6 +742,7 @@ function returnSwyj() {
             url: serverPath + "swEnter/basisHazard/" + swyj,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "basisHazard",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -775,6 +785,7 @@ function filterWxy() {
             url: serverPath + "swEnter/hazard/deptNumber/" + mainDeptId + "/" + wxyLevel + "/" + wxyText,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "hazard",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -853,6 +864,7 @@ function filterSwry() {
             url: serverPath + "swEnter/person/" + deptId + "/" + shortName,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swry",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {

@@ -14,6 +14,7 @@ function initYhLevel() {
         url: serverPath + "baseInfo/41",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "yhLevel",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -55,6 +56,7 @@ function initYhType() {
         url: serverPath + "baseInfo/1",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "yhType",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -96,6 +98,7 @@ function initPcPerson() {
         url: serverPath + "yhEnter/pcPerson",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "pcPerson",
         success: function (data) {
             if (data != undefined && data != null && data != "null") {
@@ -109,6 +112,7 @@ function initPcPerson() {
                         url: serverPath + "yhEnter/department",
                         dataType: "jsonp",
                         type: "post",
+                        timeout: 10000,
                         jsonpCallback: "department",
                         success: function (data) {
                             if (data != undefined && data != null && data.length > 0) {
@@ -167,6 +171,7 @@ function initYhzy() {
         url: serverPath + "baseInfo/116",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "yhzy",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -458,6 +463,7 @@ function selectZrdw(selectVal) {
         url: serverPath + "yhEnter/zrr/deptId/" + selectVal.value,
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "zrr",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
@@ -578,6 +584,7 @@ function submitInfo() {
                 url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
                 dataType: "jsonp",
                 type: "post",
+                timeout: 10000,
                 jsonpCallback: "insertInfo",
                 success: function (data) {
                     if (data == "success") {
@@ -648,6 +655,7 @@ function filterYhyj() {
             url: serverPath + "yhEnter/yhBasis/deptNumber/" + mainDeptId + "/" + yhyjLevel + "/" + yhyjType + "/" + yhyjText,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhBasis",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {

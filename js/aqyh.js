@@ -25,6 +25,7 @@ function getYhBaseInfo() {
         url: serverPath + "baseInfo/1",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "baseInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
@@ -34,7 +35,12 @@ function getYhBaseInfo() {
             listView.listview('refresh');
         },
         error: function () {
-            alert("error");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -47,6 +53,7 @@ function getSwBaseInfo() {
         url: serverPath + "baseInfo/102",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "baseInfo",
         success: function (data) {
             for (var i = 0; i < data.length; i++) {
@@ -56,7 +63,12 @@ function getSwBaseInfo() {
             listView.listview('refresh');
         },
         error: function () {
-            alert("error");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -136,6 +148,7 @@ function getFirstYhInfo(listView, typeId) {
             url: serverPath + "yhinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhInfo",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -156,14 +169,24 @@ function getFirstYhInfo(listView, typeId) {
 
                     loadYhScroll();
                 } else {
-                    alert("没有数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 loading = false;
 
             },
             error: function () {
-                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 loading = false;
             }
         });
@@ -177,6 +200,7 @@ function gotoYhDetail(item) {
         url: serverPath + "yhinput/" + item.id,
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "yhDetail",
         success: function (data) {
             if (data != null) {
@@ -197,7 +221,12 @@ function gotoYhDetail(item) {
             }
         },
         error: function () {
-            alert("error");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -215,6 +244,7 @@ function getFirstSwInfo(listView, typeId) {
             url: serverPath + "swinput/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swInfo",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -238,14 +268,24 @@ function getFirstSwInfo(listView, typeId) {
                      }, 200);*/
                     loadSwScroll();
                 } else {
-                    alert("没有数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 loading = false;
 
             },
             error: function () {
-                alert("error");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 loading = false;
             }
         });
@@ -260,6 +300,7 @@ function gotoSwDetail(item) {
         url: serverPath + "swinput/" + item.id,
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "swDetail",
         success: function (data) {
             if (data != null) {
@@ -284,7 +325,12 @@ function gotoSwDetail(item) {
             }
         },
         error: function () {
-            alert("error");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -301,6 +347,7 @@ function getFirstRjInfo(listView, typeId) {
             url: serverPath + "kqRecord/typeId/" + typeId + "/start/" + start + "/limit/" + limit,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "rjInfo",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -325,14 +372,24 @@ function getFirstRjInfo(listView, typeId) {
                      }, 200);*/
                     loadRjScroll();
                 } else {
-                    alert("没有数据！");
+                    $().toastmessage('showToast', {
+                        text: '没有数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
                 }
 
                 loading = false;
 
             },
             error: function () {
-                alert("error");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 loading = false;
             }
         });
@@ -347,6 +404,7 @@ function gotoRjDetail(item) {
         url: serverPath + "kqRecord/" + item.id,
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "rjDetail",
         success: function (data) {
             if (data != null) {
@@ -364,7 +422,12 @@ function gotoRjDetail(item) {
             }
         },
         error: function () {
-            alert("error");
+            $().toastmessage('showToast', {
+                text: '访问服务器错误！',
+                sticky: false,
+                position: 'middle-center',
+                type: 'error'
+            });
         }
     });
 }
@@ -407,6 +470,7 @@ function yhPullUpAction() {
             url: serverPath + "yhinput/typeId/" + yhTypeId + "/start/" + start + "/limit/" + limit,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhInfo",
             success: function (data) {
                 if (data.length > 0) {
@@ -422,7 +486,12 @@ function yhPullUpAction() {
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 loading = false;
             }
         });
@@ -443,6 +512,7 @@ function swPullUpAction() {
             url: serverPath + "swinput/typeId/" + swTypeId + "/start/" + start + "/limit/" + limit,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swInfo",
             success: function (data) {
                 if (data.length > 0) {
@@ -458,7 +528,12 @@ function swPullUpAction() {
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 loading = false;
             }
         });
@@ -479,6 +554,7 @@ function rjPullUpAction() {
             url: serverPath + "kqRecord/typeId/" + rjTypeId + "/start/" + start + "/limit/" + limit,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "rjInfo",
             success: function (data) {
                 if (data.length > 0) {
@@ -494,7 +570,12 @@ function rjPullUpAction() {
                 loading = false;
             },
             error: function () {
-                alert("error");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 loading = false;
             }
         });

@@ -46,22 +46,66 @@ function login() {
             url: serverPath + "user/login/userName/" + userName + "/password/" + password,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "login1",
             success: function (data) {
                 if (data == "success") {
 //                $.mobile.changePage("index2.html");
                     window.location.href = "index2.html";
                 } else {
-                    alert("登录失败！");
+                    $().toastmessage('showToast', {
+                        text: '登录失败！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
                 }
 
                 $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
-                alert("登录失败！");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
                 $.mobile.loading("hide");
                 loading = false;
+            }
+        });
+    }
+
+}
+
+function logout() {
+    if (confirm("确认退出？")) {
+        $.ajax({
+            url: serverPath + "user/logout",
+            dataType: "jsonp",
+            type: "post",
+            timeout: 10000,
+            jsonpCallback: "logout1",
+            success: function (data) {
+                if (data == "success") {
+                    $().toastmessage('showToast', {
+                        text: '成功退出！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'success'
+                    });
+
+                }
+                window.location.href = "index.html";
+            },
+            error: function () {
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
             }
         });
     }

@@ -40,6 +40,7 @@ function getRjxxcxData() {
             url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "rjxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -187,6 +188,7 @@ function summaryScroll10PullUp() {
             url: serverPath + "summary/rjxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "rjxxSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -259,6 +261,7 @@ function getDbjhbData() {
             url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "dbjhbSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -402,6 +405,7 @@ function summaryScroll1PullUp() {
             url: serverPath + "summary/dbjhb/date/" + date + "/banci/" + banci + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "dbjhbSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -466,6 +470,7 @@ function getGpxxData() {
             url: serverPath + "summary/gpxx/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "gpxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -595,6 +600,7 @@ function summaryScroll5PullUp() {
             url: serverPath + "summary/gpxx/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "gpxxSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -675,6 +681,7 @@ function getFswxxData() {
             url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "fswxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -820,6 +827,7 @@ function summaryScroll2PullUp() {
             url: serverPath + "summary/fswxx/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "fswxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -916,6 +924,7 @@ function getZbdbldData(flag) {
             url: serverPath + "summary/zbdbld/date/" + curDate,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "zbdbldSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1012,6 +1021,7 @@ function getYdyhhzData() {
             url: serverPath + "summary/ydyhhz/date/" + date,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "ydyhhzSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1151,6 +1161,7 @@ function summaryScroll9PullUp() {
             url: serverPath + "summary/ydyhhz/date/" + date + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "ydyhhzSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1234,6 +1245,7 @@ function getLdxjdbData() {
             url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "ldxjdbSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1383,6 +1395,7 @@ function summaryScroll7PullUp() {
             url: serverPath + "summary/ldxjdb/startDate/" + startDate + "/endDate/" + endDate + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "ldxjdbSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1470,6 +1483,7 @@ function getKzdkyhData() {
             url: serverPath + "summary/kzdkyh/startDate/" + startDate + "/endDate/" + endDate + "/mine/" + mine + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "kzdkyhSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1595,9 +1609,15 @@ function summaryScroll6PullUp() {
     if (loading == false) {
         pageNo++;
 
-        var date = $("#date-6").val();
-        if (date == undefined || date == null || date == "") {
-            alert("请输入日期！");
+        var startDate = $("#startDate-6").val();
+        if (startDate == undefined || startDate == null || startDate == "") {
+            alert("请输入开始日期！");
+            return;
+        }
+
+        var endDate = $("#endDate-6").val();
+        if (endDate == undefined || endDate == null || endDate == "") {
+            alert("请输入截止日期！");
             return;
         }
 
@@ -1614,9 +1634,10 @@ function summaryScroll6PullUp() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "summary/kzdkyh/date/" + date + "/mine/" + mine + "/start/" + start + "/limit/" + pageSize,
+            url: serverPath + "summary/kzdkyh/startDate/" + startDate + "/endDate/" + endDate + "/mine/" + mine + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "kzdkyhSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -1693,6 +1714,7 @@ function getYdswgphzData() {
             url: serverPath + "summary/ydswgphz/date/" + date + "/type/" + type,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "ydswgphzSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1828,6 +1850,7 @@ function getSwxxcxData() {
             url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -1976,6 +1999,7 @@ function summaryScroll11PullUp() {
             url: serverPath + "summary/swxx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "swxxSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -2057,6 +2081,7 @@ function getYhfltjcxData() {
             url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhfltjcxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -2209,6 +2234,7 @@ function summaryScroll12PullUp() {
             url: serverPath + "summary/yhfltjcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhfltjcxSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -2295,6 +2321,7 @@ function getYhxxzhcxData() {
             url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhxxzhcxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -2445,6 +2472,7 @@ function summaryScroll13PullUp() {
             url: serverPath + "summary/yhxxzhcx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "yhxxzhcxSummary",
             success: function (data) {
                 if (data != null && data.length > 0) {
@@ -2533,6 +2561,7 @@ function getGsxxData() {
             url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "gsxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -2682,6 +2711,7 @@ function summaryScroll4PullUp() {
             url: serverPath + "summary/gsxx/startDate/" + startDate + "/endDate/" + endDate + "/unit/" + unit + "/level/" + level + "/name/" + name + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
+            timeout: 10000,
             jsonpCallback: "gsxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
@@ -2738,6 +2768,7 @@ function gotoGsxx() {
         url: serverPath + "baseInfo/gsLevel",
         dataType: "jsonp",
         type: "post",
+        timeout: 10000,
         jsonpCallback: "gsLevel",
         success: function (data) {
             if (data != undefined && data != null && data.length > 0) {
