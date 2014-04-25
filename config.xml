@@ -23,5 +23,4 @@
 
     <gap:splash src="splash/8.png"/>
 
-    <preference name="fullscreen" value="true"/>
 </widget>
