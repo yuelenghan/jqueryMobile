@@ -21,6 +21,7 @@
 
     <icon src="logo.png"/>
 
-    <gap:splash src="splash/8.png"/>
+    <!--<gap:splash src="splash/8.png"/>-->
 
+    <preference name="fullscreen" value="true"/>
 </widget>
