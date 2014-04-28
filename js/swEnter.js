@@ -424,9 +424,6 @@ function getSwry() {
 function submitInfo() {
     if (confirm("确认提交？")) {
         if (loading == false) {
-            $.mobile.loading("show", {text: "正在录入...", textVisible: true});
-            loading = true;
-
             var swyj = $("#swBasisValue").val();   // 三违依据
             var swxz = $("#swLevelSelect").val();   // 三违性质
             var swlx = $("#swTypeSelect").val();    // 三违类型
@@ -467,6 +464,10 @@ function submitInfo() {
                 alert("排查人员无法获取，请登录！");
                 return;
             }
+            if (pcdd == undefined || pcdd == null || pcdd == "") {
+                alert("请填写排查地点！");
+                return;
+            }
 
             if (mxdd == undefined || mxdd == null || mxdd == "") {
                 mxdd = "null";
@@ -474,6 +475,10 @@ function submitInfo() {
 
             /*                alert("swyj = " + swyj + ", swxz = " + swxz + ", swlx = " + swlx + ", swzy = " + swzy + ", wxy = " + wxy + ", swms = " + swms + ", swry = " + swry
              + ", pcry = " + pcry + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", jcfs = " + jcfs);*/
+
+            $.mobile.loading("show", {text: "正在录入...", textVisible: true});
+            loading = true;
+
 
             $.ajax({
                 url: serverPath + "swEnter/insertInfo/" + swyj + "/" + swxz + "/" + swlx + "/" + swzy + "/" + wxy + "/" + swms + "/" + swry + "/" + pcry + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + jcfs + "/" + mainDeptId,

@@ -81,6 +81,7 @@ function login() {
 
 function logout() {
     if (confirm("确认退出？")) {
+        window.location.href = "index.html";
         $.ajax({
             url: serverPath + "user/logout",
             dataType: "jsonp",
@@ -95,9 +96,7 @@ function logout() {
                         position: 'middle-center',
                         type: 'success'
                     });
-
                 }
-                window.location.href = "index.html";
             },
             error: function () {
                 $().toastmessage('showToast', {

@@ -10,6 +10,7 @@
     <link href="css/my.css" rel="stylesheet" type="text/css"/>
     <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
     <link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
+    <link href="css/myDate.css" rel="stylesheet" type="text/css"/>
 
     <!-- js -->
     <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
@@ -20,6 +21,9 @@
     <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
     <script src="js/iscroll.js" type="text/javascript"></script>
     <script src="js/swEnter.js" type="text/javascript"></script>
+    <script src="js/myDate.js" type="text/javascript"></script>
+    <script src="js/myDateFlip.js" type="text/javascript"></script>
+    <script src="js/myDatei18n.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         /* document.addEventListener('touchmove', function (e) {
@@ -38,13 +42,13 @@
          $("#pcTime").attr("value", year + "-" + month + "-" + day);
          });*/
 
-        $(function () {
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            $("#pcTime").attr("value", year + "-" + month + "-" + day);
-        });
+        /*   $(function () {
+         var date = new Date();
+         var year = date.getFullYear();
+         var month = date.getMonth() + 1;
+         var day = date.getDate();
+         $("#pcTime").attr("value", year + "-" + month + "-" + day);
+         });*/
 
         initSwLevel();
         initSwType();
@@ -119,7 +123,8 @@
         <input id="placeDetail" type="text">
 
         <label for="pcTime">排查时间<span style="color: red">*</span></label>
-        <input id="pcTime" type="text" data-role="date">
+        <input id="pcTime" type="text" data-role="datebox"
+               data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>
 
         <label for="pcbc">排查班次<span style="color: red">*</span></label>
         <select id="pcbc">

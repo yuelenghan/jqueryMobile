@@ -524,9 +524,6 @@ function selectZgfs(selectVal) {
 function submitInfo() {
     if (confirm("确认提交？")) {
         if (loading == false) {
-            $.mobile.loading("show", {text: "正在录入...", textVisible: true});
-            loading = true;
-
             var yhyj = $("#yhBasisValue").val();   // 隐患依据
             var yhjb = $("#yhLevelSelect").val();   // 隐患级别
             var yhlx = $("#yhTypeSelect").val();    // 隐患类型
@@ -559,6 +556,10 @@ function submitInfo() {
                 alert("请填写隐患描述！");
                 return;
             }
+            if (pcdd == undefined || pcdd == null || pcdd == "") {
+                alert("请填写排查地点！");
+                return;
+            }
             if (pcsj == undefined || pcsj == null || pcsj == "") {
                 alert("请填写排查时间！");
                 return;
@@ -579,6 +580,9 @@ function submitInfo() {
             /*   alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", wxy = " + wxy + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
              + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
              + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
+
+            $.mobile.loading("show", {text: "正在录入...", textVisible: true});
+            loading = true;
 
             $.ajax({
                 url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
