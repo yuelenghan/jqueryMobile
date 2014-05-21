@@ -37,13 +37,46 @@
             });
         });
 
+        /*  function openAndroidActivity() {
+         window.plugins.webintent.openApk({
+         action: "android.intent.action.VIEW",
+         url: 'http://10.1.168.50:8080/res/airimos_phone_android.apk'},
+         function () {
+         },
+         function () {
+         //                        alert('无法打开视频监控，请先安装客户端！');
+         window.plugins.webintent.startActivity({
+         action: "android.intent.action.VIEW",
+         url: 'http://10.1.168.50:8080/res/airimos_phone_android.apk'},
+         function () {
+         },
+         function () {
+         alert('下载客户端出错！');
+         }
+         );
+         }
+         );
+
+         }*/
+
+        /*function startMyActivity() {
+         window.plugins.webintent.myStartActivity({
+         action: "android.intent.action.VIEW",
+         url: 'http://10.1.168.50:8080/res/airimos_phone_android.apk'},
+         function () {
+         },
+         function () {
+         alert('出错！');
+         }
+         );
+         }*/
     </script>
 </head>
 <body>
 
 <div data-role="page" id="main">
     <div data-role="header" data-theme="b">
-        <div align="center"><h1 style="font-size: large">安全生产风险预控信息系统</h1></div>
+        <div align="center"><h1 style="font-size: large">风险预控可视化系统</h1></div>
     </div>
     <div data-role="content">
         <div align="right">
@@ -73,8 +106,7 @@
                 人员定位
             </div>
             <div class="ui-block-b" align="center">
-                <a id="button5" class="myButton" href="https://itunes.apple.com/cn/app/yu-shi-yun-yan/id699565849?mt=8"
-                   data-role="button"
+                <a id="button5" class="myButton" href="#" data-role="button"
                    style="background-image: url(logo/5.jpg)"></a>
                 视频监控
             </div>
@@ -89,9 +121,9 @@
                 系统设置
             </div>
             <div class="ui-block-b" align="center">
-                <a id="button8" class="myButton" href="#" data-role="button"
+                <a id="button8" class="myButton" data-ajax="false" href="swxcQuery.html" data-role="button"
                    style="background-image: url(logo/8.jpg)"></a>
-                帮助说明
+                三违现场查询
             </div>
             <div class="ui-block-c" align="center">
                 <a id="button9" class="myButton" data-ajax="false" href="summary.html" data-role="button"

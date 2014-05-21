@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery Mobile Web 应用程序</title>
+
+    <!-- css -->
+    <link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/jquery.mobile.datepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="css/my.css" rel="stylesheet" type="text/css"/>
+    <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
+    <link href="css/myDate.css" rel="stylesheet" type="text/css"/>
+
+    <!-- js -->
+    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
+    <script src="js/jquery.mobile.datepicker.js" type="text/javascript"></script>
+    <script src="js/jquery.ui.datepicker.js" type="text/javascript"></script>
+    <script src="js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+    <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
+    <script src="js/iscroll.js" type="text/javascript"></script>
+    <script src="js/swxcQuery.js" type="text/javascript"></script>
+    <script src="js/myDate.js" type="text/javascript"></script>
+    <script src="js/myDateFlip.js" type="text/javascript"></script>
+    <script src="js/myDatei18n.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+
+        /* $(function(){
+         //            getSwxcList();
+
+         if($.mobile.activePage == undefined){
+         alert("undefined");
+         } else {
+         alert($.mobile.activePage.attr("id"));
+         }
+         })*/
+    </script>
+</head>
+<body>
+<div data-role="page" id="swxcQuery1">
+    <div data-role="header" data-theme="b">
+        <a href="index2.html" data-role="button" class="ui-btn-left" data-icon="arrow-l" data-ajax="false"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large;">三违现场查询</h1>
+    </div>
+
+    <div data-role="content">
+        <label for="startDate">开始日期:</label>
+        <input id="startDate" type="text" data-role="datebox"
+               data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>
+
+        <label for="endDate">结束日期:</label>
+        <input id="endDate" type="text" data-role="datebox"
+               data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getSwxcList()">查询</a>
+    </div>
+</div>
+
+<!-- 三违现场列表 -->
+<div data-role="page" id="swxcQuery2" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#swxcQuery1" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-ajax="false"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">三违现场查询</h1>
+    </div>
+
+    <div data-role="content">
+        <div id="swxcWrapper" class="wrapper">
+            <div id="swxcScroller" class="scroller">
+                <div id="swxcPullDown" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
+
+                <ul data-role="listview" id="swxcListview">
+                </ul>
+
+                <div id="swxcPullUp" class="pullUp">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
