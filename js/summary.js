@@ -3,7 +3,7 @@
  * Created by lh on 14-2-27.
  */
 
-var serverPath = "http://192.168.1.105:8080/DataService/";
+var serverPath = "http://localhost:8080/DataService/";
 var pageSize = 15, pageNo = 1;
 var summaryScroll1, summaryScroll2, summaryScroll3, summaryScroll4, summaryScroll5,
     summaryScroll6, summaryScroll7, summaryScroll8, summaryScroll9, summaryScroll10,
@@ -908,18 +908,21 @@ function getZbdbldData(flag) {
         loading == true;
 
         var date = new Date();
+        if (flag.id == "mt") {
+            date.setDate(date.getDate() + 1);
+        }
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
         var day = date.getDate();
 
-        // 今天
-        if (flag.id == "jt") {
+        /*  // 今天
+         if (flag.id == "jt") {
         }
 
         // 明天
         if (flag.id == "mt") {
             day = date.getDate() + 1;
-        }
+         }*/
 
         if (month < 10) {
             month = "0" + month;
