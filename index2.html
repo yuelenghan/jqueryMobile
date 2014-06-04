@@ -1,213 +1,213 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-    <title>jQuery Mobile Web 应用程序</title>
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+<title>jQuery Mobile Web 应用程序</title>
 
-    <!-- css -->
-    <link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
-    <link href="css/my.css" rel="stylesheet" type="text/css"/>
-    <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
-    <link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
+<!-- css -->
+<link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/my.css" rel="stylesheet" type="text/css"/>
+<link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
 
-    <!-- js -->
+<!-- js -->
 
-    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
-    <script src="js/iscroll.js" type="text/javascript"></script>
-    <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
-    <script src="js/aqyh.js" type="text/javascript"></script>
-    <script src="js/login.js" type="text/javascript"></script>
+<script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
+<script src="js/iscroll.js" type="text/javascript"></script>
+<script src="js/jquery.toastmessage.js" type="text/javascript"></script>
+<script src="js/aqyh.js" type="text/javascript"></script>
+<script src="js/login.js" type="text/javascript"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        var loading = false;
+    var loading = false;
 
-        $(function () {
-            $.ajax({
-                url: serverPath + "yhEnter/pcPerson",
-                dataType: "jsonp",
-                type: "post",
-                jsonpCallback: "pcPerson",
-                success: function (data) {
-                    if (data != undefined && data != null && data != "null") {
-                        $("#loginUser").text("欢迎：" + data.personName);
-                    }
-                },
-                error: function () {
-                    alert("error!");
+    $(function () {
+        $.ajax({
+            url: serverPath + "yhEnter/pcPerson",
+            dataType: "jsonp",
+            type: "post",
+            jsonpCallback: "pcPerson",
+            success: function (data) {
+                if (data != undefined && data != null && data != "null") {
+                    $("#loginUser").text("欢迎：" + data.personName);
                 }
-            });
+            },
+            error: function () {
+                alert("error!");
+            }
         });
+    });
 
-        function getZbdbld() {
-            if (loading == false) {
-                var date = new Date();
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                var day = date.getDate();
+    function getZbdbld() {
+        if (loading == false) {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
 
-                if (month < 10) {
-                    month = "0" + month;
-                }
-                if (day < 10) {
-                    day = "0" + day;
-                }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (day < 10) {
+                day = "0" + day;
+            }
 
-                var curDate = year + "-" + month + "-" + day;
+            var curDate = year + "-" + month + "-" + day;
 
 //            alert(curDate);
 
-                var testDate = "2013-10-22";
+            var testDate = "2013-10-22";
 
-                $.mobile.loading("show", {text: "正在获取...", textVisible: true});
-                loading = true;
+            $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+            loading = true;
 
-                $.ajax({
-                    url: "http://192.168.1.105:8080/DataService/summary/zbdbld/date/" + testDate,
-                    dataType: "jsonp",
-                    type: "post",
-                    timeout: 10000,
-                    jsonpCallback: "zbdbld",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            $.mobile.changePage("zbdbld.html");
+            $.ajax({
+                url: "http://10.1.168.50:8080/DataService/summary/zbdbld/date/" + curDate,
+                dataType: "jsonp",
+                type: "post",
+                timeout: 10000,
+                jsonpCallback: "zbdbld",
+                success: function (data) {
+                    if (data != undefined && data != null && data.length > 0) {
+                        $.mobile.changePage("zbdbld.html");
 
-                            setTimeout(function () {
-                                $("#zbdbld-result tbody").html("");
+                        setTimeout(function () {
+                            $("#zbdbld-result tbody").html("");
 
-                                for (var i = 0; i < data.length; i++) {
+                            for (var i = 0; i < data.length; i++) {
 
-                                    var tableStr = "<tr>";
-                                    tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
-                                    tableStr += "<td colspan='2'>值班</td>";
-                                    tableStr += "<td>" + data[i].detail + "</td></tr>";
+                                var tableStr = "<tr>";
+                                tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
+                                tableStr += "<td colspan='2'>值班</td>";
+                                tableStr += "<td>" + data[i].detail + "</td></tr>";
 
-                                    tableStr += "<tr>";
-                                    tableStr += "<td rowspan='3'>带班</td>";
-                                    tableStr += "<td>夜班</td>";
-                                    tableStr += "<td>" + data[i].yb + "</td></tr>";
+                                tableStr += "<tr>";
+                                tableStr += "<td rowspan='3'>带班</td>";
+                                tableStr += "<td>夜班</td>";
+                                tableStr += "<td>" + data[i].yb + "</td></tr>";
 
-                                    tableStr += "<tr>";
-                                    tableStr += "<td>早班</td>";
-                                    tableStr += "<td>" + data[i].zb + "</td></tr>";
+                                tableStr += "<tr>";
+                                tableStr += "<td>早班</td>";
+                                tableStr += "<td>" + data[i].zb + "</td></tr>";
 
-                                    tableStr += "<tr>";
-                                    tableStr += "<td>中班</td>";
-                                    tableStr += "<td>" + data[i].zhb + "</td></tr>";
+                                tableStr += "<tr>";
+                                tableStr += "<td>中班</td>";
+                                tableStr += "<td>" + data[i].zhb + "</td></tr>";
 
-                                    $(tableStr).appendTo($("#zbdbld-result tbody"));
-                                }
+                                $(tableStr).appendTo($("#zbdbld-result tbody"));
+                            }
 
-                                // 刷新table, 否则隐藏coloumn功能不可用
-                                $("#zbdbld-result").table("refresh");
-                            }, 200);
+                            // 刷新table, 否则隐藏coloumn功能不可用
+                            $("#zbdbld-result").table("refresh");
+                        }, 200);
 
-                        } else {
-                            $().toastmessage('showToast', {
-                                text: '没有数据',
-                                sticky: false,
-                                position: 'middle-center',
-                                type: 'notice'
-                            });
-                        }
-
-                        $.mobile.loading("hide");
-                        loading = false;
-                    },
-                    error: function () {
-                        $.mobile.loading("hide");
-                        loading = false;
-
+                    } else {
                         $().toastmessage('showToast', {
-                            text: '访问服务器错误！',
+                            text: '没有数据',
                             sticky: false,
                             position: 'middle-center',
-                            type: 'error'
+                            type: 'notice'
                         });
                     }
-                });
-            }
 
+                    $.mobile.loading("hide");
+                    loading = false;
+                },
+                error: function () {
+                    $.mobile.loading("hide");
+                    loading = false;
+
+                    $().toastmessage('showToast', {
+                        text: '访问服务器错误！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
+                }
+            });
         }
 
-        function getAqgk() {
-            if (loading == false) {
-                var date = new Date();
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                var day = date.getDate();
+    }
 
-                if (month < 10) {
-                    month = "0" + month;
-                }
-                if (day < 10) {
-                    day = "0" + day;
-                }
+    function getAqgk() {
+        if (loading == false) {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
 
-                var curDate = year + "-" + month + "-" + day;
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (day < 10) {
+                day = "0" + day;
+            }
 
-                var testDate = "2013-10-22";
+            var curDate = year + "-" + month + "-" + day;
 
-                $.mobile.loading("show", {text: "正在获取...", textVisible: true});
-                loading = true;
+            var testDate = "2013-10-22";
 
-                $.ajax({
-                    url: "http://192.168.1.105:8080/DataService/aqgk/" + testDate,
-                    dataType: "jsonp",
-                    type: "post",
-                    timeout: 10000,
-                    jsonpCallback: "aqgk",
-                    success: function (data) {
-                        if (data != undefined && data != null && data.length > 0) {
-                            $.mobile.changePage("aqgk.html");
+            $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+            loading = true;
 
-                            setTimeout(function () {
-                                $("#aqgk-result tbody").html("");
+            $.ajax({
+                url: "http://localhost:8080/DataService/aqgk/" + curDate,
+                dataType: "jsonp",
+                type: "post",
+                timeout: 10000,
+                jsonpCallback: "aqgk",
+                success: function (data) {
+                    if (data != undefined && data != null && data.length > 0) {
+                        $.mobile.changePage("aqgk.html");
 
-                                for (var i = 0; i < data.length; i++) {
-                                    var tableStr = "<tr>";
-                                    tableStr += "<td>" + data[i].deptName + "</td>";
-                                    tableStr += "<td>" + data[i].yhAll + "</td>";
-                                    tableStr += "<td>" + data[i].swAll + "</td>";
-                                    tableStr += "<td>" + data[i].gpAll + "</td>";
-                                    tableStr += "</tr>";
+                        setTimeout(function () {
+                            $("#aqgk-result tbody").html("");
 
-                                    $(tableStr).appendTo($("#aqgk-result tbody"));
-                                }
+                            for (var i = 0; i < data.length; i++) {
+                                var tableStr = "<tr>";
+                                tableStr += "<td>" + data[i].deptName + "</td>";
+                                tableStr += "<td>" + data[i].yhAll + "</td>";
+                                tableStr += "<td>" + data[i].swAll + "</td>";
+                                tableStr += "<td>" + data[i].gpAll + "</td>";
+                                tableStr += "</tr>";
 
-                                // 刷新table, 否则隐藏coloumn功能不可用
-                                $("#aqgk-result").table("refresh");
-                            }, 200);
-                        } else {
-                            $().toastmessage('showToast', {
-                                text: '没有数据',
-                                sticky: false,
-                                position: 'middle-center',
-                                type: 'notice'
-                            });
-                        }
+                                $(tableStr).appendTo($("#aqgk-result tbody"));
+                            }
 
-                        $.mobile.loading("hide");
-                        loading = false;
-
-                    },
-                    error: function () {
-                        $.mobile.loading("hide");
-                        loading = false;
-
+                            // 刷新table, 否则隐藏coloumn功能不可用
+                            $("#aqgk-result").table("refresh");
+                        }, 200);
+                    } else {
                         $().toastmessage('showToast', {
-                            text: '访问服务器错误！',
+                            text: '没有数据',
                             sticky: false,
                             position: 'middle-center',
-                            type: 'error'
+                            type: 'notice'
                         });
                     }
-                });
-            }
 
+                    $.mobile.loading("hide");
+                    loading = false;
+
+                },
+                error: function () {
+                    $.mobile.loading("hide");
+                    loading = false;
+
+                    $().toastmessage('showToast', {
+                        text: '访问服务器错误！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'error'
+                    });
+                }
+            });
         }
-    </script>
+
+    }
+</script>
 </head>
 <body>
 

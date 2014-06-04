@@ -99,13 +99,6 @@
 
         <select id="zrdwSelect" onchange="selectZrdw(this)" data-mini="true" data-native-menu="false"></select>
 
-        <label for="pcbc">排查班次<span style="color: red">*</span></label>
-        <select id="pcbc" data-mini="true" data-native-menu="false">
-        <option value="早班">早班</option>
-            <option value="中班">中班</option>
-            <option value="夜班">夜班</option>
-        </select>
-
         <!--<label for="zgfs">整改方式<span style="color: red">*</span></label>
         <select id="zgfs" onchange="selectZgfs(this)" data-mini="true">
             <option value="现场整改">现场整改</option>
@@ -141,6 +134,13 @@
             <input id="pcTime" type="text" data-role="datebox"
                    data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>
 
+            <!-- 去掉排查班次，从入井信息获取 -->
+            <!--<label for="pcbc">排查班次<span style="color: red">*</span></label>
+            <select id="pcbc">
+                <option value="早班">早班</option>
+                <option value="中班">中班</option>
+                <option value="夜班">夜班</option>
+            </select>-->
 
             <!-- 隐藏排查人员 -->
             <!--<label for="pcPersonName">排查人员<span style="color: red">*</span></label>-->
@@ -183,25 +183,10 @@
 
             <label for="zgbcSelect">整改班次</label>
             <select id="zgbcSelect" data-mini="true" data-native-menu="false">
-            <option value="早班">早班</option>
+                <option value="早班">早班</option>
                 <option value="中班">中班</option>
                 <option value="夜班">夜班</option>
             </select>
-
-            <label for="fineTypeSelect">处罚类型<span style="color: red">*</span></label>
-            <select id="fineTypeSelect" data-mini="true" data-native-menu="false" onchange="selectFineType(this)">
-                <option value="0">不处罚</option>
-                <option value="1">责任单位</option>
-                <option value="2">责任人</option>
-                <option value="3">责任单位和责任人</option>
-            </select>
-
-            <div style="display: none" id="dwfkDiv">
-                <input id="dwfk" type="text" placeholder="单位罚款">
-            </div>
-            <div style="display: none" id="grfkDiv">
-                <input id="grfk" type="text" placeholder="个人罚款">
-            </div>
         </div>
 
         <a class="ui-shadow ui-btn ui-mini"

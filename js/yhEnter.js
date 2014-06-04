@@ -3,7 +3,7 @@
  * Created by Administrator on 2014/4/2.
  */
 
-var serverPath = "http://192.168.1.105:8080/DataService/";
+var serverPath = "http://192.168.1.123:8080/DataService/";
 var mainDeptId, loading = false;
 
 /**
@@ -466,17 +466,18 @@ function selectZrdw(selectVal) {
         timeout: 10000,
         jsonpCallback: "zrr",
         success: function (data) {
+            var select = $("#zrrSelect");
+            select.html("");
             if (data != undefined && data != null && data.length > 0) {
-                var select = $("#zrrSelect");
-                select.html("");
                 var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
                     selectStr += "<option value='" + data[i].personNumber + "'>" + data[i].name + "</option>";
 
                 }
                 $(selectStr).appendTo(select);
-                select.selectmenu('refresh', true);
+
             }
+            select.selectmenu('refresh', true);
         },
         error: function () {
 //            alert("error!");
@@ -518,16 +519,29 @@ function selectZgfs(selectVal) {
     }
 }
 
+function selectXczg() {
+    // 隐藏限期整改div
+    $("#xqzgDiv").hide();
+}
+
+function selectXqzg() {
+    // 显示限期整改div
+    $("#xqzgDiv").show();
+}
+
 /**
  * 提交隐患信息，插入数据库
  */
 function submitInfo() {
+    // 对于现场整改和限期整改数据录入时的区别, 前台不做处理, 在后台统一处理
+    // 现场整改只录入隐患依据、隐患描述、责任单位和排查班次
+    // 限期整改录入所有项
     if (confirm("确认提交？")) {
         if (loading == false) {
             var yhyj = $("#yhBasisValue").val();   // 隐患依据
             var yhjb = $("#yhLevelSelect").val();   // 隐患级别
             var yhlx = $("#yhTypeSelect").val();    // 隐患类型
-            var wxy = $("#hazardValue").val();     // 危险源
+//            var wxy = $("#hazardValue").val();     // 危险源
             var yhms = $("#yhContent").val();       // 隐患描述
             var zrdw = $("#zrdwSelect").val();      // 责任单位
             var zrr = $("#zrrSelect").val();        // 责任人
@@ -538,36 +552,81 @@ function submitInfo() {
             var pcry = $("#pcPersonNumber").val();  // 排查人员
             var pclx = $("#pcType").val();          // 排查类型
             var yhzy = $("#yhzySelect").val();      // 隐患专业
-            var zgfs = $("#zgfs").val();            // 整改方式
+            var zgfs = $('input[name="zgfs"]:checked').val();            // 整改方式
             var zgqx = $("#zgqx").val();            // 整改期限
             var zgbc = $("#zgbcSelect").val();      // 整改班次
+
+            // 现场整改不填写处罚类型
+            var fineType = 0;
+            var dwfk = 0;
+            var grfk = 0;
+
 
             if (yhyj == undefined || yhyj == null || yhyj == "") {
                 alert("请填写隐患依据！");
                 return;
             }
 
-            if (wxy == undefined || wxy == null || wxy == "") {
-                alert("请填写危险源！");
-                return;
-            }
+            /*if (wxy == undefined || wxy == null || wxy == "") {
+             alert("请填写危险源！");
+             return;
+             }*/
 
             if (yhms == undefined || yhms == null || yhms == "") {
                 alert("请填写隐患描述！");
                 return;
             }
-            if (pcdd == undefined || pcdd == null || pcdd == "") {
-                alert("请填写排查地点！");
-                return;
-            }
-            if (pcsj == undefined || pcsj == null || pcsj == "") {
-                alert("请填写排查时间！");
-                return;
-            }
+
             if (pcry == undefined || pcry == null || pcry == "") {
                 alert("排查人员无法获取，请登录！");
                 return;
             }
+
+            if (zgfs == "现场整改") {
+                if (pcdd == undefined || pcdd == null || pcdd == "") {
+                    pcdd = 0;
+                }
+            }
+
+            if (zgfs == "新增") {
+                if (pcdd == undefined || pcdd == null || pcdd == "") {
+                    alert("请填写排查地点！");
+                    return;
+                }
+                if (pcsj == undefined || pcsj == null || pcsj == "") {
+                    alert("请填写排查时间！");
+                    return;
+                }
+
+                // 得到处罚信息和罚款金额
+                fineType = $("#fineTypeSelect").val();
+                var intMatch = /^[1-9][0-9]*$/; // 金额正则表达式--正整数
+                if (fineType == 1) {
+                    dwfk = $("#dwfk").val();
+                    if (!intMatch.test(dwfk)) {
+                        alert("请填写正确的单位罚款金额! ");
+                        return;
+                    }
+                } else if (fineType == 2) {
+                    grfk = $("#grfk").val();
+                    if (!intMatch.test(grfk)) {
+                        alert("请填写正确的个人罚款金额! ");
+                        return;
+                    }
+                } else if (fineType == 3) {
+                    dwfk = $("#dwfk").val();
+                    grfk = $("#grfk").val();
+                    if (!intMatch.test(dwfk)) {
+                        alert("请填写正确的单位罚款金额! ");
+                        return;
+                    }
+                    if (!intMatch.test(grfk)) {
+                        alert("请填写正确的个人罚款金额! ");
+                        return;
+                    }
+                }
+            }
+
 
             if (mxdd == undefined || mxdd == null || mxdd == "") {
                 mxdd = "null";
@@ -577,7 +636,7 @@ function submitInfo() {
             }
 
 
-            /*   alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", wxy = " + wxy + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
+            /*alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
              + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
              + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
 
@@ -585,14 +644,14 @@ function submitInfo() {
             loading = true;
 
             $.ajax({
-                url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + wxy + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId,
+                url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId + "/" + fineType + "/" + dwfk + "/" + grfk,
                 dataType: "jsonp",
                 type: "post",
                 timeout: 10000,
                 jsonpCallback: "insertInfo",
                 success: function (data) {
                     if (data == "success") {
-//                        alert("录入成功！")
+                        //                        alert("录入成功！")
                         $().toastmessage('showToast', {
                             text: '录入成功！',
                             sticky: false,
@@ -600,7 +659,7 @@ function submitInfo() {
                             type: 'success'
                         });
                     } else {
-//                        alert("录入失败！");
+                        //                        alert("录入失败！");
                         $().toastmessage('showToast', {
                             text: '录入失败！',
                             sticky: false,
@@ -615,7 +674,7 @@ function submitInfo() {
                 error: function () {
                     $.mobile.loading("hide");
                     loading = false;
-//                    alert("error!");
+                    //                    alert("error!");
                     $().toastmessage('showToast', {
                         text: '访问服务器错误！',
                         sticky: false,
@@ -1107,4 +1166,21 @@ function zrrFilter() {
 function selectDept(deptId) {
 //    alert(deptId);
     mainDeptId = deptId;
+}
+
+function selectFineType(selectVal) {
+//    alert(selectVal.value);
+    if (selectVal.value == 0) {
+        $("#dwfkDiv").hide();
+        $("#grfkDiv").hide();
+    } else if (selectVal.value == 1) {
+        $("#dwfkDiv").show();
+        $("#grfkDiv").hide();
+    } else if (selectVal.value == 2) {
+        $("#dwfkDiv").hide();
+        $("#grfkDiv").show();
+    } else if (selectVal.value == 3) {
+        $("#dwfkDiv").show();
+        $("#grfkDiv").show();
+    }
 }
