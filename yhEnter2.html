@@ -20,7 +20,7 @@
     <script src="js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
     <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
     <script src="js/iscroll.js" type="text/javascript"></script>
-    <script src="js/yhEnter.js" type="text/javascript"></script>
+    <script src="js/yhEnter2.js" type="text/javascript"></script>
     <script src="js/myDate.js" type="text/javascript"></script>
     <script src="js/myDateFlip.js" type="text/javascript"></script>
     <script src="js/myDatei18n.js" type="text/javascript"></script>
@@ -29,25 +29,31 @@
         /* document.addEventListener('touchmove', function (e) {
          e.preventDefault();
          }, false);*/
+
         initYhLevel();
         initYhType();
-        initPcPerson();
+        //        initPcPerson();
         initYhzy();
 
-        /*  $(function () {
-         var date = new Date();
-         var year = date.getFullYear();
-         var month = date.getMonth() + 1;
-         var day = date.getDate();
-         $("#pcTime").attr("value", year + "-" + month + "-" + day);
-         });*/
+        $(function () {
+            /*var date = new Date();
+             var year = date.getFullYear();
+             var month = date.getMonth() + 1;
+             var day = date.getDate();
+             $("#pcTime").attr("value", year + "-" + month + "-" + day);*/
+
+            /* var localStorage = window.localStorage;
+             alert(localStorage.getItem("mainDeptId"));*/
+
+            initPcPersonAndDept();
+        });
     </script>
 </head>
 <body>
 <!-- 隐患录入第一个页面 -->
 <div data-role="page" id="yhEnter1">
     <div data-role="header" data-theme="b">
-        <a href="enterMain.html" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+        <a href="irisData.html" data-role="button" class="ui-btn-left" data-icon="arrow-l" data-ajax="false"
            data-iconpos="notext"></a>
 
         <h1 style="font-size: large;">隐患录入</h1>
@@ -55,15 +61,6 @@
     </div>
 
     <div data-role="content">
-        <!--  <label for="deptNumber">部门编码</label>
-          <input type="text" id="deptNumber" placeholder="请输入部门编码进行查询">
-          <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
-             onclick="getYhBasis()">查询</a>-->
-        <div id="deptSelectDiv" style="display: none">
-            <label for="deptSelect">部门列表</label>
-            <select id="deptSelect" onchange="selectDept(this.value)"></select>
-        </div>
-
         隐患依据<span style="color: red">*</span>
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini" href="#yhyj-filter" data-transition="flip">获取隐患依据</a>
         <!--  <select id="yhBasisSelect" onchange="selectBasis(this)"></select>-->
@@ -130,9 +127,10 @@
             <label for="placeDetail">明细地点</label>
             <textarea id="placeDetail" type="text"></textarea>
 
-            <label for="pcTime">排查时间<span style="color: red">*</span></label>
+            <!-- 去掉排查时间, 从入井信息获取 -->
+            <!--<label for="pcTime">排查时间<span style="color: red">*</span></label>
             <input id="pcTime" type="text" data-role="datebox"
-                   data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>
+                   data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>-->
 
             <!-- 去掉排查班次，从入井信息获取 -->
             <!--<label for="pcbc">排查班次<span style="color: red">*</span></label>
@@ -144,8 +142,8 @@
 
             <!-- 隐藏排查人员 -->
             <!--<label for="pcPersonName">排查人员<span style="color: red">*</span></label>-->
-            <input id="pcPersonName" type="hidden" readonly="true">
-            <input id="pcPersonNumber" type="hidden">
+            <!--<input id="pcPersonName" type="hidden" readonly="true">
+            <input id="pcPersonNumber" type="hidden">-->
 
             <label for="pcType">排查类型<span style="color: red">*</span></label>
             <select id="pcType" onchange="selectPcType(this)" data-mini="true" data-native-menu="false">
@@ -187,6 +185,22 @@
                 <option value="中班">中班</option>
                 <option value="夜班">夜班</option>
             </select>
+
+            <!-- 罚款信息 -->
+            <label for="fineTypeSelect">处罚类型<span style="color: red">*</span></label>
+            <select id="fineTypeSelect" data-mini="true" data-native-menu="false" onchange="selectFineType(this)">
+                <option value="0">不处罚</option>
+                <option value="1">责任单位</option>
+                <option value="2">责任人</option>
+                <option value="3">责任单位和责任人</option>
+            </select>
+
+            <div style="display: none" id="dwfkDiv">
+                <input id="dwfk" type="text" placeholder="单位罚款">
+            </div>
+            <div style="display: none" id="grfkDiv">
+                <input id="grfk" type="text" placeholder="个人罚款">
+            </div>
         </div>
 
         <a class="ui-shadow ui-btn ui-mini"

@@ -4,7 +4,7 @@
  */
 
 var serverPath = "http://192.168.1.123:8080/DataService/";
-var mainDeptId, loading = false;
+var mainDeptId, loading = false, personNumber;
 
 /**
  * 初始化隐患级别
@@ -93,75 +93,12 @@ function initYhType() {
 /**
  * 初始化排查人员和部门（登录人员）
  */
-function initPcPerson() {
-    $.ajax({
-        url: serverPath + "yhEnter/pcPerson",
-        dataType: "jsonp",
-        type: "post",
-        timeout: 10000,
-        jsonpCallback: "pcPerson",
-        success: function (data) {
-            if (data != undefined && data != null && data != "null") {
-//                alert(data.personNumber + "," + data.personName);
-                $("#pcPersonNumber").val(data.personNumber);
-                $("#pcPersonName").val(data.personName);
+function initPcPersonAndDept() {
+    var localStorage = window.localStorage;
+    personNumber = localStorage.getItem("personNumber");
+    mainDeptId = localStorage.getItem("mainDeptId");
 
-                // 登录人员为领导，初始化部门列表
-                if (data.roleLevel == 1) {
-                    $.ajax({
-                        url: serverPath + "yhEnter/department",
-                        dataType: "jsonp",
-                        type: "post",
-                        timeout: 10000,
-                        jsonpCallback: "department",
-                        success: function (data) {
-                            if (data != undefined && data != null && data.length > 0) {
-                                var select = $("#deptSelect");
-                                select.html("");
-                                var selectStr = "";
-                                for (var i = 0; i < data.length; i++) {
-                                    selectStr += "<option value='" + data[i].deptNumber + "'>" + data[i].deptName + "</option>";
-                                }
-                                $(selectStr).appendTo(select);
-                                select.selectmenu('refresh', true);
-
-                                mainDeptId = select.val();
-
-                                // 显示部门列表
-                                $("#deptSelectDiv").show();
-                            }
-                        },
-                        error: function () {
-//                            alert("error!");
-                            $().toastmessage('showToast', {
-                                text: '访问服务器错误！',
-                                sticky: false,
-                                position: 'middle-center',
-                                type: 'error'
-                            });
-                        }
-                    });
-                } else {
-                    // 初始化隐患依据
-                    mainDeptId = data.mainDeptId;
-//                    window.localStorage.setItem("mainDeptId", mainDeptId);
-//                    getYhBasis(mainDeptId);
-                    // 隐藏部门列表
-                    $("#deptSelectDiv").hide();
-                }
-            }
-        },
-        error: function () {
-//            alert("error!");
-            $().toastmessage('showToast', {
-                text: '访问服务器错误！',
-                sticky: false,
-                position: 'middle-center',
-                type: 'error'
-            });
-        }
-    });
-
+//    alert("mainDeptId = " + mainDeptId + ", personNumber = " + personNumber + ", personName = " + personName);
 }
 
 /**
@@ -197,7 +134,6 @@ function initYhzy() {
         }
     });
 }
-
 
 /**
  * 根据选择的责任单位初始化责任人
@@ -295,14 +231,16 @@ function submitInfo() {
             var zrr = $("#zrrSelect").val();        // 责任人
             var pcdd = $("#placeSelect").val();     // 排查地点
             var mxdd = $("#placeDetail").val();     // 明细地点
-            var pcsj = $("#pcTime").val();          // 排查时间
-            var pcbc = $("#pcbc").val();            // 排查班次
-            var pcry = $("#pcPersonNumber").val();  // 排查人员
+            var pcsj = window.localStorage.getItem("pcsj");         // 排查时间
+            var pcbc = window.localStorage.getItem("banci");   // 排查班次
+            var pcry = personNumber;  // 排查人员
             var pclx = $("#pcType").val();          // 排查类型
             var yhzy = $("#yhzySelect").val();      // 隐患专业
             var zgfs = $('input[name="zgfs"]:checked').val();            // 整改方式
             var zgqx = $("#zgqx").val();            // 整改期限
             var zgbc = $("#zgbcSelect").val();      // 整改班次
+
+            var rjid = window.localStorage.getItem("rjid");
 
             // 现场整改不填写处罚类型
             var fineType = 0;
@@ -384,7 +322,7 @@ function submitInfo() {
             }
 
 
-            /*alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
+            /* alert("yhyj = " + yhyj + ", yhjb = " + yhjb + ", yhlx = " + yhlx + ", yhms = " + yhms + ", zrdw = " + zrdw + ", zrr = " + zrr
              + ", pcdd = " + pcdd + ", mxdd = " + mxdd + ", pcsj = " + pcsj + ", pcbc = " + pcbc + ", pcry = " + pcry + ", pclx = " + pclx
              + ", yhzy = " + yhzy + ", zgfs = " + zgfs + ", zgqx = " + zgqx + ", zgbc = " + zgbc);*/
 
@@ -392,7 +330,7 @@ function submitInfo() {
             loading = true;
 
             $.ajax({
-                url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId + "/" + fineType + "/" + dwfk + "/" + grfk + "/" + 0,
+                url: serverPath + "yhEnter/insertInfo/" + yhyj + "/" + yhjb + "/" + yhlx + "/" + yhms + "/" + zrdw + "/" + zrr + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + pcry + "/" + pclx + "/" + zgfs + "/" + zgqx + "/" + zgbc + "/" + yhzy + "/" + mainDeptId + "/" + fineType + "/" + dwfk + "/" + grfk + "/" + rjid,
                 dataType: "jsonp",
                 type: "post",
                 timeout: 10000,
@@ -909,11 +847,6 @@ function zrrFilter() {
         });
     }
 
-}
-
-function selectDept(deptId) {
-//    alert(deptId);
-    mainDeptId = deptId;
 }
 
 function selectFineType(selectVal) {

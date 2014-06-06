@@ -61,7 +61,7 @@
              onclick="getYhBasis()">查询</a>-->
         <div id="deptSelectDiv" style="display: none">
             <label for="deptSelect">部门列表</label>
-            <select id="deptSelect" onchange="selectDept(this.value)"></select>
+            <select id="deptSelect" onchange="selectDept(this.value)" data-native-menu="false"></select>
         </div>
 
         隐患依据<span style="color: red">*</span>
@@ -188,6 +188,7 @@
                 <option value="夜班">夜班</option>
             </select>
 
+            <!-- 罚款信息 -->
             <label for="fineTypeSelect">处罚类型<span style="color: red">*</span></label>
             <select id="fineTypeSelect" data-mini="true" data-native-menu="false" onchange="selectFineType(this)">
                 <option value="0">不处罚</option>

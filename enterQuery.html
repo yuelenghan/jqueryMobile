@@ -35,24 +35,24 @@
 
     <div data-role="content">
         <label for="target">选择查询目标</label>
-        <select id="target" onchange="selectTarget(this.value)">
-            <option value="yh">隐患</option>
+        <select id="target" onchange="selectTarget(this.value)" data-native-menu="false">
+        <option value="yh">隐患</option>
             <option value="sw">三违</option>
         </select>
 
         <label for="banci">班次</label>
-        <select id="banci">
-            <option value='null'>--全部--</option>
+        <select id="banci" data-native-menu="false">
+        <option value='null'>--全部--</option>
             <option value="早班">早班</option>
             <option value="中班">中班</option>
             <option value="夜班">夜班</option>
         </select>
 
         <label for="level">等级</label>
-        <select id="level"></select>
+        <select id="level" data-native-menu="false"></select>
 
         <label for="type">类型</label>
-        <select id="type"></select>
+        <select id="type" data-native-menu="false"></select>
 
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" onclick="query()">查询</a>
 
