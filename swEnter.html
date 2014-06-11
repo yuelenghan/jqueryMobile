@@ -75,75 +75,130 @@
 
         <div id="deptSelectDiv" style="display: none">
             <label for="deptSelect">部门列表</label>
-            <select id="deptSelect" onchange="selectDept(this.value)"></select>
+            <select id="deptSelect" onchange="selectDept(this.value)" data-native-menu="false"
+                    data-mini="true"></select>
         </div>
 
-        <label for="swBasisText">三违依据<span style="color: red">*</span></label>
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" href="#swyj-filter" data-transition="flip">获取三违依据</a>
-        <input type="text" id="swBasisText" readonly="true">
+        三违依据<span style="color: red">*</span>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini" href="#swyj-filter" data-transition="flip">获取三违依据</a>
+        <textarea id="swBasisText" readonly="readonly"></textarea>
         <input type="hidden" id="swBasisValue">
         <!-- <select id="swBasisSelect" onchange="selectBasis(this)"></select>-->
 
         <label for="swLevelSelect">三违性质<span style="color: red">*</span></label>
-        <select id="swLevelSelect"></select>
+        <select id="swLevelSelect" data-native-menu="false" data-mini="true"></select>
 
         <label for="swTypeSelect">三违类型<span style="color: red">*</span></label>
-        <select id="swTypeSelect"></select>
+        <select id="swTypeSelect" data-native-menu="false" data-mini="true"></select>
 
         <label for="swProSelect">三违专业<span style="color: red">*</span></label>
-        <select id="swProSelect"></select>
+        <select id="swProSelect" data-native-menu="false" data-mini="true"></select>
 
-        <label for="hazardText">危险源<span style="color: red">*</span></label>
+        <!--<label for="hazardText">危险源<span style="color: red">*</span></label>
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" href="#wxy-filter"
            data-transition="flip">获取危险源</a>
         <input type="text" id="hazardText" readonly="true">
-        <input type="hidden" id="hazardValue">
+        <input type="hidden" id="hazardValue">-->
 
         <label for="swContent">三违描述<span style="color: red">*</span></label>
         <textarea id="swContent"></textarea>
 
-        <label for="swryName">三违人员<span style="color: red">*</span></label>
+        三违人员<span style="color: red">*</span>
         <!--<input id="querySwry" placeholder="请输入人员姓名进行查询">-->
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline" onclick="getSwry()">获取三违人员</a>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini" onclick="getSwry()">获取三违人员</a>
         <!-- <select id="swry"></select>-->
         <input type="text" id="swryName" readonly="true">
         <input type="hidden" id="swryNumber">
 
-        <label for="pcPersonName">排查人员<span style="color: red">*</span></label>
-        <input id="pcPersonName" type="text" readonly="true">
+        <!--<label for="pcPersonName">排查人员<span style="color: red">*</span></label>-->
+        <input id="pcPersonName" type="hidden" readonly="true">
         <input id="pcPersonNumber" type="hidden">
 
-        <label for="placeSelect">排查地点<span style="color: red">*</span></label>
-        <input type="text" placeholder="可以输入条件对排查地点进行过滤" id="placeFilter">
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+        排查地点<span style="color: red">*</span>
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini ui-btn-icon-notext ui-icon-search"
            onclick="filterPlace()">过滤</a>
-        <select id="placeSelect"></select>
+        <input type="search" placeholder="可以输入条件对排查地点进行过滤" id="placeFilter">
+
+        <select id="placeSelect" data-native-menu="false" data-mini="true"></select>
 
         <label for="placeDetail">明细地点</label>
-        <input id="placeDetail" type="text">
+        <textarea id="placeDetail"></textarea>
 
         <label for="pcTime">排查时间<span style="color: red">*</span></label>
         <input id="pcTime" type="text" data-role="datebox"
                data-options='{"mode": "flipbox","useImmediate":true, "useButton": false, "useFocus": true, "useInlineBlind": true}'>
 
         <label for="pcbc">排查班次<span style="color: red">*</span></label>
-        <select id="pcbc">
-            <option value="早班">早班</option>
+        <select id="pcbc" data-native-menu="false" data-mini="true">
+        <option value="早班">早班</option>
             <option value="中班">中班</option>
             <option value="夜班">夜班</option>
         </select>
 
 
         <label for="jcType">检查方式<span style="color: red">*</span></label>
-        <select id="jcType">
-            <option value="1">区队自查</option>
+        <select id="jcType" data-native-menu="false" data-mini="true">
+        <option value="1">区队自查</option>
             <option value="2">职能科室</option>
             <option value="3" selected="selected">安检部门</option>
             <option value="4">矿领导</option>
             <option value="5">公司部室</option>
         </select>
 
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+        <button class="ui-btn ui-corner-all ui-mini" onclick="getSwFineSet()">获取处罚信息</button>
+
+        <fieldset data-role="controlgroup" data-type="horizontal">
+            <label for="dwjf">单位积分</label>
+            <input type="checkbox" id="dwjf" onchange="checkDwjf()" data-mini="true">
+
+            <label for="dwfk">单位罚款</label>
+            <input type="checkbox" id="dwfk" onchange="checkDwfk()" data-mini="true">
+
+
+            <label for="grjf">个人积分</label>
+            <input type="checkbox" id="grjf" onchange="checkGrjf()" data-mini="true">
+
+
+            <label for="grfk">个人罚款</label>
+            <input type="checkbox" id="grfk" onchange="checkGrfk()" data-mini="true">
+
+
+            <label for="jbxx">进班学习</label>
+            <input type="checkbox" id="jbxx" onchange="checkJbxx()" data-mini="true">
+
+            <label for="dismiss">解除劳动合同</label>
+            <input type="checkbox" id="dismiss" data-mini="true">
+        </fieldset>
+
+        <br>
+
+        <div style="display: none" id="dwjfDiv">
+            <label for="dwjfValue">单位积分</label>
+            <input type="text" id="dwjfValue" placeholder="单位积分" data-mini="true">
+        </div>
+
+        <div style="display: none" id="dwfkDiv">
+            <label for="dwfkValue">单位罚款</label>
+            <input type="text" id="dwfkValue" placeholder="单位罚款" data-mini="true">
+        </div>
+
+        <div style="display: none" id="grjfDiv">
+            <label for="grjfValue">个人积分</label>
+            <input type="text" id="grjfValue" placeholder="个人积分" data-mini="true">
+        </div>
+
+        <div style="display: none" id="grfkDiv">
+            <label for="grfkValue">个人罚款</label>
+            <input type="text" id="grfkValue" placeholder="个人罚款" data-mini="true">
+        </div>
+
+        <div style="display: none" id="jbxxDiv">
+            <label for="jbxxValue">进班学习</label>
+            <input type="text" id="jbxxValue" placeholder="进班学习" data-mini="true">
+        </div>
+
+
+        <a class="ui-shadow ui-btn ui-mini"
            onclick="submitInfo()">提交</a>
     </div>
 </div>
@@ -155,18 +210,18 @@
 
     <div data-role="content">
         <label for="swyjLevel">三违性质</label>
-        <select id="swyjLevel"></select>
+        <select id="swyjLevel" data-native-menu="false" data-mini="true"></select>
 
-        <label for="swyjText">文字描述</label>
-        <input type="text" placeholder="可以输入条件对三违依据进行过滤" id="swyjText">
-
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+        文字描述
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini ui-btn-icon-notext ui-icon-search"
            onclick="filterSwyj()">过滤</a>
+        <input type="search" placeholder="可以输入条件对三违依据进行过滤" id="swyjText">
+
 
         <label for="swyjList">过滤结果</label>
-        <select id="swyjList"></select>
+        <select id="swyjList" data-native-menu="false" data-mini="true"></select>
 
-        <a class="ui-shadow ui-btn"
+        <a class="ui-shadow ui-btn ui-mini"
            onclick="returnSwyj()">确定</a>
     </div>
 </div>
@@ -208,19 +263,19 @@
 
     <div data-role="content">
         <label for="deptList">部门</label>
-        <select id="deptList">
+        <select id="deptList" data-native-menu="false" data-mini="true">
         </select>
 
-        <label for="swryText">姓名</label>
-        <input type="text" placeholder="可以输入姓名或简称进行过滤" id="swryText">
-
-        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline"
+        姓名
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini ui-btn-icon-notext ui-icon-search"
            onclick="filterSwry()">过滤</a>
+        <input type="search" placeholder="可以输入姓名或简称进行过滤" id="swryText">
+
 
         <label for="swryList">过滤结果</label>
-        <select id="swryList"></select>
+        <select id="swryList" data-native-menu="false" data-mini="true"></select>
 
-        <a class="ui-shadow ui-btn"
+        <a class="ui-shadow ui-btn ui-mini"
            onclick="returnSwry()">确定</a>
     </div>
 </div>

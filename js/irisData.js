@@ -1,7 +1,7 @@
 /**
  * Created by lihe on 14-6-5.
  */
-var serverPath = "http://192.168.1.123:8080/DataService/";
+var serverPath = "http://10.1.168.50:8080/DataService/";
 var personData;
 var mainDeptId, loading = false;
 
@@ -156,6 +156,11 @@ function confirmInfo() {
                 var key = $("#irisDataSelect").val();
                 var kqType = $("#kqType").val();
 //        alert(key);
+
+                if (key == undefined || key == null || key == "") {
+                    alert("请选择虹膜数据! ");
+                    return;
+                }
 
                 $.mobile.loading("show", {text: "正在录入...", textVisible: true});
                 loading = true;

@@ -3,7 +3,7 @@
  * Created by Administrator on 2014/4/10.
  */
 
-var serverPath = "http://10.1.168.50:8080/DataService/";
+var serverPath = "http://192.168.1.123:8080/DataService/";
 var mainDeptId;
 var loading = false;
 
@@ -169,7 +169,7 @@ function initDeptList() {
             if (data != undefined && data != null && data.length > 0) {
                 var select = $("#deptList");
                 select.html("");
-                var selectStr = "<option value='null'>--全部--</option>";
+                var selectStr = "";
                 for (var i = 0; i < data.length; i++) {
                     selectStr += "<option value='" + data[i].deptNumber + "'>" + data[i].deptName + "</option>";
                 }
@@ -428,7 +428,7 @@ function submitInfo() {
             var swxz = $("#swLevelSelect").val();   // 三违性质
             var swlx = $("#swTypeSelect").val();    // 三违类型
             var swzy = $("#swProSelect").val();     // 三违专业
-            var wxy = $("#hazardValue").val();     // 危险源
+//            var wxy = $("#hazardValue").val();     // 危险源
             var swms = $("#swContent").val();       // 三违描述
             var swry = $("#swryNumber").val();            // 三违人员
             var pcry = $("#pcPersonNumber").val();  // 排查人员
@@ -438,14 +438,72 @@ function submitInfo() {
             var pcbc = $("#pcbc").val();            // 排查班次
             var jcfs = $("#jcType").val();          // 检查方式
 
+            var dwjf = $("#dwjf").is(":checked");
+            var dwfk = $("#dwfk").is(":checked");
+            var grjf = $("#grjf").is(":checked");
+            var grfk = $("#grfk").is(":checked");
+            var jbxx = $("#jbxx").is(":checked");
+            var dismiss = $("#dismiss").is(":checked");
+            /*alert("单位积分 : " + dwjf + ", 单位罚款 : " + dwfk + ", 个人积分 : " + grjf +
+             ", 个人罚款 : " + grfk + ", 进班学习 : " + jbxx + ", 解除劳动合同 : " + dismiss);*/
+
+            var dwjfValue = $("#dwjfValue").val();
+            var dwfkValue = $("#dwfkValue").val();
+            var grjfValue = $("#grjfValue").val();
+            var grfkValue = $("#grfkValue").val();
+            var jbxxValue = $("#jbxxValue").val();
+
+            if (dwjfValue == undefined || dwjfValue == null || dwjfValue == "") {
+                dwjfValue = 0;
+            }
+            if (dwfkValue == undefined || dwfkValue == null || dwfkValue == "") {
+                dwfkValue = 0;
+            }
+            if (grjfValue == undefined || grjfValue == null || grjfValue == "") {
+                grjfValue = 0;
+            }
+            if (grfkValue == undefined || grfkValue == null || grfkValue == "") {
+                grfkValue = 0;
+            }
+            if (jbxxValue == undefined || jbxxValue == null || jbxxValue == "") {
+                jbxxValue = 0;
+            }
+
+            var intMatch = /0|(^[1-9][0-9]*$)/; // 正则表达式--0或正整数
+            if (!intMatch.test(dwjfValue)) {
+                alert("请填写正确的单位积分数据! ");
+                return;
+            }
+            if (!intMatch.test(dwfkValue)) {
+                alert("请填写正确的单位罚款数据! ");
+                return;
+            }
+            if (!intMatch.test(grjfValue)) {
+                alert("请填写正确的个人积分数据! ");
+                return;
+            }
+            if (!intMatch.test(grfkValue)) {
+                alert("请填写正确的个人罚款数据! ");
+                return;
+            }
+            if (!intMatch.test(jbxxValue)) {
+                alert("请填写正确的进班学习数据! ");
+                return;
+            }
+
+            /*   alert("单位积分 = " + dwjfValue + ", 单位罚款 = " + dwfkValue +
+             ", 个人积分 = " + grjfValue + ", 个人罚款 = " + grfkValue + ", 进班学习 = " + jbxxValue);
+
+             return;*/
+
             if (swyj == undefined || swyj == null || swyj == "") {
                 alert("请填写三违依据！");
                 return;
             }
-            if (wxy == undefined || wxy == null || wxy == "") {
-                alert("请填写危险源！");
+            /*if (wxy == undefined || wxy == null || wxy == "") {
+             alert("请填写危险源！");
                 return;
-            }
+             }*/
 
             if (swms == undefined || swms == null || swms == "") {
                 alert("请填写三违描述！");
@@ -481,7 +539,7 @@ function submitInfo() {
 
 
             $.ajax({
-                url: serverPath + "swEnter/insertInfo/" + swyj + "/" + swxz + "/" + swlx + "/" + swzy + "/" + wxy + "/" + swms + "/" + swry + "/" + pcry + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + jcfs + "/" + mainDeptId,
+                url: serverPath + "swEnter/insertInfo/" + swyj + "/" + swxz + "/" + swlx + "/" + swzy + "/" + swms + "/" + swry + "/" + pcry + "/" + pcdd + "/" + mxdd + "/" + pcsj + "/" + pcbc + "/" + jcfs + "/" + mainDeptId + "/" + dwjf + "/" + dwjfValue + "/" + dwfk + "/" + dwfkValue + "/" + grjf + "/" + grjfValue + "/" + grfk + "/" + grfkValue + "/" + jbxx + "/" + jbxxValue + "/" + dismiss,
                 dataType: "jsonp",
                 type: "post",
                 timeout: 10000,
@@ -915,10 +973,158 @@ function returnSwry() {
     var swryNumber = $("#swryList").val();
     var swryName = $("#swryList").find("option:selected").text();
 
+    var deptNumber = $("#deptList").val();
+    var deptName = $("#deptList").find("option:selected").text();
+
 //    alert(swryNumber + ", " + swryName);
 
     $.mobile.changePage("#swEnter1", {transition: "flip"});
 
-    $("#swryNumber").val(swryNumber);
-    $("#swryName").val(swryName);
+    $("#swryNumber").val(deptNumber + "@" + swryNumber);
+    $("#swryName").val(deptName + " -- " + swryName);
+}
+
+function checkDwjf() {
+    if ($("#dwjf").is(':checked')) {
+        $("#dwjfDiv").show();
+    } else {
+        $("#dwjfValue").val(0);
+        $("#dwjfDiv").hide();
+    }
+}
+
+function checkDwfk() {
+    if ($("#dwfk").is(':checked')) {
+        $("#dwfkDiv").show();
+    } else {
+        $("#dwfkValue").val(0);
+        $("#dwfkDiv").hide();
+    }
+}
+
+function checkGrjf() {
+    if ($("#grjf").is(':checked')) {
+        $("#grjfDiv").show();
+    } else {
+        $("#grjfValue").val(0);
+        $("#grjfDiv").hide();
+    }
+}
+
+function checkGrfk() {
+    if ($("#grfk").is(':checked')) {
+        $("#grfkDiv").show();
+    } else {
+        $("#grfkValue").val(0);
+        $("#grfkDiv").hide();
+    }
+}
+function checkJbxx() {
+    if ($("#jbxx").is(':checked')) {
+        $("#jbxxDiv").show();
+    } else {
+        $("#jbxxValue").val(0);
+        $("#jbxxDiv").hide();
+    }
+}
+
+function getSwFineSet() {
+    if (loading == false) {
+        var levelId = $("#swLevelSelect").val();
+        var jcType = $("#jcType").val();
+//    alert("mainDeptId = " + mainDeptId + ", levelId = " + levelId + ", jcType = " + jcType);
+
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "swEnter/fineSet/" + levelId + "/" + jcType + "/" + mainDeptId,
+            dataType: "jsonp",
+            type: "post",
+            timeout: 10000,
+            jsonpCallback: "fineSet",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].fineobject == 0) {
+                            // 单位处罚
+                            if (data[i].finetype == 0) {
+                                // 单位积分
+                                $("#dwjf").checkboxradio("disable");
+                                $("#dwjf").attr("checked", true).checkboxradio("refresh");
+                                $("#dwjfDiv").show();
+                                $("#dwjfValue").val(data[i].fine);
+                            } else if (data[i].finetype == 1) {
+                                // 单位罚款
+                                $("#dwfk").checkboxradio("disable");
+                                $("#dwfk").attr("checked", true).checkboxradio("refresh");
+                                $("#dwfkDiv").show();
+                                $("#dwfkValue").val(data[i].fine);
+                            } else {
+                                $().toastmessage('showToast', {
+                                    text: '对单位的处罚类型错误！处罚类型为 : ' + data[i].finetype,
+                                    sticky: false,
+                                    position: 'middle-center',
+                                    type: 'error'
+                                });
+                            }
+                        } else if (data[i].fineobject == 1) {
+                            // 个人处罚
+                            if (data[i].finetype == 0) {
+                                // 个人积分
+                                $("#grjf").checkboxradio("disable");
+                                $("#grjf").attr("checked", true).checkboxradio("refresh");
+                                $("#grjfDiv").show();
+                                $("#grjfValue").val(data[i].fine);
+                            } else if (data[i].finetype == 1) {
+                                // 个人罚款
+                                $("#grfk").checkboxradio("disable");
+                                $("#grfk").attr("checked", true).checkboxradio("refresh");
+                                $("#grfkDiv").show();
+                                $("#grfkValue").val(data[i].fine);
+                            } else if (data[i].finetype == 2) {
+                                //  进班学习
+                                $("#jbxx").checkboxradio("disable");
+                                $("#jbxx").attr("checked", true).checkboxradio("refresh");
+                                $("#jbxxDiv").show();
+                                $("#jbxxValue").val(data[i].fine);
+                            } else if (data[i].finetype == 3) {
+                                // 解除劳动合同
+                                $("#dismiss").attr("checked", true).checkboxradio("refresh");
+                            }
+                        } else {
+                            $().toastmessage('showToast', {
+                                text: '处罚对象错误！处罚对象为 : ' + data[i].fineobject,
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'error'
+                            });
+                        }
+                    }
+                } else {
+                    $().toastmessage('showToast', {
+                        text: '没有处罚信息数据！',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'warning'
+                    });
+                }
+
+                $.mobile.loading("hide");
+                loading = false;
+            },
+            error: function () {
+                $.mobile.loading("hide");
+                loading = false;
+//                alert("error!");
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
+            }
+        });
+    }
+
 }

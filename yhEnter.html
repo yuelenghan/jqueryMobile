@@ -61,13 +61,14 @@
              onclick="getYhBasis()">查询</a>-->
         <div id="deptSelectDiv" style="display: none">
             <label for="deptSelect">部门列表</label>
-            <select id="deptSelect" onchange="selectDept(this.value)" data-native-menu="false"></select>
+            <select id="deptSelect" onchange="selectDept(this.value)" data-native-menu="false"
+                    data-mini="true"></select>
         </div>
 
         隐患依据<span style="color: red">*</span>
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini" href="#yhyj-filter" data-transition="flip">获取隐患依据</a>
         <!--  <select id="yhBasisSelect" onchange="selectBasis(this)"></select>-->
-        <textarea id="yhBasisText" readonly="true"></textarea>
+        <textarea id="yhBasisText" readonly="readonly"></textarea>
         <!--<input type="text" id="yhBasisText" readonly="true">-->
         <input type="hidden" id="yhBasisValue">
 
@@ -101,7 +102,7 @@
 
         <label for="pcbc">排查班次<span style="color: red">*</span></label>
         <select id="pcbc" data-mini="true" data-native-menu="false">
-        <option value="早班">早班</option>
+            <option value="早班">早班</option>
             <option value="中班">中班</option>
             <option value="夜班">夜班</option>
         </select>
@@ -135,7 +136,7 @@
             <select id="placeSelect" data-mini="true" data-native-menu="false"></select>
 
             <label for="placeDetail">明细地点</label>
-            <textarea id="placeDetail" type="text"></textarea>
+            <textarea id="placeDetail"></textarea>
 
             <label for="pcTime">排查时间<span style="color: red">*</span></label>
             <input id="pcTime" type="text" data-role="datebox"
@@ -183,7 +184,7 @@
 
             <label for="zgbcSelect">整改班次</label>
             <select id="zgbcSelect" data-mini="true" data-native-menu="false">
-            <option value="早班">早班</option>
+                <option value="早班">早班</option>
                 <option value="中班">中班</option>
                 <option value="夜班">夜班</option>
             </select>
