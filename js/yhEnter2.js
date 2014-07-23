@@ -3,7 +3,7 @@
  * Created by Administrator on 2014/4/2.
  */
 
-var serverPath = "http://10.1.168.50:8080/DataService/";
+var serverPath = "/DataService/";
 var mainDeptId, loading = false, personNumber;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Created by lihe on 14-6-5.
  */
-var serverPath = "http://10.1.168.50:8080/DataService/";
+var serverPath = "/DataService/";
 var personData;
 var mainDeptId, loading = false;
 

@@ -3,7 +3,7 @@
  * Created by lh on 14-2-27.
  */
 
-var serverPath = "http://10.1.168.50:8080/DataService/";
+var serverPath = "/DataService/";
 var pageSize = 15, pageNo = 1;
 var summaryScroll1, summaryScroll2, summaryScroll3, summaryScroll4, summaryScroll5,
     summaryScroll6, summaryScroll7, summaryScroll8, summaryScroll9, summaryScroll10,
