@@ -215,7 +215,7 @@ function swxcPullUpAction() {
 }
 
 function gotoSwxcDetail(item) {
-    var url = "http://10.1.168.51/YSNewSearch/SwView.aspx?Swid=" + item.id;
+    var url = "http://58.242.43.42:8012/YSNewSearch/SwView.aspx?Swid=" + item.id;
     window.location.href = url;
 //    window.open(url);
 

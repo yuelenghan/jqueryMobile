@@ -66,6 +66,8 @@
             <li><a href="#swxxcx1">三违信息查询</a></li>
             <li><a href="#yhfltjcx1">隐患分类统计</a></li>
             <li><a href="#yhxxzhcx1">隐患信息综合查询</a></li>
+            <li><a onclick="getOutPutData()">产量查询</a></li>
+            <li><a href="#wscx1">瓦斯查询</a></li>
         </ul>
     </div>
 </div>
@@ -991,6 +993,103 @@
 
                 <div id="summaryPullUp13" class="pullUp">
                     <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第十四个查询统计 -->
+<!-- 产量查询 -->
+<div data-role="page" id="clcx" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">产量查询</h1>
+    </div>
+
+    <div data-role="content">
+        <table id="clcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+            <thead>
+            <tr>
+                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                <th data-priority="0">内容</th>
+                <th data-priority="0">日期</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 第十五个查询统计 -->
+<!-- 瓦斯查询1 -- 录入参数页面 -->
+<div data-role="page" id="wscx1" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">隐患信息综合查询</h1>
+    </div>
+
+    <div data-role="content">
+        <select id="mine-15" data-native-menu="false">
+            <option value="新集一矿">新集一矿</option>
+            <option value="新集二矿">新集二矿</option>
+            <option value="新集三矿">新集三矿</option>
+            <option value="刘庄矿">刘庄煤矿</option>
+            <option value="口孜东矿">口孜东矿</option>
+            <option value="板集矿">板集煤矿</option>
+            <option value="杨村矿">杨村煤矿</option>
+        </select>
+
+        <select id="type-15" data-native-menu="false">
+            <option value="CO">CO</option>
+            <option value="equip">设备</option>
+        </select>
+
+        <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
+           onclick="getWsData()">查询</a>
+    </div>
+</div>
+
+<!-- 瓦斯查询2 -- 查询结果页面 -->
+<div data-role="page" id="wscx2" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-iconpos="notext"></a>
+
+        <h1 style="font-size: large">瓦斯查询</h1>
+    </div>
+
+    <div data-role="content">
+        <div id="summaryWrapper15" class="wrapper">
+            <div id="summaryScroller15" class="scroller">
+                <div id="summaryPullDown15" class="pullDown">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
+
+                <table id="wscx-result" data-role="table" data-mode="columntoggle"
+                       class="ui-responsive table-stroke">
+                    <thead>
+                    <tr>
+                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        <th data-priority="0">分站</th>
+                        <th data-priority="1">类型</th>
+                        <th data-priority="0">描述</th>
+                        <th data-priority="0">值</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="summaryPullUp15" class="pullUp">
+                <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
                 </div>
             </div>
         </div>

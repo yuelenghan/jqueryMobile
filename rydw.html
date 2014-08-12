@@ -27,22 +27,39 @@
     </script>
 </head>
 <body>
-<div data-role="page">
-    <div data-role="header" data-theme="b">
-        <a href="index2.html" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+<div data-role="page" data-add-back-btn="true">
+    <div data-role="header" data-theme="b" style="height: 3.5em">
+        <a href="index2.html" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
+           data-ajax="false"
            data-iconpos="notext"></a>
 
-        <h1 style="font-size: large;">人员定位</h1>
+        <h1 style="font-size: large">人员定位</h1>
     </div>
 
     <div data-role="content">
-        <ul data-role="listview">
-            <li><a href="#inMinePeople1">查询井下人员</a></li>
-        </ul>
+        <table id="rydw-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+            <thead>
+            <tr>
+                <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                <th data-priority="1">简称</th>
+                <th data-priority="1">定员数</th>
+                <th data-priority="1">井下人数</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
     </div>
+
+    <!-- <div data-role="content">
+         <ul data-role="listview">
+             <li><a href="#inMinePeople1">查询井下人员</a></li>
+         </ul>
+     </div>-->
 </div>
 
-<!-- 查询井下人员1 -- 录入参数页面 -->
+<!-- 查询井下人员1 -- 录入参数页面
 <div data-role="page" id="inMinePeople1" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
@@ -60,7 +77,7 @@
     </div>
 </div>
 
-<!-- 查询井下人员2 -- 查询结果页面 -->
+&lt;!&ndash; 查询井下人员2 -- 查询结果页面 &ndash;&gt;
 <div data-role="page" id="inMinePeople2" data-add-back-btn="true">
     <div data-role="header" data-theme="b" style="height: 3.5em">
         <a href="#" data-rel="back" data-role="button" class="ui-btn-left" data-icon="arrow-l"
@@ -80,15 +97,15 @@
                        class="ui-responsive table-stroke">
                     <thead>
                     <tr>
-                        <!-- 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 -->
+                        &lt;!&ndash; 如果列比较多，屏幕比较窄 则会优先显示 data-priority = "1"的  数越小优先级越高 &ndash;&gt;
                         <th data-priority="0">姓名</th>
-                        <!--<th data-priority="1">职务</th>
+                        &lt;!&ndash;<th data-priority="1">职务</th>
                         <th data-priority="1">部门简称</th>
                         <th data-priority="1">部门全称</th>
-                        <th data-priority="1">工种名称</th>-->
+                        <th data-priority="1">工种名称</th>&ndash;&gt;
                         <th data-priority="0">位置</th>
-                        <!--       <th data-priority="1">初次报告时间</th>
-                               <th data-priority="1">末次报告时间</th>-->
+                        &lt;!&ndash;       <th data-priority="1">初次报告时间</th>
+                               <th data-priority="1">末次报告时间</th>&ndash;&gt;
                         <th data-priority="1">入井时间</th>
                     </tr>
                     </thead>
@@ -103,6 +120,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 </body>
 </html>

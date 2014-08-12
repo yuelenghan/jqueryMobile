@@ -3,11 +3,11 @@
  * Created by lh on 14-2-27.
  */
 
-var serverPath = "/DataService/";
+var serverPath = "http://58.242.43.42:8010/DataService/";
 var pageSize = 15, pageNo = 1;
 var summaryScroll1, summaryScroll2, summaryScroll3, summaryScroll4, summaryScroll5,
     summaryScroll6, summaryScroll7, summaryScroll8, summaryScroll9, summaryScroll10,
-    summaryScroll11, summaryScroll12, summaryScroll13, summaryScroll81;
+    summaryScroll11, summaryScroll12, summaryScroll13, summaryScroll81, summaryScroll15;
 var loading = false;
 
 // 从服务端得到入井信息统计的数据
@@ -2815,4 +2815,291 @@ function gotoGsxx() {
             });
         }
     });
+}
+
+function getOutPutData() {
+    if (loading == false) {
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+        loading = true;
+
+
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (day < 10) {
+            day = "0" + day;
+        }
+
+        var startDate = year + "-" + month + "-" + "01";
+        var endDate = year + "-" + month + "-" + day;
+
+        $.ajax({
+            url: serverPath + "outPut/" + startDate + "/" + endDate,
+            dataType: "jsonp",
+            type: "post",
+            timeout: 10000,
+            jsonpCallback: "clcx",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#clcx");
+
+                    setTimeout(function () {
+                        $("#clcx-result tbody").html("");
+                        for (var i = 0; i < data.length; i++) {
+                            var tableStr = "<tr>";
+                            tableStr += "<td>" + data[i].ydContent + "</td>";
+                            tableStr += "<td>" + data[i].ydDt1 + "</td>";
+                            tableStr += "</tr>";
+
+                            $(tableStr).appendTo($("#clcx-result tbody"));
+                        }
+
+                        // 刷新table, 否则隐藏coloumn功能不可用
+                        $("#clcx-result").table("refresh");
+                    }, 200);
+                } else {
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
+                }
+
+                $.mobile.loading("hide");
+                loading = false;
+            },
+            error: function () {
+                $.mobile.loading("hide");
+                loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
+            }
+        });
+    }
+
+}
+
+
+function getWsData() {
+    if (loading == false) {
+        pageNo = 1;
+
+        var mine = $("#mine-15").val();
+        var type = $("#type-15").val();
+
+        if (mine == undefined || mine == null || mine == "") {
+            alert("请选择煤矿！");
+            return;
+        }
+
+        if (type == undefined || type == null || type == "") {
+            alert("请选择类型！");
+            return;
+        }
+
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "gas/" + mine + "/" + type + "/0" + "/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            timeout: 10000,
+            jsonpCallback: "wsDate",
+            success: function (data) {
+                if (data != undefined && data != null && data.length > 0) {
+                    $.mobile.changePage("#wscx2");
+                    $("#wscx-result tbody").html("");
+
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].fenzhan + "</td>";
+                        tableStr += "<td>" + data[i].leixing + "</td>";
+                        tableStr += "<td>" + data[i].miaoshu + "</td>";
+                        tableStr += "<td>" + data[i].zhi + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#wscx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#wscx-result").table("refresh");
+
+                    // 销毁下拉刷新插件
+                    if (summaryScroll15) {
+                        summaryScroll15.destroy();
+                        summaryScroll15 = null;
+                    }
+
+                    loadSummaryScroll15();
+                } else {
+                    $().toastmessage('showToast', {
+                        text: '没有数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
+                }
+
+                $.mobile.loading("hide");
+                loading = false;
+            },
+            error: function () {
+                $.mobile.loading("hide");
+                loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
+            }
+        });
+
+    }
+}
+
+function loadSummaryScroll15() {
+    var pullDownEl = document.getElementById('summaryPullDown15');
+    var pullDownOffset = pullDownEl.offsetHeight;
+    var pullUpEl = document.getElementById('summaryPullUp15');
+    var pullUpOffset = pullUpEl.offsetHeight;
+//    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
+
+    summaryScroll15 = new iScroll('summaryWrapper15', {
+        useTransition: true,
+        topOffset: pullDownOffset,
+        onRefresh: function () {
+            if (pullDownEl.className.match('loading')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+            } else if (pullUpEl.className.match('loading')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+            }
+        },
+        onScrollMove: function () {
+//            console.log("y = " + this.y + ", minY = " + this.minScrollY + ", maxY = " + this.maxScrollY + ", pullUpOffset = " + pullUpOffset);
+            if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'flip';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                this.minScrollY = 0;
+            } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                pullDownEl.className = '';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                this.minScrollY = -pullDownOffset;
+            } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'flip';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                this.maxScrollY = this.maxScrollY;
+            } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                pullUpEl.className = '';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                this.maxScrollY = pullUpOffset;
+            }
+        },
+        onScrollEnd: function () {
+            if (pullDownEl.className.match('flip')) {
+                pullDownEl.className = 'loading';
+                pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                getWsData();	// Execute custom function (ajax call?)
+            } else if (pullUpEl.className.match('flip')) {
+                pullUpEl.className = 'loading';
+                pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                summaryScroll15PullUp();	// Execute custom function (ajax call?)
+            }
+        }
+    });
+
+
+    setTimeout(function () {
+        document.getElementById('summaryWrapper15').style.left = '0';
+    }, 800);
+}
+
+function summaryScroll15PullUp() {
+    if (loading == false) {
+        pageNo++;
+
+        var mine = $("#mine-15").val();
+        var type = $("#type-15").val();
+//        alert(mine + ", " + type);
+
+        if (mine == undefined || mine == null || mine == "") {
+            alert("请选择煤矿！");
+            return;
+        }
+
+        if (type == undefined || type == null || type == "") {
+            alert("请选择类型！");
+            return;
+        }
+
+        var start = (pageNo - 1) * 15;
+
+        $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+        loading = true;
+
+        $.ajax({
+            url: serverPath + "gas/" + mine + "/" + type + "/" + start + "/" + pageSize,
+            dataType: "jsonp",
+            type: "post",
+            timeout: 10000,
+            jsonpCallback: "wsData",
+            success: function (data) {
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].fenzhan + "</td>";
+                        tableStr += "<td>" + data[i].leixing + "</td>";
+                        tableStr += "<td>" + data[i].miaoshu + "</td>";
+                        tableStr += "<td>" + data[i].zhi + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#wscx-result tbody"));
+                    }
+
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#wscx-result").table("refresh");
+
+                } else {
+                    $().toastmessage('showToast', {
+                        text: '没有新数据',
+                        sticky: false,
+                        position: 'middle-center',
+                        type: 'notice'
+                    });
+                }
+
+                summaryScroll15.refresh();
+
+                $.mobile.loading("hide");
+                loading = false;
+            },
+            error: function () {
+                $.mobile.loading("hide");
+                loading = false;
+
+                $().toastmessage('showToast', {
+                    text: '访问服务器错误！',
+                    sticky: false,
+                    position: 'middle-center',
+                    type: 'error'
+                });
+            }
+        });
+    }
+
 }
