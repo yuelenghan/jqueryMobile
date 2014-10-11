@@ -3,7 +3,7 @@
  * Created by Administrator on 2014/4/10.
  */
 
-var serverPath = "/DataService/";
+var serverPath = "http://localhost:8080/DataService/";
 var mainDeptId;
 var loading = false;
 
@@ -502,7 +502,7 @@ function submitInfo() {
             }
             /*if (wxy == undefined || wxy == null || wxy == "") {
              alert("请填写危险源！");
-                return;
+             return;
              }*/
 
             if (swms == undefined || swms == null || swms == "") {

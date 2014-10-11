@@ -7,7 +7,7 @@ var yhScroll, swScroll, rjScroll,
 
 var loading = false;
 
-var serverPath = "/DataService/";
+var serverPath = "http://localhost:8080/DataService/";
 
 // 初始化安全隐患页面
 function initAqyh() {

@@ -2,7 +2,7 @@
  * 人员定位js
  * Created by Administrator on 2014/3/21.
  */
-var serverPath = "/DataService/";
+var serverPath = "http://localhost:8080/DataService/";
 var rydwScroll1;
 var pageSize = 15, pageNo = 1;
 var loading = false;

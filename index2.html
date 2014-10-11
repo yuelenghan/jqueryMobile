@@ -18,254 +18,179 @@
 <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
 <script src="js/aqyh.js" type="text/javascript"></script>
 <script src="js/login.js" type="text/javascript"></script>
+    <script src="js/aqgk.js" type="text/javascript"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    var loading = false;
-    var serverPath = "http://58.242.43.42:8010/DataService/";
-    $(function () {
-        $.ajax({
-            url: serverPath + "yhEnter/pcPerson",
-            dataType: "jsonp",
-            type: "post",
-            jsonpCallback: "pcPerson",
-            success: function (data) {
-                if (data != undefined && data != null && data != "null") {
-                    $("#loginUser").text("欢迎：" + data.personName);
+        var loading = false;
+        var serverPath = "http://localhost:8080/DataService/";
+        $(function () {
+            $.ajax({
+                url: serverPath + "yhEnter/pcPerson",
+                dataType: "jsonp",
+                type: "post",
+                jsonpCallback: "pcPerson",
+                success: function (data) {
+                    if (data != undefined && data != null && data != "null") {
+                        $("#loginUser").text("欢迎：" + data.personName);
+            }
+                },
+                error: function () {
+                    alert("error!");
                 }
-            },
-            error: function () {
-                alert("error!");
-            }
-        });
     });
+        });
 
-    function getZbdbld() {
-        if (loading == false) {
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
+        function getZbdbld() {
+            if (loading == false) {
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
 
-            if (month < 10) {
-                month = "0" + month;
-            }
-            if (day < 10) {
-                day = "0" + day;
-            }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
 
-            var curDate = year + "-" + month + "-" + day;
+                var curDate = year + "-" + month + "-" + day;
 
 //            alert(curDate);
 
-            var testDate = "2013-10-22";
+                var testDate = "2013-10-22";
 
-            $.mobile.loading("show", {text: "正在获取...", textVisible: true});
-            loading = true;
+                $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+                loading = true;
 
-            $.ajax({
-                url: serverPath + "summary/zbdbld/date/" + curDate,
-                dataType: "jsonp",
-                type: "post",
-                timeout: 10000,
-                jsonpCallback: "zbdbld",
-                success: function (data) {
-                    if (data != undefined && data != null && data.length > 0) {
-                        $.mobile.changePage("zbdbld.html");
+                $.ajax({
+                    url: serverPath + "summary/zbdbld/date/" + curDate,
+                    dataType: "jsonp",
+                    type: "post",
+                    timeout: 10000,
+                    jsonpCallback: "zbdbld",
+                    success: function (data) {
+                        if (data != undefined && data != null && data.length > 0) {
+                            $.mobile.changePage("zbdbld.html");
 
-                        setTimeout(function () {
-                            $("#zbdbld-result tbody").html("");
+                            setTimeout(function () {
+                                $("#zbdbld-result tbody").html("");
 
-                            for (var i = 0; i < data.length; i++) {
+                                for (var i = 0; i < data.length; i++) {
 
-                                var tableStr = "<tr>";
-                                tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
-                                tableStr += "<td colspan='2'>值班</td>";
-                                tableStr += "<td>" + data[i].detail + "</td></tr>";
+                                    var tableStr = "<tr>";
+                                    tableStr += "<td rowspan='4'>" + data[i].deptName + "</td>";
+                                    tableStr += "<td colspan='2'>值班</td>";
+                                    tableStr += "<td>" + data[i].detail + "</td></tr>";
 
-                                tableStr += "<tr>";
-                                tableStr += "<td rowspan='3'>带班</td>";
-                                tableStr += "<td>夜班</td>";
-                                tableStr += "<td>" + data[i].yb + "</td></tr>";
+                                    tableStr += "<tr>";
+                                    tableStr += "<td rowspan='3'>带班</td>";
+                                    tableStr += "<td>夜班</td>";
+                                    tableStr += "<td>" + data[i].yb + "</td></tr>";
 
-                                tableStr += "<tr>";
-                                tableStr += "<td>早班</td>";
-                                tableStr += "<td>" + data[i].zb + "</td></tr>";
+                                    tableStr += "<tr>";
+                                    tableStr += "<td>早班</td>";
+                                    tableStr += "<td>" + data[i].zb + "</td></tr>";
 
-                                tableStr += "<tr>";
-                                tableStr += "<td>中班</td>";
-                                tableStr += "<td>" + data[i].zhb + "</td></tr>";
+                                    tableStr += "<tr>";
+                                    tableStr += "<td>中班</td>";
+                                    tableStr += "<td>" + data[i].zhb + "</td></tr>";
 
-                                $(tableStr).appendTo($("#zbdbld-result tbody"));
-                            }
+                                    $(tableStr).appendTo($("#zbdbld-result tbody"));
+                                }
 
-                            // 刷新table, 否则隐藏coloumn功能不可用
-                            $("#zbdbld-result").table("refresh");
-                        }, 200);
+                                // 刷新table, 否则隐藏coloumn功能不可用
+                                $("#zbdbld-result").table("refresh");
+                            }, 200);
 
-                    } else {
-                        $().toastmessage('showToast', {
-                            text: '没有数据',
-                            sticky: false,
-                            position: 'middle-center',
-                            type: 'notice'
-                        });
-                    }
-
-                    $.mobile.loading("hide");
-                    loading = false;
-                },
-                error: function () {
-                    $.mobile.loading("hide");
-                    loading = false;
-
+                        } else {
                     $().toastmessage('showToast', {
-                        text: '访问服务器错误！',
+                        text: '没有数据',
                         sticky: false,
                         position: 'middle-center',
-                        type: 'error'
+                        type: 'notice'
                     });
                 }
-            });
-        }
 
-    }
+                        $.mobile.loading("hide");
+                        loading = false;
+                    },
+                    error: function () {
+                        $.mobile.loading("hide");
+                        loading = false;
 
-    function getAqgk() {
-        if (loading == false) {
-            var date = new Date();
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-
-            if (month < 10) {
-                month = "0" + month;
+                        $().toastmessage('showToast', {
+                            text: '访问服务器错误！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'error'
+                        });
             }
-            if (day < 10) {
-                day = "0" + day;
+                });
             }
 
-            var curDate = year + "-" + month + "-" + day;
-
-//            var testDate = "2013-10-22";
-
-            $.mobile.loading("show", {text: "正在获取...", textVisible: true});
-            loading = true;
-
-            $.ajax({
-                url: serverPath + "aqgk/" + curDate,
-                dataType: "jsonp",
-                type: "post",
-                timeout: 10000,
-                jsonpCallback: "aqgk",
-                success: function (data) {
-                    if (data != undefined && data != null && data.length > 0) {
-                        $.mobile.changePage("aqgk.html");
-
-                        setTimeout(function () {
-                            $("#aqgk-result tbody").html("");
-
-                            for (var i = 0; i < data.length; i++) {
-                                var tableStr = "<tr>";
-                                tableStr += "<td>" + data[i].deptName + "</td>";
-                                tableStr += "<td>" + data[i].yhAll + "</td>";
-                                tableStr += "<td>" + data[i].swAll + "</td>";
-                                tableStr += "<td>" + data[i].gpAll + "</td>";
-                                tableStr += "</tr>";
-
-                                $(tableStr).appendTo($("#aqgk-result tbody"));
-                            }
-
-                            // 刷新table, 否则隐藏coloumn功能不可用
-                            $("#aqgk-result").table("refresh");
-                        }, 200);
-                    } else {
-                        $().toastmessage('showToast', {
-                            text: '没有数据',
-                            sticky: false,
-                            position: 'middle-center',
-                            type: 'notice'
-                        });
-                    }
-
-                    $.mobile.loading("hide");
-                    loading = false;
-
-                },
-                error: function () {
-                    $.mobile.loading("hide");
-                    loading = false;
-
-                    $().toastmessage('showToast', {
-                        text: '访问服务器错误！',
-                        sticky: false,
-                        position: 'middle-center',
-                        type: 'error'
-                    });
-                }
-            });
         }
 
-    }
 
-    function getRydwSummary() {
-        if (loading == false) {
-            $.mobile.loading("show", {text: "正在获取...", textVisible: true});
-            loading = true;
+        function getRydwSummary() {
+            if (loading == false) {
+                $.mobile.loading("show", {text: "正在获取...", textVisible: true});
+                loading = true;
 
-            $.ajax({
-                url: serverPath + "rydw/summary",
-                dataType: "jsonp",
-                type: "post",
-                timeout: 10000,
-                jsonpCallback: "rydwSummary",
-                success: function (data) {
-                    if (data != undefined && data != null && data.length > 0) {
-                        $.mobile.changePage("rydw.html");
+                $.ajax({
+                    url: serverPath + "rydw/summary",
+                    dataType: "jsonp",
+                    type: "post",
+                    timeout: 10000,
+                    jsonpCallback: "rydwSummary",
+                    success: function (data) {
+                        if (data != undefined && data != null && data.length > 0) {
+                            $.mobile.changePage("rydw.html");
 
-                        setTimeout(function () {
-                            $("#rydw-result tbody").html("");
+                            setTimeout(function () {
+                                $("#rydw-result tbody").html("");
 
-                            for (var i = 0; i < data.length; i++) {
-                                var tableStr = "<tr>";
-                                tableStr += "<td>" + data[i].shortName + "</td>";
-                                tableStr += "<td>" + data[i].maxNum + "</td>";
-                                tableStr += "<td>" + data[i].numMine + "</td>";
-                                tableStr += "</tr>";
+                                for (var i = 0; i < data.length; i++) {
+                                    var tableStr = "<tr>";
+                                    tableStr += "<td>" + data[i].shortName + "</td>";
+                                    tableStr += "<td>" + data[i].maxNum + "</td>";
+                                    tableStr += "<td>" + data[i].numMine + "</td>";
+                                    tableStr += "</tr>";
 
-                                $(tableStr).appendTo($("#rydw-result tbody"));
-                            }
+                                    $(tableStr).appendTo($("#rydw-result tbody"));
+                                }
 
-                            // 刷新table, 否则隐藏coloumn功能不可用
-                            $("#rydw-result").table("refresh");
-                        }, 200);
-                    } else {
-                        $().toastmessage('showToast', {
-                            text: '没有数据',
-                            sticky: false,
-                            position: 'middle-center',
-                            type: 'notice'
-                        });
-                    }
-
-                    $.mobile.loading("hide");
-                    loading = false;
-
-                },
-                error: function () {
-                    $.mobile.loading("hide");
-                    loading = false;
-
+                                // 刷新table, 否则隐藏coloumn功能不可用
+                                $("#rydw-result").table("refresh");
+                            }, 200);
+                        } else {
                     $().toastmessage('showToast', {
-                        text: '访问服务器错误！',
+                        text: '没有数据',
                         sticky: false,
                         position: 'middle-center',
-                        type: 'error'
+                        type: 'notice'
                     });
                 }
-            });
-        }
+
+                        $.mobile.loading("hide");
+                        loading = false;
+
+                    },
+                    error: function () {
+                        $.mobile.loading("hide");
+                        loading = false;
+
+                        $().toastmessage('showToast', {
+                            text: '访问服务器错误！',
+                            sticky: false,
+                            position: 'middle-center',
+                            type: 'error'
+                        });
+                    }
+                });
     }
+        }
 
 </script>
 </head>
@@ -281,52 +206,71 @@
             <a href="#" onclick="logout()">退出系统</a>
         </div>
 
-        <div class="ui-grid-b">
+        <div class="ui-grid-c">
             <div class="ui-block-a" align="center">
-                <a id="button1" class="myButton" href="#" data-role="button" style="background-image:url(logo/1.jpg);"
-                   onclick="getZbdbld()">
-                </a>
+                <!--<a id="button1" class="myButton" href="#" data-role="button" style="background-image:url(logo/1.jpg);"-->
+                <!--onclick="getZbdbld()">-->
+                <!--</a>-->
+                <a id="button1" class="myButton" href="irisData.html" data-ajax="false" data-role="button"
+                   style="background-image:url(logo/1.jpg);"></a>
+                入井隐患排查
+            </div>
+            <div class="ui-block-b" align="center">
+                <!--<a id="button2" class="myButton" href="#" data-role="button"-->
+                <!--style="background-image: url(logo/1.jpg)" onclick="getAqgk()"></a>-->
+                <a id="button2" class="myButton" href="swEnter.html" data-ajax="false" data-role="button"
+                   style="background-image: url(logo/1.jpg)"></a>
+                三违信息录入
+            </div>
+            <div class="ui-block-c" align="center">
+                <a id="button3" class="myButton" href="yhEnter.html" data-ajax="false" data-role="button"
+                   style="background-image: url(logo/3.jpg)"></a>
+                专项隐患排查
+            </div>
+            <div class="ui-block-d" align="center">
+                <a id="button4" class="myButton" data-ajax="false" href="rjxxcx.html" data-role="button"
+                   style="background-image: url(logo/3.jpg)"></a>
+                入井信息查询
+            </div>
+            <div class="ui-block-a" align="center">
+                <a id="button5" class="myButton" data-ajax="false" href="yhcx.html" data-role="button"
+                   style="background-image: url(logo/4.jpg)"></a>
+                隐患查询
+            </div>
+            <div class="ui-block-b" align="center">
+                <a id="button6" class="myButton" data-ajax="false" href="swcx.html" data-role="button"
+                   style="background-image: url(logo/4.jpg)"></a>
+                三违查询
+            </div>
+            <div class="ui-block-c" align="center">
+                <a id="button7" class="myButton" data-ajax="false" href="swjfcx.html" data-role="button"
+                   style="background-image: url(logo/6.jpg)"></a>
+                三违积分查询
+            </div>
+            <div class="ui-block-d" align="center">
+                <a id="button8" class="myButton" data-ajax="false" href="gpcx.html" data-role="button"
+                   style="background-image: url(logo/6.jpg)"></a>
+                挂牌查询
+            </div>
+            <div class="ui-block-a" align="center">
+                <a id="button9" class="myButton" data-ajax="false" href="swxcQuery.html" data-role="button"
+                   style="background-image: url(logo/8.jpg)"></a>
+                安全事故查询
+            </div>
+            <div class="ui-block-b" align="center">
+                <a id="button10" class="myButton" data-ajax="false" href="dbzb.html" data-role="button"
+                   style="background-image: url(logo/9.jpg)"></a>
                 带班值班
             </div>
-            <div class="ui-block-b" align="center">
-                <a id="button2" class="myButton" href="#" data-role="button"
-                   style="background-image: url(logo/2.jpg)" onclick="getAqgk()"></a>
+            <div class="ui-block-c" align="center">
+                <a id="button11" class="myButton" data-ajax="false" onclick="getAqgk()" data-role="button"
+                   style="background-image: url(logo/9.jpg)"></a>
                 安全概况
             </div>
-            <div class="ui-block-c" align="center">
-                <a id="button3" class="myButton" data-ajax="false" href="enterMain.html" data-role="button"
-                   style="background-image: url(logo/3.jpg)"></a>
-                信息录入
-            </div>
-            <div class="ui-block-a" align="center">
-                <a id="button4" class="myButton" href="#" data-role="button"
-                   style="background-image: url(logo/4.jpg)" onclick="getRydwSummary()"></a>
-                人员定位
-            </div>
-            <div class="ui-block-b" align="center">
-                <a id="button5" class="myButton" href="#" data-role="button"
-                   style="background-image: url(logo/5.jpg)"></a>
-                视频监控
-            </div>
-            <div class="ui-block-c" align="center">
-                <a id="button6" class="myButton" data-ajax="false" href="aqyh.html" data-role="button"
-                   style="background-image: url(logo/6.jpg)"></a>
-                隐患三违
-            </div>
-            <div class="ui-block-a" align="center">
-                <a id="button7" class="myButton" href="doc/doc.html" data-role="button"
-                   style="background-image: url(logo/7.jpg)"></a>
-                系统帮助
-            </div>
-            <div class="ui-block-b" align="center">
-                <a id="button8" class="myButton" data-ajax="false" href="swxcQuery.html" data-role="button"
-                   style="background-image: url(logo/8.jpg)"></a>
-                抓拍记录
-            </div>
-            <div class="ui-block-c" align="center">
-                <a id="button9" class="myButton" data-ajax="false" href="summary.html" data-role="button"
+            <div class="ui-block-d" align="center">
+                <a id="button12" class="myButton" data-ajax="false" href="summary.html" data-role="button"
                    style="background-image: url(logo/9.jpg)"></a>
-                统计分析
+                视频监控
             </div>
         </div>
     </div>

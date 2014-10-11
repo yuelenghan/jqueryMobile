@@ -3,7 +3,7 @@
  * Created by Administrator on 2014/4/1.
  */
 
-var serverPath = "http://58.242.43.42:8010/DataService/";
+var serverPath = "http://localhost:8080/DataService/";
 var loading = false;
 
 /**

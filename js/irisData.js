@@ -1,7 +1,7 @@
 /**
  * Created by lihe on 14-6-5.
  */
-var serverPath = "/DataService/";
+var serverPath = "http://localhost:8080/DataService/";
 var personData;
 var mainDeptId, loading = false;
 
@@ -36,7 +36,7 @@ function getIrisData() {
 
                             var selectStr = "";
                             for (var i = 0; i < data.length; i++) {
-                                selectStr += "<option value='" + data[i].key + "'>" + data[i].departName + ", " + data[i].inWellTime + "</option>";
+                                selectStr += "<option value='" + data[i].key + "'>" + data[i].departName + "," + data[i].inWellTime + "," + data[i].outWellTime + "</option>";
                             }
                             $(selectStr).appendTo(irisSelect);
                             irisSelect.selectmenu('refresh', true);
@@ -236,6 +236,42 @@ function confirmInfo() {
                     alert("请输入考勤日期! ");
                     return;
                 }
+
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hour = date.getHours();
+                var minute = date.getMinutes();
+//                alert(hour + "," + minute);
+
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (hour < 10) {
+                    hour = "0" + hour;
+                }
+                if (minute < 10) {
+                    minute = "0" + minute;
+                }
+
+
+                // 字符串格式
+                var curTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+//                alert("curTime = " + curTime + ", outWellTime = " + outWellTime);
+
+                // 毫秒数
+                var curTime2 = Date.parse(curTime.replace(/-/g, "/"));
+                var outWellTime2 = Date.parse(outWellTime.replace(/-/g, "/"));
+//                alert("curTime2 = " + curTime2 + ", outWellTime2 = " + outWellTime2);
+                if (curTime2 - outWellTime2 > 4 * 3600 * 1000) {
+                    alert("当前时间大于出井时间4小时, 不允许录入!");
+                    return;
+                }
+
 
                 $.mobile.loading("show", {text: "正在录入...", textVisible: true});
                 loading = true;
