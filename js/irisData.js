@@ -1,7 +1,6 @@
 /**
  * Created by lihe on 14-6-5.
  */
-var serverPath = "http://localhost:8080/DataService/";
 var personData;
 var mainDeptId, loading = false;
 

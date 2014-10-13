@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-<title>jQuery Mobile Web 应用程序</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery Mobile Web 应用程序</title>
 
-<!-- css -->
-<link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
-<link href="css/my.css" rel="stylesheet" type="text/css"/>
-<link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
-<link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
+    <!-- css -->
+    <link href="css/jquery.mobile-1.4.0.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/my.css" rel="stylesheet" type="text/css"/>
+    <link href="css/myScroll.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="css/jquery.toastmessage.css" rel="stylesheet" type="text/css">
 
-<!-- js -->
+    <!-- js -->
 
-<script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
-<script src="js/iscroll.js" type="text/javascript"></script>
-<script src="js/jquery.toastmessage.js" type="text/javascript"></script>
-<script src="js/aqyh.js" type="text/javascript"></script>
-<script src="js/login.js" type="text/javascript"></script>
+    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="js/jquery.mobile-1.4.0.min.js" type="text/javascript"></script>
+    <script src="js/iscroll.js" type="text/javascript"></script>
+    <script src="js/jquery.toastmessage.js" type="text/javascript"></script>
+
+    <script src="js/constant.js" type="text/javascript"></script>
+    <script src="js/aqyh.js" type="text/javascript"></script>
+    <script src="js/login.js" type="text/javascript"></script>
     <script src="js/aqgk.js" type="text/javascript"></script>
 
     <script type="text/javascript">
 
         var loading = false;
-        var serverPath = "http://localhost:8080/DataService/";
         $(function () {
             $.ajax({
                 url: serverPath + "yhEnter/pcPerson",
@@ -33,12 +34,12 @@
                 success: function (data) {
                     if (data != undefined && data != null && data != "null") {
                         $("#loginUser").text("欢迎：" + data.personName);
-            }
+                    }
                 },
                 error: function () {
                     alert("error!");
                 }
-    });
+            });
         });
 
         function getZbdbld() {
@@ -105,13 +106,13 @@
                             }, 200);
 
                         } else {
-                    $().toastmessage('showToast', {
-                        text: '没有数据',
-                        sticky: false,
-                        position: 'middle-center',
-                        type: 'notice'
-                    });
-                }
+                            $().toastmessage('showToast', {
+                                text: '没有数据',
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'notice'
+                            });
+                        }
 
                         $.mobile.loading("hide");
                         loading = false;
@@ -126,7 +127,7 @@
                             position: 'middle-center',
                             type: 'error'
                         });
-            }
+                    }
                 });
             }
 
@@ -165,13 +166,13 @@
                                 $("#rydw-result").table("refresh");
                             }, 200);
                         } else {
-                    $().toastmessage('showToast', {
-                        text: '没有数据',
-                        sticky: false,
-                        position: 'middle-center',
-                        type: 'notice'
-                    });
-                }
+                            $().toastmessage('showToast', {
+                                text: '没有数据',
+                                sticky: false,
+                                position: 'middle-center',
+                                type: 'notice'
+                            });
+                        }
 
                         $.mobile.loading("hide");
                         loading = false;
@@ -189,10 +190,10 @@
                         });
                     }
                 });
-    }
+            }
         }
 
-</script>
+    </script>
 </head>
 <body>
 
@@ -253,7 +254,7 @@
                 挂牌查询
             </div>
             <div class="ui-block-a" align="center">
-                <a id="button9" class="myButton" data-ajax="false" href="swxcQuery.html" data-role="button"
+                <a id="button9" class="myButton" data-ajax="false" href="aqsgcx.html" data-role="button"
                    style="background-image: url(logo/8.jpg)"></a>
                 安全事故查询
             </div>
@@ -268,7 +269,7 @@
                 安全概况
             </div>
             <div class="ui-block-d" align="center">
-                <a id="button12" class="myButton" data-ajax="false" href="summary.html" data-role="button"
+                <a id="button12" class="myButton" data-ajax="false" href="#" data-role="button"
                    style="background-image: url(logo/9.jpg)"></a>
                 视频监控
             </div>

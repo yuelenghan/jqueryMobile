@@ -2,11 +2,10 @@
  * Created by lihe on 14/10/9.
  */
 
-var serverPath = "http://localhost:8080/DataService/";
 var pageSize = 15, pageNo = 1;
 var loading = false;
 
-var summaryScroll3;
+var summaryScroll;
 
 function initSwType() {
     $.ajax({
@@ -127,12 +126,12 @@ function getSwcxData() {
                     $("#swcx-result").table("refresh");
 
                     // 销毁下拉刷新插件
-                    if (summaryScroll3) {
-                        summaryScroll3.destroy();
-                        summaryScroll3 = null;
+                    if (summaryScroll) {
+                        summaryScroll.destroy();
+                        summaryScroll = null;
                     }
 
-                    loadSummaryScroll3();
+                    loadSummaryScroll();
                 } else {
                     $().toastmessage('showToast', {
                         text: '没有数据',
@@ -159,14 +158,14 @@ function getSwcxData() {
     }
 }
 
-function loadSummaryScroll3() {
-    var pullDownEl = document.getElementById('summaryPullDown3');
+function loadSummaryScroll() {
+    var pullDownEl = document.getElementById('summaryPullDown');
     var pullDownOffset = pullDownEl.offsetHeight;
-    var pullUpEl = document.getElementById('summaryPullUp3');
+    var pullUpEl = document.getElementById('summaryPullUp');
     var pullUpOffset = pullUpEl.offsetHeight;
 //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-    summaryScroll3 = new iScroll('summaryWrapper3', {
+    summaryScroll = new iScroll('summaryWrapper', {
         useTransition: true,
         topOffset: pullDownOffset,
         onRefresh: function () {
@@ -206,18 +205,18 @@ function loadSummaryScroll3() {
             } else if (pullUpEl.className.match('flip')) {
                 pullUpEl.className = 'loading';
                 pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-                summaryScroll3PullUp();	// Execute custom function (ajax call?)
+                summaryScrollPullUp();	// Execute custom function (ajax call?)
             }
         }
     });
 
 
     setTimeout(function () {
-        document.getElementById('summaryWrapper3').style.left = '0';
+        document.getElementById('summaryWrapper').style.left = '0';
     }, 800);
 }
 
-function summaryScroll3PullUp() {
+function summaryScrollPullUp() {
     if (loading == false) {
         pageNo++;
 
@@ -280,7 +279,7 @@ function summaryScroll3PullUp() {
                     });
                 }
 
-                summaryScroll3.refresh();
+                summaryScroll.refresh();
                 $.mobile.loading("hide");
                 loading = false;
             },

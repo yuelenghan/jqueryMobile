@@ -23,6 +23,8 @@
     <script src="js/myDate.js" type="text/javascript"></script>
     <script src="js/myDateFlip.js" type="text/javascript"></script>
     <script src="js/myDatei18n.js" type="text/javascript"></script>
+
+    <script src="js/constant.js" type="text/javascript"></script>
     <script src="js/department.js" type="text/javascript"></script>
     <script src="js/gpcx.js" type="text/javascript"></script>
 
@@ -43,11 +45,11 @@
     <div data-role="content">
         <label for="startDate">开始日期:</label>
         <input id="startDate" type="text" data-role="datebox"
-               data-options='{"mode": "flipbox", "useButton": true}'>
+               data-options='{"mode": "flipbox", "useButton": true}' data-mini="true">
 
         <label for="endDate">结束日期:</label>
         <input id="endDate" type="text" data-role="datebox"
-               data-options='{"mode": "flipbox", "useButton": true}'>
+               data-options='{"mode": "flipbox", "useButton": true}' data-mini="true">
 
         <span style="color: red">*默认查询当月挂牌信息</span>
 
@@ -97,10 +99,10 @@
     </div>
 
     <div data-role="content">
-        <div id="summaryWrapper4" class="wrapper">
-            <div id="summaryScroller4" class="scroller">
-                <div id="summaryPullDown4" class="pullDown">
-                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+        <div id="summaryWrapper" class="wrapper">
+            <div id="summaryScroller" class="scroller">
+                <div id="summaryPullDown" class="pullDown">
+                <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
                 </div>
                 <table id="gpcxDetail-result" data-role="table" data-mode="columntoggle"
                        class="ui-responsive table-stroke">
@@ -120,8 +122,8 @@
                     </tbody>
                 </table>
 
-                <div id="summaryPullUp4" class="pullUp">
-                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                <div id="summaryPullUp" class="pullUp">
+                <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
                 </div>
             </div>
         </div>

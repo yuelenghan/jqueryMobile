@@ -1,7 +1,6 @@
 /**
  * Created by lihe on 14/9/26.
  */
-var serverPath = "http://localhost:8080/DataService/";
 var currentDisplayLevel = 1;
 
 // 初始化第一级部门

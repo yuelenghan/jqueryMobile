@@ -2,7 +2,7 @@
  * Created by Administrator on 2014/4/23.
  */
 
-var serverPath = "http://localhost:8080/DataService/";
+var serverPath = "/DataService/";
 var mainDeptId, loading = false;
 
 function initYhLevel() {

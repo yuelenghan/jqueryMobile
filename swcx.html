@@ -23,6 +23,8 @@
     <script src="js/myDate.js" type="text/javascript"></script>
     <script src="js/myDateFlip.js" type="text/javascript"></script>
     <script src="js/myDatei18n.js" type="text/javascript"></script>
+
+    <script src="js/constant.js" type="text/javascript"></script>
     <script src="js/department.js" type="text/javascript"></script>
     <script src="js/swcx.js" type="text/javascript"></script>
 
@@ -44,11 +46,11 @@
     <div data-role="content">
         <label for="startDate">开始日期:</label>
         <input id="startDate" type="text" data-role="datebox"
-               data-options='{"mode": "flipbox", "useButton": true}'>
+               data-options='{"mode": "flipbox", "useButton": true}' data-mini="true">
 
         <label for="endDate">结束日期:</label>
         <input id="endDate" type="text" data-role="datebox"
-               data-options='{"mode": "flipbox", "useButton": true}'>
+               data-options='{"mode": "flipbox", "useButton": true}' data-mini="true">
 
         <span style="color: red">*默认查询当月三违信息</span>
 
@@ -63,13 +65,13 @@
         <span style="color: red">*默认查询本单位三违信息</span>
 
         <label for="name">姓名:</label>
-        <input id="name" type="text">
+        <input id="name" type="text" data-mini="true">
 
         <label for="type">类型:</label>
-        <select id="type" data-native-menu="false"></select>
+        <select id="type" data-native-menu="false" data-mini="true"></select>
 
         <label for="level">性质:</label>
-        <select id="level" data-native-menu="false"></select>
+        <select id="level" data-native-menu="false" data-mini="true"></select>
 
         <br>
         <a class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-btn-icon-left ui-icon-search"
@@ -88,10 +90,10 @@
     </div>
 
     <div data-role="content">
-        <div id="summaryWrapper3" class="wrapper">
-            <div id="summaryScroller3" class="scroller">
-                <div id="summaryPullDown3" class="pullDown">
-                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+        <div id="summaryWrapper" class="wrapper">
+            <div id="summaryScroller" class="scroller">
+                <div id="summaryPullDown" class="pullDown">
+                <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
                 </div>
 
                 <table id="swcx-result" data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
@@ -110,8 +112,8 @@
                     </tbody>
                 </table>
 
-                <div id="summaryPullUp3" class="pullUp">
-                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                <div id="summaryPullUp" class="pullUp">
+                <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
                 </div>
             </div>
         </div>

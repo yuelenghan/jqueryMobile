@@ -1,7 +1,6 @@
 /**
  * Created by Administrator on 2014/4/18.
  */
-var serverPath = "http://localhost:8080/DataService/";
 var mainDeptId;
 
 /**

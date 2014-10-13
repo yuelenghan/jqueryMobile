@@ -7,8 +7,6 @@ var yhScroll, swScroll, rjScroll,
 
 var loading = false;
 
-var serverPath = "http://localhost:8080/DataService/";
-
 // 初始化安全隐患页面
 function initAqyh() {
     // 延迟200ms执行, 否则界面没有渲染完成, 取不到listview1

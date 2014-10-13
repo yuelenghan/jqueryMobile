@@ -1,11 +1,10 @@
 /**
  * Created by lihe on 14/9/29.
  */
-var serverPath = "http://localhost:8080/DataService/";
 var pageSize = 15, pageNo = 1;
 var loading = false;
 
-var summaryScroll1;
+var summaryScroll;
 
 function initZwjb() {
     if (loading == false) {
@@ -117,12 +116,12 @@ function getRjxxcxData() {
                     $("#rjxxcx-result").table("refresh");
 
                     // 销毁下拉刷新插件
-                    if (summaryScroll1) {
-                        summaryScroll1.destroy();
-                        summaryScroll1 = null;
+                    if (summaryScroll) {
+                        summaryScroll.destroy();
+                        summaryScroll = null;
                     }
 
-                    loadSummaryScroll1();
+                    loadSummaryScroll();
 
 
                 } else {
@@ -155,14 +154,14 @@ function getRjxxcxData() {
 
 }
 
-function loadSummaryScroll1() {
-    var pullDownEl = document.getElementById('summaryPullDown1');
+function loadSummaryScroll() {
+    var pullDownEl = document.getElementById('summaryPullDown');
     var pullDownOffset = pullDownEl.offsetHeight;
-    var pullUpEl = document.getElementById('summaryPullUp1');
+    var pullUpEl = document.getElementById('summaryPullUp');
     var pullUpOffset = pullUpEl.offsetHeight;
 //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-    summaryScroll1 = new iScroll('summaryWrapper1', {
+    summaryScroll = new iScroll('summaryWrapper', {
         useTransition: true,
         topOffset: pullDownOffset,
         onRefresh: function () {
@@ -202,18 +201,18 @@ function loadSummaryScroll1() {
             } else if (pullUpEl.className.match('flip')) {
                 pullUpEl.className = 'loading';
                 pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-                summaryScroll1PullUp();	// Execute custom function (ajax call?)
+                summaryScrollPullUp();	// Execute custom function (ajax call?)
             }
         }
     });
 
 
     setTimeout(function () {
-        document.getElementById('summaryWrapper1').style.left = '0';
+        document.getElementById('summaryWrapper').style.left = '0';
     }, 800);
 }
 
-function summaryScroll1PullUp() {
+function summaryScrollPullUp() {
     if (loading == false) {
         pageNo++;
 
@@ -281,7 +280,7 @@ function summaryScroll1PullUp() {
                     });
                 }
 
-                summaryScroll1.refresh();
+                summaryScroll.refresh();
                 $.mobile.loading("hide");
                 loading = false;
             },

@@ -1,62 +1,75 @@
 /**
- * Created by Administrator on 2014/5/6.
- */
-/**
- * 三违信息查询
+ * Created by lihe on 14/10/11.
  */
 var pageSize = 15, pageNo = 1;
-var swxcScroll;
 var loading = false;
 
-function getSwxcList() {
+var summaryScroll;
+
+function getAqsgcxData() {
     if (loading == false) {
         pageNo = 1;
 
         var startDate = $("#startDate").val();
         var endDate = $("#endDate").val();
+        var dept = $("#deptNumber").text();
+        var xz = $("#xz").val();
+
+//        alert("startDate = " + startDate + ", endDate = " + endDate + ", dept = " + dept + ", xz = " + xz);
 
         if (startDate == undefined || startDate == null || startDate == "") {
-            alert("请输入开始日期!");
-            return;
+            startDate = "null";
         }
         if (endDate == undefined || endDate == null || endDate == "") {
-            alert("请输入结束日期!");
-            return;
+            endDate = "null";
         }
+
+        if (dept == undefined || dept == null || dept == "") {
+            dept = "null";
+        }
+
+        if (xz == undefined || xz == null || xz == "") {
+            xz = "null";
+        }
+
 
         $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
         // 提交到服务端
         $.ajax({
-            url: serverPath + "swxcQuery/swxcList/" + startDate + "/" + endDate + "/0/" + pageSize,
+            url: serverPath + "aqsgcx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/xz/" + xz + "/start/0/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
-            timeout: 10000,
-            jsonpCallback: "swxcList",
+            timeout: 20000,
+            jsonpCallback: "aqsgcx",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#swxcQuery2");
-                    var listView = $("#swxcListview");
-                    listView.empty();
+                    $.mobile.changePage("#aqsgcx2");
+                    $("#aqsgcx-result tbody").html("");
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#' onclick='gotoSwxcDetail(this)'  id='" + data[i].swinputId + "'>描述:" + data[i].remarks + " 班次:" + data[i].banci + " 排查时间:" + data[i].pcTime + "</a></li>";
-                        listView.append(list);
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].zgDeptName + "</td>";
+                        tableStr += "<td>" + data[i].placeName + "</td>";
+                        tableStr += "<td>" + data[i].date + "</td>";
+                        tableStr += "<td>" + data[i].xz + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#aqsgcx-result tbody"));
                     }
 
-                    listView.listview('refresh');
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#aqsgcx-result").table("refresh");
 
                     // 销毁下拉刷新插件
-                    if (swxcScroll) {
-                        swxcScroll.destroy();
-                        swxcScroll = null;
+                    if (summaryScroll) {
+                        summaryScroll.destroy();
+                        summaryScroll = null;
                     }
 
-                    loadSwxcScroll();
-
+                    loadSummaryScroll();
                 } else {
-//                    alert("没有数据!")
-//                    $.mobile.changePage("#alert-dialog");
                     $().toastmessage('showToast', {
                         text: '没有数据',
                         sticky: false,
@@ -69,29 +82,27 @@ function getSwxcList() {
                 loading = false;
             },
             error: function () {
-                $.mobile.loading("hide");
-                loading = false;
-
                 $().toastmessage('showToast', {
                     text: '访问服务器错误！',
                     sticky: false,
                     position: 'middle-center',
                     type: 'error'
                 });
+                $.mobile.loading("hide");
+                loading = false;
             }
         });
     }
-
 }
 
-function loadSwxcScroll() {
-    var pullDownEl = document.getElementById('swxcPullDown');
+function loadSummaryScroll() {
+    var pullDownEl = document.getElementById('summaryPullDown');
     var pullDownOffset = pullDownEl.offsetHeight;
-    var pullUpEl = document.getElementById('swxcPullUp');
+    var pullUpEl = document.getElementById('summaryPullUp');
     var pullUpOffset = pullUpEl.offsetHeight;
 //    alert("pullDownOffset = " + pullDownOffset + ", pullUpOffset = " + pullUpOffset);
 
-    swxcScroll = new iScroll('swxcWrapper', {
+    summaryScroll = new iScroll('summaryWrapper', {
         useTransition: true,
         topOffset: pullDownOffset,
         onRefresh: function () {
@@ -127,38 +138,46 @@ function loadSwxcScroll() {
             if (pullDownEl.className.match('flip')) {
                 pullDownEl.className = 'loading';
                 pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
-                getSwxcList();	// Execute custom function (ajax call?)
+                getAqsgcxData();	// Execute custom function (ajax call?)
             } else if (pullUpEl.className.match('flip')) {
                 pullUpEl.className = 'loading';
                 pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
-                swxcPullUpAction();	// Execute custom function (ajax call?)
+                summaryScrollPullUp();	// Execute custom function (ajax call?)
             }
         }
     });
 
 
     setTimeout(function () {
-        document.getElementById('swxcWrapper').style.left = '0';
+        document.getElementById('summaryWrapper').style.left = '0';
     }, 800);
 }
 
-function swxcPullUpAction() {
+function summaryScrollPullUp() {
     if (loading == false) {
         pageNo++;
 
         var startDate = $("#startDate").val();
         var endDate = $("#endDate").val();
-        var dept = $("#dept").val();
+        var dept = $("#deptNumber").text();
+        var xz = $("#xz").val();
+
+//        alert("startDate = " + startDate + ", endDate = " + endDate + ", dept = " + dept + ", xz = " + xz);
 
         if (startDate == undefined || startDate == null || startDate == "") {
-            alert("请输入开始日期!");
-            return;
+            startDate = "null";
         }
         if (endDate == undefined || endDate == null || endDate == "") {
-            alert("请输入结束日期!");
-            return;
+            endDate = "null";
         }
 
+        if (dept == undefined || dept == null || dept == "") {
+            dept = "null";
+        }
+
+        if (xz == undefined || xz == null || xz == "") {
+            xz = "null";
+        }
 
         var start = (pageNo - 1) * 15;
         var limit = pageSize;
@@ -167,24 +186,28 @@ function swxcPullUpAction() {
         loading = true;
 
         $.ajax({
-            url: serverPath + "swxcQuery/swxcList/" + startDate + "/" + endDate + "/" + start + "/" + pageSize,
+            url: serverPath + "aqsgcx/startDate/" + startDate + "/endDate/" + endDate + "/dept/" + dept + "/xz/" + xz + "/start/" + start + "/limit/" + pageSize,
             dataType: "jsonp",
             type: "post",
-            timeout: 10000,
-            jsonpCallback: "swxcList",
+            timeout: 20000,
+            jsonpCallback: "aqsgcx",
             success: function (data) {
                 if (data != null && data.length > 0) {
-                    var listView = $("#swxcListview");
                     for (var i = 0; i < data.length; i++) {
-                        var list = "<li><a href='#' onclick='gotoSwxcDetail(this)'  id='" + data[i].swinputId + "'>描述:" + data[i].remarks + " 班次:" + data[i].banci + " 排查时间:" + data[i].pcTime + "</a></li>";
-                        listView.append(list);
+                        var tableStr = "<tr>";
+                        tableStr += "<td>" + data[i].deptName + "</td>";
+                        tableStr += "<td>" + data[i].zgDeptName + "</td>";
+                        tableStr += "<td>" + data[i].placeName + "</td>";
+                        tableStr += "<td>" + data[i].date + "</td>";
+                        tableStr += "<td>" + data[i].xz + "</td>";
+                        tableStr += "</tr>";
+
+                        $(tableStr).appendTo($("#aqsgcx-result tbody"));
                     }
 
-                    listView.listview('refresh');
-
+                    // 刷新table, 否则隐藏coloumn功能不可用
+                    $("#aqsgcx-result").table("refresh");
                 } else {
-//                    alert("没有新数据！");
-//                    $.mobile.changePage("#alert2-dialog");
                     $().toastmessage('showToast', {
                         text: '没有新数据',
                         sticky: false,
@@ -193,15 +216,13 @@ function swxcPullUpAction() {
                     });
                 }
 
-                swxcScroll.refresh();
-
+                summaryScroll.refresh();
                 $.mobile.loading("hide");
                 loading = false;
             },
             error: function () {
                 $.mobile.loading("hide");
                 loading = false;
-
                 $().toastmessage('showToast', {
                     text: '访问服务器错误！',
                     sticky: false,
@@ -211,20 +232,25 @@ function swxcPullUpAction() {
             }
         });
     }
+
 }
 
-function gotoSwxcDetail(item) {
-    var url = "http://58.242.43.42:8012/YSNewSearch/SwView.aspx?Swid=" + item.id;
-    window.location.href = url;
-//    window.open(url);
+function returndept() {
+    $.mobile.changePage("#aqsgcx1", {transition: "flip"});
+    var deptNumber, deptName;
+    if ($("#dept-" + currentDisplayLevel).val() == -1) {
+        if (currentDisplayLevel == 1) {
+            deptNumber = "";
+            deptName = "";
+        } else {
+            deptNumber = $("#dept-" + (currentDisplayLevel - 1)).val();
+            deptName = $("#dept-" + (currentDisplayLevel - 1)).find("option:selected").text();
+        }
+    } else {
+        deptNumber = $("#dept-" + currentDisplayLevel).val();
+        deptName = $("#dept-" + currentDisplayLevel).find("option:selected").text();
+    }
+    $("#deptNumber").text(deptNumber);
+    $("#deptName").text(deptName);
 
-    /* window.plugins.webintent.startActivity({
-     action: "android.intent.action.VIEW",
-     url: url},
-     function () {
-     },
-     function () {
-     alert('出错了！');
-     }
-     );*/
 }

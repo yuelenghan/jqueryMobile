@@ -1,7 +1,6 @@
 /**
  * Created by lihe on 14/10/8.
  */
-var serverPath = "http://localhost:8080/DataService/";
 var pageSize = 15, pageNo = 1;
 var loading = false;
 

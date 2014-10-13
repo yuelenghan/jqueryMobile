@@ -2,7 +2,6 @@
  * Created by lihe on 14/10/8.
  */
 var loading = false;
-var serverPath = "http://localhost:8080/DataService/";
 
 function getAqgk() {
     if (loading == false) {
