@@ -122,25 +122,3 @@ function selectDept(selectVal) {
 }
 
 
-//var yhyjText = $("#yhyjList").find("option:selected").text();
-//function returndept() {
-////    $.mobile.changePage("#rjxxcx1");
-//    $.mobile.changePage("#rjxxcx1", {transition: "flip"});
-//    var deptNumber, deptName;
-//    if ($("#dept-" + currentDisplayLevel).val() == -1) {
-//        if (currentDisplayLevel == 1) {
-//            deptNumber = "";
-//            deptName = "";
-//        } else {
-//            deptNumber = $("#dept-" + (currentDisplayLevel - 1)).val();
-//            deptName = $("#dept-" + (currentDisplayLevel - 1)).find("option:selected").text();
-//        }
-//    } else {
-//        deptNumber = $("#dept-" + currentDisplayLevel).val();
-//        deptName = $("#dept-" + currentDisplayLevel).find("option:selected").text();
-//    }
-//    $("#deptNumber").text(deptNumber);
-//    $("#deptName").text(deptName);
-//
-//}
-

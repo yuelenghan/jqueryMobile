@@ -9,6 +9,14 @@ var mainDeptId;
 
 var summaryScroll;
 
+
+function gotoQuery() {
+    initYhLevel();
+    initYhType();
+    initPcPerson();
+    $.mobile.changePage("#yhcx2", {transition: "flip"});
+}
+
 function initYhLevel() {
     $.ajax({
         url: serverPath + "baseInfo/41",
@@ -135,12 +143,24 @@ function getYhcxData() {
             status = "null";
         }
 
+        if (pcType == undefined || pcType == null || pcType == "") {
+            pcType = -7;
+        }
+
+        if (type == undefined || type == null || type == "") {
+            type = -1;
+        }
+
         if (place == undefined || place == null || place == "") {
             place = -1;
         }
 
         if (zgType == undefined || zgType == null || zgType == "") {
             zgType = "null";
+        }
+
+        if (level == undefined || level == null || level == "") {
+            level = -1;
         }
 
 
@@ -159,7 +179,7 @@ function getYhcxData() {
             jsonpCallback: "yhcx",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#yhcx2");
+                    $.mobile.changePage("#yhcx1");
                     $("#yhcx-result tbody").html("");
                     for (var i = 0; i < data.length; i++) {
                         var tableStr = "<tr>";
@@ -363,7 +383,7 @@ function summaryScrollPullUp() {
 }
 
 function returndept() {
-    $.mobile.changePage("#yhcx1", {transition: "flip"});
+    $.mobile.changePage("#yhcx2", {transition: "flip"});
     var deptNumber, deptName;
     if ($("#dept-" + currentDisplayLevel).val() == -1) {
         if (currentDisplayLevel == 1) {

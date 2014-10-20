@@ -6,6 +6,11 @@ var loading = false;
 
 var summaryScroll;
 
+function gotoQuery() {
+    initZwjb();
+    $.mobile.changePage("#rjxxcx2", {transition: "flip"});
+}
+
 function initZwjb() {
     if (loading == false) {
         $.mobile.loading("show", {text: "正在获取...", textVisible: true});
@@ -79,7 +84,7 @@ function getRjxxcxData() {
             dept = "null";
         }
 
-        if (zwjb == "-1" || zwjb == -1) {
+        if (zwjb == undefined || zwjb == "-1" || zwjb == -1) {
             zwjb = "null";
         }
 
@@ -99,7 +104,7 @@ function getRjxxcxData() {
             jsonpCallback: "rjxxSummary",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#rjxxcx2");
+                    $.mobile.changePage("#rjxxcx1");
                     $("#rjxxcx-result tbody").html("");
                     for (var i = 0; i < data.length; i++) {
                         var tableStr = "<tr>";
@@ -108,7 +113,6 @@ function getRjxxcxData() {
                         tableStr += "<td>" + data[i].downTime + "</td>";
                         tableStr += "</tr>";
 
-                        //                                $(tableStr).insertAfter($("#rjxxcx-result tr:last"));
                         $(tableStr).appendTo($("#rjxxcx-result tbody"));
                     }
 
@@ -122,10 +126,7 @@ function getRjxxcxData() {
                     }
 
                     loadSummaryScroll();
-
-
                 } else {
-//                    alert("没有数据!")
 //                    $.mobile.changePage("#alert-dialog");
                     $().toastmessage('showToast', {
                         text: '没有数据',
@@ -301,7 +302,7 @@ function summaryScrollPullUp() {
 
 function returndept() {
 //    $.mobile.changePage("#rjxxcx1");
-    $.mobile.changePage("#rjxxcx1", {transition: "flip"});
+    $.mobile.changePage("#rjxxcx2", {transition: "flip"});
     var deptNumber, deptName;
     if ($("#dept-" + currentDisplayLevel).val() == -1) {
         if (currentDisplayLevel == 1) {

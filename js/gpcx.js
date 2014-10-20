@@ -9,6 +9,11 @@ var leader = false;
 
 var summaryScroll;
 
+
+function gotoQuery() {
+    $.mobile.changePage("#gpcx2", {transition: "flip"});
+}
+
 function initPcPerson() {
     $.ajax({
         url: serverPath + "yhEnter/pcPerson",
@@ -29,6 +34,9 @@ function initPcPerson() {
                     deptId = data.deptId;
                 }
 
+//                alert(leader + ", " + deptId);
+
+                getGpcxData();
             }
         },
         error: function () {
@@ -70,7 +78,7 @@ function getGpcxData() {
                 jsonpCallback: "gpcx",
                 success: function (data) {
                     if (data != undefined && data != null && data.length > 0) {
-                        $.mobile.changePage("#gpcx2");
+                        $.mobile.changePage("#gpcx1");
                         $("#gpcx-result tbody").html("");
                         for (var i = 0; i < data.length; i++) {
                             var tableStr = "<tr>";

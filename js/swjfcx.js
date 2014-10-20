@@ -6,6 +6,10 @@ var loading = false;
 
 var summaryScroll;
 
+function gotoQuery() {
+    $.mobile.changePage("#swjfcx2", {transition: "flip"});
+}
+
 function getSwjfcxData() {
     if (loading == false) {
         pageNo = 1;
@@ -44,7 +48,7 @@ function getSwjfcxData() {
             jsonpCallback: "swjfcx",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#swjfcx2");
+                    $.mobile.changePage("#swjfcx1");
                     $("#swjfcx-result tbody").html("");
                     for (var i = 0; i < data.length; i++) {
                         var tableStr = "<tr>";
@@ -231,7 +235,7 @@ function summaryScrollPullUp() {
 }
 
 function returndept() {
-    $.mobile.changePage("#swjfcx1", {transition: "flip"});
+    $.mobile.changePage("#swjfcx2", {transition: "flip"});
     var deptNumber, deptName;
     if ($("#dept-" + currentDisplayLevel).val() == -1) {
         if (currentDisplayLevel == 1) {

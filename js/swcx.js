@@ -7,6 +7,13 @@ var loading = false;
 
 var summaryScroll;
 
+function gotoQuery() {
+    initSwType();
+    initSwLevel();
+
+    $.mobile.changePage("#swcx2", {transition: "flip"});
+}
+
 function initSwType() {
     $.ajax({
         url: serverPath + "baseInfo/102",
@@ -96,6 +103,14 @@ function getSwcxData() {
             name = "null";
         }
 
+        if (type == undefined || type == null || type == "") {
+            type = -1;
+        }
+
+        if (level == undefined || level == null || level == "") {
+            level = -1;
+        }
+
         $.mobile.loading("show", {text: "正在获取...", textVisible: true});
         loading = true;
 
@@ -108,7 +123,7 @@ function getSwcxData() {
             jsonpCallback: "swcx",
             success: function (data) {
                 if (data != undefined && data != null && data.length > 0) {
-                    $.mobile.changePage("#swcx2");
+                    $.mobile.changePage("#swcx1");
                     $("#swcx-result tbody").html("");
                     for (var i = 0; i < data.length; i++) {
                         var tableStr = "<tr>";
@@ -299,7 +314,7 @@ function summaryScrollPullUp() {
 }
 
 function returndept() {
-    $.mobile.changePage("#swcx1", {transition: "flip"});
+    $.mobile.changePage("#swcx2", {transition: "flip"});
     var deptNumber, deptName;
     if ($("#dept-" + currentDisplayLevel).val() == -1) {
         if (currentDisplayLevel == 1) {

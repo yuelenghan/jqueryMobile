@@ -41,16 +41,17 @@
 
     <div data-role="content">
         <!-- 选择录入方式 : 选择或手动 -->
-        <fieldset data-role="controlgroup" data-type="horizontal">
-            <label for="xz">选择入井信息</label>
-            <input type="radio" name="lrfs" id="xz" data-mini="true" value="1"
-                   onchange="selectXz()">
-            <label for="sd">手动录入</label>
-            <input type="radio" name="lrfs" id="sd" data-mini="true" value="2" onchange="selectSd()">
-        </fieldset>
+        <div>
+            <fieldset data-role="controlgroup" data-type="horizontal">
+                <label for="xz">选择入井信息</label>
+                <input type="radio" name="lrfs" id="xz" data-mini="true" value="1"
+                       onchange="selectXz()">
+                <label for="sd">手动录入</label>
+                <input type="radio" name="lrfs" id="sd" data-mini="true" value="2" onchange="selectSd()">
+            </fieldset>
 
-        <br>
-        <br>
+        </div>
+
         <br>
         <br>
 
